@@ -1,20 +1,11 @@
-const { GraphQLObjectType, GraphQLString, 
-       GraphQLID, GraphQLInt, GraphQLSchema } = require('graphql');
-
+const { GraphQLObjectType, GraphQLID, GraphQLString, GraphQLSchema } = require('graphql');
+const { HelloType } = require('./objects');
 
 var fakeDatabase = [
     { name:"world", id:1},
     { name: "graphql", id: 2},
     { name: "react", id: 3 }
 ]
-
-const HelloType = new GraphQLObjectType({
-    name: 'Hello',
-    fields: () => ({
-        name: { type: GraphQLString }, 
-        id: { type: GraphQLID }
-    })
-});
 
 //RootQuery describe how users can use the graph and grab data.
 //E.g Root query to get all authors, get all books, get a particular book 
@@ -35,7 +26,7 @@ const RootQuery = new GraphQLObjectType({
         }
     }
 });
- 
+
 //Creating a new GraphQL Schema, with options query which defines query 
 //we will allow users to use when they are making request.
 module.exports = new GraphQLSchema({
