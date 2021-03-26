@@ -2,18 +2,17 @@ const { GraphQLObjectType, GraphQLString,
        GraphQLID, GraphQLInt, GraphQLSchema } = require('graphql');
 
 
-var fakeBookDatabase = [
-    { name:"Book 1", pages:432 , id:1},
-    { name: "Book 2", pages: 32, id: 2},
-    { name: "Book 3", pages: 532, id: 3 }
+var fakeDatabase = [
+    { name:"world", id:1},
+    { name: "graphql", id: 2},
+    { name: "react", id: 3 }
 ]
 
-const BookType = new GraphQLObjectType({
-    name: 'Book',
+const HelloType = new GraphQLObjectType({
+    name: 'Hello',
     fields: () => ({
-        id: { type: GraphQLID  },
         name: { type: GraphQLString }, 
-        pages: { type: GraphQLInt }
+        id: { type: GraphQLID }
     })
 });
 
@@ -23,15 +22,15 @@ const BookType = new GraphQLObjectType({
 const RootQuery = new GraphQLObjectType({
     name: 'RootQueryType',
     fields: {
-        book: {
-            type: BookType,
+        hello: {
+            type: HelloType,
             //argument passed by the user while making the query
             args: { id: { type: GraphQLID } },
             resolve(parent, args) {
                 //Here we define how to get data from database source
 
                 //this will return the book with id passed in argument by the user
-                return fakeBookDatabase.find((item) => { return item.id == args.id});
+                return fakeDatabase.find((item) => { return item.id == args.id});
             }
         }
     }
