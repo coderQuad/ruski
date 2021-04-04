@@ -29,7 +29,12 @@ const PlayerType = new GraphQLObjectType({
         id: { type: GraphQLID },
         cups: { type: GraphQLInt },
         penalties: { type: GraphQLInt },
-        user_id: { type: GraphQLID } 
+        user: { 
+            type: UserType,
+            resolve(parent, args){
+                return User.findById(parent.user_id);
+            }
+        } 
     })
 });
 
@@ -40,7 +45,12 @@ const CommentType = new GraphQLObjectType({
         timestamp: { type: GraphQLString },
         text: { type: GraphQLString },
         likes: { type: GraphQLInt },
-        user_id: { type: GraphQLID }
+        user: {
+            type: UserType, 
+            resolve(parent, args){
+                return User.findById(parent.user_id);
+            }
+        }
     })
 });
 
@@ -55,19 +65,19 @@ const GameType = new GraphQLObjectType({
         winning_team: {
             type: new GraphQLList(PlayerType),
             resolve(parent, args){
-
+                return Player.find({'_id': { $in: parent.winning_team_player_ids }});
             }
         },
         losing_team: {
             type: new GraphQLList(PlayerType),
             resolve(parent, args){
-
+                return Player.find({'_id': { $in: parent.losing_team_player_ids }});
             }
         },
         comments: {
             type: new GraphQLList(CommentType),
             resolve(parent, args){
-
+                return Player.find({'_id': { $in: parent.comment_ids }});
             }
         }
     })
