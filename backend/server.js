@@ -1,9 +1,11 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const { graphqlHTTP } = require('express-graphql');
+const cors = require('cors');
 const schema = require('./graphql/schemas');
 
 const app = express();
+app.use(cors());
 
 mongoose.connect('mongodb://127.0.0.1:27017/ruski', { useNewUrlParser: true, useUnifiedTopology: true });
 mongoose.set('useFindAndModify', false);

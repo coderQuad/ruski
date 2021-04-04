@@ -1,5 +1,23 @@
 import logo from './logo.svg';
 import './App.css';
+import { request, gql } from 'graphql-request';
+
+const query = gql`
+{
+    users {
+      name
+      handle
+      elo
+      id
+      friends {
+        name
+        handle
+      }
+    }
+  }
+`
+
+request('http://localhost:4000/graphql', query).then((data) => console.log(data));
 
 function App() {
   return (
