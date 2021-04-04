@@ -1,8 +1,10 @@
 const { GraphQLObjectType, GraphQLString, GraphQLInt,
-       GraphQLID,
-       GraphQLList} = require('graphql');
+       GraphQLID, GraphQLList} = require('graphql');
 
 const User = require('../models/user');
+const Player = require('../models/player');
+const Comment = require('../models/comment');
+const Game = require('../models/game');
 
 const UserType = new GraphQLObjectType({
     name: 'User', 
@@ -21,13 +23,54 @@ const UserType = new GraphQLObjectType({
     })
 });
 
+const PlayerType = new GraphQLObjectType({
+    name: 'Player',
+    fields: () => ({
+        id: { type: GraphQLID },
+        cups: { type: GraphQLInt },
+        penalties: { type: GraphQLInt },
+        user_id: { type: GraphQLID } 
+    })
+});
+
+const CommentType = new GraphQLObjectType({
+    name: 'Comment',
+    fields: () => ({
+        id: { type: GraphQLID },
+        timestamp: { type: GraphQLString },
+        text: { type: GraphQLString },
+        likes: { type: GraphQLInt },
+        user_id: { type: GraphQLID }
+    })
+});
+
 const GameType = new GraphQLObjectType({
     name: 'Game',
     fields: () => ({
-        name: { type: GraphQLString }, 
-        team1: { type: GraphQLString },
-        id: { type: GraphQLID }
+        id: { type: GraphQLID },
+        timestamp: { type: GraphQLString },
+        location: { type: GraphQLString },
+        description: { type: GraphQLString },
+        likes: { type: GraphQLInt }, 
+        winning_team: {
+            type: new GraphQLList(PlayerType),
+            resolve(parent, args){
+
+            }
+        },
+        losing_team: {
+            type: new GraphQLList(PlayerType),
+            resolve(parent, args){
+
+            }
+        },
+        comments: {
+            type: new GraphQLList(CommentType),
+            resolve(parent, args){
+
+            }
+        }
     })
 });
  
-module.exports = { UserType, GameType };
+module.exports = { UserType, PlayerType, CommentType, GameType };
