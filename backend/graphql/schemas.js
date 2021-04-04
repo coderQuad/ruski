@@ -1,11 +1,10 @@
-const { GraphQLObjectType, GraphQLID, GraphQLString, GraphQLSchema } = require('graphql');
+const { GraphQLObjectType, GraphQLID, GraphQLString, 
+    GraphQLNonNull, GraphQLSchema, GraphQLList } = require('graphql');
+
 const { HelloType } = require('./objects');
 
-var fakeDatabase = [
-    { name:"world", id:1},
-    { name: "graphql", id: 2},
-    { name: "react", id: 3 }
-]
+const Hello = require('../models/hello');
+
 
 //RootQuery describe how users can use the graph and grab data.
 //E.g Root query to get all authors, get all books, get a particular book 
@@ -21,7 +20,35 @@ const RootQuery = new GraphQLObjectType({
                 //Here we define how to get data from database source
 
                 //this will return the book with id passed in argument by the user
-                return fakeDatabase.find((item) => { return item.id == args.id});
+                return Hello.findById(args.id);
+            }
+        },
+        hello: {
+            type: new GraphQLList(HelloType),
+            resolve(parent, args) {
+                return Hello.find({}); 
+            }
+        }
+    }
+});
+
+
+//Very similar to RootQuery helps user to add/update to the database.
+const Mutation = new GraphQLObjectType({
+    name: 'Mutation',
+    fields: {
+        addHello:{
+            type: HelloType,
+            args:{
+                name: { type: new GraphQLNonNull(GraphQLString)}, // GraphQLNonNull makes field required
+                tructus: { type: new GraphQLNonNull(GraphQLString)}
+            },
+            resolve(parent,args){
+                let hello = new Hello({
+                    name: args.name,
+                    tructus: args.tructus
+                })
+                return hello.save();
             }
         }
     }
@@ -30,5 +57,6 @@ const RootQuery = new GraphQLObjectType({
 //Creating a new GraphQL Schema, with options query which defines query 
 //we will allow users to use when they are making request.
 module.exports = new GraphQLSchema({
-    query: RootQuery
+    query: RootQuery,
+    mutation: Mutation
 });
