@@ -77,7 +77,7 @@ const GameType = new GraphQLObjectType({
         comments: {
             type: new GraphQLList(CommentType),
             resolve(parent, args){
-                return Player.find({'_id': { $in: parent.comment_ids }});
+                return Comment.find({'_id': { $in: parent.comment_ids }});
             }
         }
     })
