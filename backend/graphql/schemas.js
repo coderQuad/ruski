@@ -14,13 +14,12 @@ const RootQuery = new GraphQLObjectType({
     fields: {
         user: {
             type: UserType,
-            //argument passed by the user while making the query
-            args: { id: { type: GraphQLID } },
+            args: { id: { type: GraphQLID } }, 
             resolve(parent, args) {
                 return User.findById(args.id);
             }
         },
-        user: {
+        users: {
             type: new GraphQLList(UserType),
             resolve(parent, args) {
                 return User.find({}); 
@@ -34,7 +33,9 @@ const RootQuery = new GraphQLObjectType({
 const Mutation = new GraphQLObjectType({
     name: 'Mutation',
     fields: {
-        addUser:{
+
+        /* User Mutations */
+        addUser: {
             type: UserType,
             args:{
                 handle: { type: new GraphQLNonNull(GraphQLString)}, // GraphQLNonNull makes field required
@@ -53,7 +54,43 @@ const Mutation = new GraphQLObjectType({
                 })
                 return user.save();
             }
+        },
+        updateUser: {
+            type: UserType,
+            args: {
+                id: { type: GraphQLNonNull(GraphQLID)},
+                handle: { type: GraphQLString}, // GraphQLNonNull makes field required
+                name: { type: GraphQLString},
+                email: { type: GraphQLString },
+                elo: { type: GraphQLInt },
+                friend_ids: {type: new GraphQLList(GraphQLID)}
+            },
+            resolve(parent,args){
+                return User.findByIdAndUpdate(
+                    args.id,
+                    {
+                        handle: args.handle,
+                        name: args.name,
+                        email: args.email,
+                        elo: args.elo,
+                        friend_ids: args.friend_ids
+                    }
+                );
+            }
+        },
+        deleteUser: {
+            type: UserType,
+            args: {
+                id: { type: GraphQLNonNull(GraphQLID)}
+            },
+            resolve(parent,args){
+                return User.findByIdAndDelete( args.id );
+            }
         }
+
+
+        /* Game Mutations */
+        
     }
 });
 

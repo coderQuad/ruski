@@ -6,6 +6,7 @@ const schema = require('./graphql/schemas');
 const app = express();
 
 mongoose.connect('mongodb://127.0.0.1:27017/ruski', { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.set('useFindAndModify', false);
 const connection = mongoose.connection;
 
 connection.once('open', function() {
