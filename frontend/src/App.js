@@ -2,6 +2,8 @@ import logo from './logo.svg';
 import './App.css';
 import { request, gql } from 'graphql-request';
 
+
+/* Example of a graphql client side request with graphql-request */
 const query = gql`
 {
     users {
@@ -16,8 +18,8 @@ const query = gql`
     }
   }
 `
-
 request('http://localhost:4000/graphql', query).then((data) => console.log(data));
+
 
 function App() {
   return (

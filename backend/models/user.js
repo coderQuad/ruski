@@ -7,6 +7,6 @@ const userSchema = new Schema({
     email: String,
     elo: Number,
     friend_ids: [Schema.Types.ObjectId]
-})
+});
 
 module.exports = mongoose.model('User', userSchema);
