@@ -1,15 +1,32 @@
-const { GraphQLObjectType, GraphQLString, 
-       GraphQLID} = require('graphql');
+const { GraphQLObjectType, GraphQLString, GraphQLInt,
+       GraphQLID,
+       GraphQLList} = require('graphql');
 
-const Hello = require('../models/hello');
+const User = require('../models/user');
 
-const HelloType = new GraphQLObjectType({
-    name: 'Hello',
+const UserType = new GraphQLObjectType({
+    name: 'User', 
+    fields: () => ({
+        handle: { type: GraphQLString },
+        name: { type: GraphQLString },
+        email: { type: GraphQLString },
+        elo: { type: GraphQLInt },
+        friends: {
+            type: new GraphQLList(UserType),
+            resolve(parent, args){
+                return User.find({'_id': { $in: parent.friend_ids }});
+            }
+        }
+    })
+});
+
+const GameType = new GraphQLObjectType({
+    name: 'Game',
     fields: () => ({
         name: { type: GraphQLString }, 
-        tructus: { type: GraphQLString },
+        team1: { type: GraphQLString },
         id: { type: GraphQLID }
     })
 });
  
-module.exports = { HelloType };
+module.exports = { UserType, GameType };

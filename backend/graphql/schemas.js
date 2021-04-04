@@ -1,9 +1,9 @@
-const { GraphQLObjectType, GraphQLID, GraphQLString, 
+const { GraphQLObjectType, GraphQLID, GraphQLString, GraphQLInt, 
     GraphQLNonNull, GraphQLSchema, GraphQLList } = require('graphql');
 
-const { HelloType } = require('./objects');
+const { UserType, GameType } = require('./objects');
 
-const Hello = require('../models/hello');
+const User = require('../models/user');
 
 
 //RootQuery describe how users can use the graph and grab data.
@@ -12,21 +12,18 @@ const Hello = require('../models/hello');
 const RootQuery = new GraphQLObjectType({
     name: 'RootQueryType',
     fields: {
-        hello: {
-            type: HelloType,
+        user: {
+            type: UserType,
             //argument passed by the user while making the query
             args: { id: { type: GraphQLID } },
             resolve(parent, args) {
-                //Here we define how to get data from database source
-
-                //this will return the book with id passed in argument by the user
-                return Hello.findById(args.id);
+                return User.findById(args.id);
             }
         },
-        hello: {
-            type: new GraphQLList(HelloType),
+        user: {
+            type: new GraphQLList(UserType),
             resolve(parent, args) {
-                return Hello.find({}); 
+                return User.find({}); 
             }
         }
     }
@@ -37,18 +34,24 @@ const RootQuery = new GraphQLObjectType({
 const Mutation = new GraphQLObjectType({
     name: 'Mutation',
     fields: {
-        addHello:{
-            type: HelloType,
+        addUser:{
+            type: UserType,
             args:{
-                name: { type: new GraphQLNonNull(GraphQLString)}, // GraphQLNonNull makes field required
-                tructus: { type: new GraphQLNonNull(GraphQLString)}
+                handle: { type: new GraphQLNonNull(GraphQLString)}, // GraphQLNonNull makes field required
+                name: { type: new GraphQLNonNull(GraphQLString)},
+                email: { type: GraphQLString },
+                elo: { type: GraphQLInt },
+                friend_ids: {type: new GraphQLList(GraphQLID)}
             },
             resolve(parent,args){
-                let hello = new Hello({
+                let user = new User({
+                    handle: args.handle,
                     name: args.name,
-                    tructus: args.tructus
+                    email: args.email,
+                    elo: args.elo,
+                    friend_ids: args.friend_ids
                 })
-                return hello.save();
+                return user.save();
             }
         }
     }
