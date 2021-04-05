@@ -102,7 +102,7 @@ const Mutation = new GraphQLObjectType({
                     email: args.email,
                     elo: args.elo,
                     friend_ids: args.friend_ids
-                })
+                });
                 return user.save();
             }
         },
@@ -137,11 +137,73 @@ const Mutation = new GraphQLObjectType({
             resolve(parent,args){
                 return User.findByIdAndDelete( args.id );
             }
-        }
-
+        },
 
         /* Game Mutations */
-        
+        addGame: {
+            type: GameType,
+            args: {
+                location: { type: GraphQLString },
+                description: { type: new GraphQLNonNull(GraphQLString)},
+                winner_1_cups: { type: new GraphQLNonNull(GraphQLInt)},
+                winner_1_penalties: { type: new GraphQLNonNull(GraphQLInt)},
+                winner_1_user_id: { type: new GraphQLNonNull(GraphQLID)},
+                winner_2_cups: { type: new GraphQLNonNull(GraphQLInt)},
+                winner_2_penalties: { type: new GraphQLNonNull(GraphQLInt)},
+                winner_2_user_id: { type: new GraphQLNonNull(GraphQLID)},
+                loser_1_cups: { type: new GraphQLNonNull(GraphQLInt)},
+                loser_1_penalties: { type: new GraphQLNonNull(GraphQLInt)},
+                loser_1_user_id: { type: new GraphQLNonNull(GraphQLID)},
+                loser_2_cups: { type: new GraphQLNonNull(GraphQLInt)},
+                loser_2_penalties: { type: new GraphQLNonNull(GraphQLInt)},
+                loser_2_user_id: { type: new GraphQLNonNull(GraphQLID)}
+            },
+            resolve(parent, args){
+
+                let game = new Game({
+                    location: args.location, 
+                    description: args.description,
+                    likes: 0,
+                    winning_team_player_ids: [],
+                    losing_team_player_ids: [],
+                    comment_ids: []
+                });
+
+                let winner_1 = new Player({
+                    cups: args.winner_1_cups, 
+                    penalties: args.winner_1_penalties,
+                    user_id: args.winner_1_user_id
+                });
+                let winner_2 = new Player({
+                    cups: args.winner_2_cups, 
+                    penalties: args.winner_2_penalties,
+                    user_id: args.winner_2_user_id
+                });
+
+                winner_1.save()
+                    .then(response => game.winning_team_player_ids.push(response._id));
+                winner_2.save()
+                    .then(response => game.winning_team_player_ids.push(response._id));
+
+                let loser_1 = new Player({
+                    cups: args.loser_1_cups, 
+                    penalties: args.loser_1_penalties,
+                    user_id: args.loser_1_user_id
+                });
+                let loser_2 = new Player({
+                    cups: args.loser_2_cups, 
+                    penalties: args.loser_2_penalties,
+                    user_id: args.loser_2_user_id
+                });
+
+                loser_1.save()
+                    .then(response => game.losing_team_player_ids.push(response._id));
+                loser_2.save()
+                    .then(response => game.losing_team_player_ids.push(response._id));
+
+                return game.save();
+            }
+        }
     }
 });
 
