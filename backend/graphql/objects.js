@@ -4,7 +4,6 @@ const { GraphQLObjectType, GraphQLString, GraphQLInt,
 const User = require('../models/user');
 const Player = require('../models/player');
 const Comment = require('../models/comment');
-const Game = require('../models/game');
 
 const UserType = new GraphQLObjectType({
     name: 'User', 
@@ -82,5 +81,5 @@ const GameType = new GraphQLObjectType({
         }
     })
 });
- 
+
 module.exports = { UserType, PlayerType, CommentType, GameType };

@@ -1,10 +1,12 @@
 const { GraphQLObjectType, GraphQLID, GraphQLString, GraphQLInt, 
     GraphQLNonNull, GraphQLSchema, GraphQLList } = require('graphql');
 
-const { UserType, GameType } = require('./objects');
+const { UserType, PlayerType, CommentType, GameType } = require('./objects');
 
 const User = require('../models/user');
-
+const Player = require('../models/player');
+const Comment = require('../models/comment');
+const Game = require('../models/game');
 
 //RootQuery describe how users can use the graph and grab data.
 //E.g Root query to get all authors, get all books, get a particular book 
@@ -12,6 +14,8 @@ const User = require('../models/user');
 const RootQuery = new GraphQLObjectType({
     name: 'RootQueryType',
     fields: {
+
+        /* User Queries */
         user: {
             type: UserType,
             args: { id: { type: GraphQLID } }, 
@@ -23,6 +27,53 @@ const RootQuery = new GraphQLObjectType({
             type: new GraphQLList(UserType),
             resolve(parent, args) {
                 return User.find({}); 
+            }
+        },
+
+        /* Player Queries */
+        player: {
+            type: PlayerType,
+            args: { id: { type: GraphQLID } },
+            resolve(parent, args) {
+                return Player.findById(args.id);
+            }
+        },
+        players: {
+            type: new GraphQLList(PlayerType),
+            args: { ids: { type: GraphQLList(GraphQLID)}},
+            resolve(parent, args) {
+                return Player.find({'_id': { $in: args.ids }});
+            }
+        },
+
+        /* Comment Queries */
+        comment: {
+            type: CommentType,
+            args: { id: { type: GraphQLID } },
+            resolve(parent, args) {
+                return Comment.findById(args.id);
+            }
+        },
+        comments: {
+            type: new GraphQLList(CommentType),
+            args: { ids: { type: GraphQLList(GraphQLID)}},
+            resolve(parent, args){
+                return Comment.find({'_id': { $in: args.ids }});
+            }
+        },
+
+        /* Game Queries */
+        game: {
+            type: GameType,
+            args: { id: {type: GraphQLID }},
+            resolve(parent, args) {
+                return Game.findById(args.id);
+            }
+        },
+        games: {
+            type: new GraphQLList(GameType),
+            resolve(parent, args){
+                return Comment.find( {} );
             }
         }
     }
