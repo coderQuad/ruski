@@ -42,7 +42,7 @@ const RootQuery = new GraphQLObjectType({
             type: new GraphQLList(PlayerType),
             args: { ids: { type: GraphQLList(GraphQLID)}},
             resolve(parent, args) {
-                return Player.find({'_id': { $in: args.ids }});
+                return Player.find({});
             }
         },
 
@@ -58,7 +58,7 @@ const RootQuery = new GraphQLObjectType({
             type: new GraphQLList(CommentType),
             args: { ids: { type: GraphQLList(GraphQLID)}},
             resolve(parent, args){
-                return Comment.find({'_id': { $in: args.ids }});
+                return Comment.find({});
             }
         },
 
@@ -73,7 +73,7 @@ const RootQuery = new GraphQLObjectType({
         games: {
             type: new GraphQLList(GameType),
             resolve(parent, args){
-                return Comment.find( {} );
+                return Game.find( {} );
             }
         }
     }
@@ -139,69 +139,128 @@ const Mutation = new GraphQLObjectType({
             }
         },
 
+        /* Player Mutations */
+        addPlayer: {
+            type: PlayerType,
+            args: {
+                cups: { type: new GraphQLNonNull(GraphQLInt) },
+                penalties: { type: new GraphQLNonNull(GraphQLInt)},
+                user_id: { type: new GraphQLNonNull(GraphQLID)}
+            },
+            resolve(parent, args){
+                let player = new Player({
+                    cups: args.cups,
+                    penalties: args.penalties,
+                    user_id: args.user_id
+                });
+                
+                return player.save();
+            }
+        },
+        updatePlayer: {
+            type: PlayerType,
+            args: {
+                id: { type: new GraphQLNonNull(GraphQLID)},
+                cups: { type: GraphQLInt},
+                penalties: { type: GraphQLInt},
+                user_id: { type: GraphQLID}
+            },
+            resolve(parent, args){
+                return Player.findByIdAndUpdate(
+                    args.id,
+                    {
+                        cups: args.cups,
+                        penalties: args.penalties,
+                        user_id: args.user_id
+                    }
+                );
+            }
+        },
+        deletePlayer: {
+            type: PlayerType,
+            args: {
+                id: { type: new GraphQLNonNull(GraphQLID)}
+            },
+            resolve(parent, args){
+                return player.findByIdAndDelete(args.id);
+            }
+        },
+
+        /* Comment Mutations */
+        addComment: {
+            type: CommentType,
+            args: {
+                text: {type: new GraphQLNonNull(GraphQLString)},
+                user_id: {type: new GraphQLNonNull(GraphQLID)}
+            },
+            resolve(parent, args){
+                let comment = new Comment({
+                    text: args.text,
+                    likes: 0,
+                    user_id: args.user_id
+                });
+
+                return comment.save();
+            }
+        },
+        updateComment: {
+            type: CommentType,
+            args: {
+                id: { type: new GraphQLNonNull(GraphQLID)},
+                text: { type: GraphQLString},
+                user_id: { type: GraphQLID}
+            },
+            resolve(parent, args){
+                return Comment.findByIdAndUpdate(
+                    args.id,
+                    {
+                        text: args.text,
+                        likes: 0,
+                        user_id: args.user_id
+                    }
+                );
+            }
+        },
+        deleteComment: {
+            type: CommentType,
+            args: {
+                id: { type: new GraphQLNonNull(GraphQLID)}
+            },
+            resolve(parent, args){
+                return Comment.findByIdAndDelete(args.id);
+            }
+        },
+
         /* Game Mutations */
         addGame: {
             type: GameType,
             args: {
                 location: { type: GraphQLString },
                 description: { type: new GraphQLNonNull(GraphQLString)},
-                winner_1_cups: { type: new GraphQLNonNull(GraphQLInt)},
-                winner_1_penalties: { type: new GraphQLNonNull(GraphQLInt)},
-                winner_1_user_id: { type: new GraphQLNonNull(GraphQLID)},
-                winner_2_cups: { type: new GraphQLNonNull(GraphQLInt)},
-                winner_2_penalties: { type: new GraphQLNonNull(GraphQLInt)},
-                winner_2_user_id: { type: new GraphQLNonNull(GraphQLID)},
-                loser_1_cups: { type: new GraphQLNonNull(GraphQLInt)},
-                loser_1_penalties: { type: new GraphQLNonNull(GraphQLInt)},
-                loser_1_user_id: { type: new GraphQLNonNull(GraphQLID)},
-                loser_2_cups: { type: new GraphQLNonNull(GraphQLInt)},
-                loser_2_penalties: { type: new GraphQLNonNull(GraphQLInt)},
-                loser_2_user_id: { type: new GraphQLNonNull(GraphQLID)}
-            },
+                winning_team_player_ids: {type: new GraphQLList(GraphQLID)},
+                losing_team_player_ids: {type: new GraphQLList(GraphQLID)}
+           },
             resolve(parent, args){
-
                 let game = new Game({
                     location: args.location, 
                     description: args.description,
                     likes: 0,
-                    winning_team_player_ids: [],
-                    losing_team_player_ids: [],
+                    winning_team_player_ids: args.winning_team_player_ids,
+                    losing_team_player_ids: args.losing_team_player_ids,
                     comment_ids: []
                 });
 
-                let winner_1 = new Player({
-                    cups: args.winner_1_cups, 
-                    penalties: args.winner_1_penalties,
-                    user_id: args.winner_1_user_id
-                });
-                let winner_2 = new Player({
-                    cups: args.winner_2_cups, 
-                    penalties: args.winner_2_penalties,
-                    user_id: args.winner_2_user_id
-                });
-
-                winner_1.save()
-                    .then(response => game.winning_team_player_ids.push(response._id));
-                winner_2.save()
-                    .then(response => game.winning_team_player_ids.push(response._id));
-
-                let loser_1 = new Player({
-                    cups: args.loser_1_cups, 
-                    penalties: args.loser_1_penalties,
-                    user_id: args.loser_1_user_id
-                });
-                let loser_2 = new Player({
-                    cups: args.loser_2_cups, 
-                    penalties: args.loser_2_penalties,
-                    user_id: args.loser_2_user_id
-                });
-
-                loser_1.save()
-                    .then(response => game.losing_team_player_ids.push(response._id));
-                loser_2.save()
-                    .then(response => game.losing_team_player_ids.push(response._id));
-
                 return game.save();
+            }
+        },
+        updateGame: {
+            type: GameType,
+            args: {
+                id: {type: new GraphQLNonNull(GraphQLID)},
+                location: {type: GraphQLString},
+                description: { type: GraphQLString},
+                winning_team_player_ids: {type: new GraphQLList(GraphQLID)},
+                losing_team_player_ids: {type: new GraphQLList(GraphQLID)}
             }
         }
     }
