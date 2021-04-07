@@ -11,7 +11,8 @@ const EloType = new GraphQLObjectType({
     fields: () => ({
         id: { type: GraphQLID },
         elo: { type: GraphQLInt },
-        timestamp: { type: GraphQLString }
+        createdAt: { type: GraphQLString },
+        updatedAt: { type: GraphQLString }
     })
 });
 
@@ -73,7 +74,8 @@ const GameType = new GraphQLObjectType({
     name: 'Game',
     fields: () => ({
         id: { type: GraphQLID },
-        timestamp: { type: GraphQLString },
+        createdAt: { type: GraphQLString },
+        updatedAt: { type: GraphQLString },
         location: { type: GraphQLString },
         description: { type: GraphQLString },
         likes: { type: GraphQLInt }, 
