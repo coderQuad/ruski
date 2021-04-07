@@ -16,6 +16,7 @@ frontend/npm-debug.log*
 #backend
 backend/node_modules
 backend/.DS_Store
+backend/results.csv
 
 #root
 .DS_Store
