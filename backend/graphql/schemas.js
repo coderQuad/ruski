@@ -7,6 +7,7 @@ const User = require('../models/user');
 const Player = require('../models/player');
 const Comment = require('../models/comment');
 const Game = require('../models/game');
+const Elo = require('../models/elo');
 
 //RootQuery describe how users can use the graph and grab data.
 //E.g Root query to get all authors, get all books, get a particular book 
@@ -14,6 +15,20 @@ const Game = require('../models/game');
 const RootQuery = new GraphQLObjectType({
     name: 'RootQueryType',
     fields: {
+        /* Elo Queries */
+        elo: {
+            type: EloType,
+            args: { id: {type: GraphQLID}},
+            resolve(parent, args){
+                return Elo.findById(args.id);
+            }
+        },
+        elos: {
+            type: EloType,
+            resolve(parent, args) {
+                return Elo.find({});
+            }
+        },
 
         /* User Queries */
         user: {
@@ -40,7 +55,6 @@ const RootQuery = new GraphQLObjectType({
         },
         players: {
             type: new GraphQLList(PlayerType),
-            args: { ids: { type: GraphQLList(GraphQLID)}},
             resolve(parent, args) {
                 return Player.find({});
             }
@@ -56,7 +70,6 @@ const RootQuery = new GraphQLObjectType({
         },
         comments: {
             type: new GraphQLList(CommentType),
-            args: { ids: { type: GraphQLList(GraphQLID)}},
             resolve(parent, args){
                 return Comment.find({});
             }
@@ -84,6 +97,43 @@ const RootQuery = new GraphQLObjectType({
 const Mutation = new GraphQLObjectType({
     name: 'Mutation',
     fields: {
+        /* Elo Mutations */
+        addElo: {
+            type: EloType,
+            args: {
+                elo: { type: new GraphQLNonNull(GraphQLInt)}
+            },
+            resolve(parent, args){
+                let elo = new Elo({
+                    elo: args.elo
+                });
+                return elo.save();
+            }
+        },
+        updateElo: {
+            type: EloType,
+            args: {
+                id: {type: new GraphQLNonNull(GraphQLID)},
+                elo: {type: GraphQLInt}
+            },
+            resolve(parent, args){
+                return Elo.findByIdAndUpdate(
+                    args.id,
+                    {
+                        elo: args.elo
+                    }
+                );
+            }
+        },
+        deleteElo: {
+            type: EloType,
+            args: {
+                id: {type: new GraphQLNonNull(GraphQLID)}
+            },
+            resolve(parent, args){
+                return Elo.findByIdAndDelete(args.id);
+            }
+        },
 
         /* User Mutations */
         addUser: {
