@@ -1,2 +1,2 @@
 # Ruski
-> The Game of Games™
+> The Game of Games
