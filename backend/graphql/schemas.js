@@ -261,6 +261,26 @@ const Mutation = new GraphQLObjectType({
                 description: { type: GraphQLString},
                 winning_team_player_ids: {type: new GraphQLList(GraphQLID)},
                 losing_team_player_ids: {type: new GraphQLList(GraphQLID)}
+            },
+            resolve(parent, args){
+                return Game.findByIdAndUpdate(
+                    args.id,
+                    {
+                        location: args.location,
+                        description: args.description,
+                        winning_team_player_ids: args.winning_team_player_ids,
+                        losing_team_player_ids: args.losing_team_player_ids
+                    }
+                );
+            }
+        },
+        deleteGame: {
+            type: GameType,
+            args: {
+                id: {type: new GraphQLNonNull(GraphQLID)}
+            },
+            resolve(parent, args){
+                return Game.findByIdAndDelete(args.delete);
             }
         }
     }
