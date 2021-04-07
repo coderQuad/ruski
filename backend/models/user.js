@@ -6,6 +6,7 @@ const userSchema = new Schema({
     name: String, 
     email: String,
     elo: Number,
+    elo_history_ids: [Schema.Types.ObjectId],
     friend_ids: [Schema.Types.ObjectId]
 });
 

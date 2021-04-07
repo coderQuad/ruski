@@ -1,7 +1,7 @@
 const { GraphQLObjectType, GraphQLID, GraphQLString, GraphQLInt, 
     GraphQLNonNull, GraphQLSchema, GraphQLList } = require('graphql');
 
-const { UserType, PlayerType, CommentType, GameType } = require('./objects');
+const { EloType, UserType, PlayerType, CommentType, GameType } = require('./objects');
 
 const User = require('../models/user');
 const Player = require('../models/player');
@@ -24,7 +24,7 @@ const RootQuery = new GraphQLObjectType({
             }
         },
         elos: {
-            type: EloType,
+            type: new GraphQLList(EloType),
             resolve(parent, args) {
                 return Elo.find({});
             }

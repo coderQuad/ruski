@@ -4,6 +4,16 @@ const { GraphQLObjectType, GraphQLString, GraphQLInt,
 const User = require('../models/user');
 const Player = require('../models/player');
 const Comment = require('../models/comment');
+const Elo = require('../models/elo');
+
+const EloType = new GraphQLObjectType({
+    name: 'Elo',
+    fields: () => ({
+        id: { type: GraphQLID },
+        elo: { type: GraphQLInt },
+        timestamp: { type: GraphQLString }
+    })
+});
 
 const UserType = new GraphQLObjectType({
     name: 'User', 
@@ -13,6 +23,12 @@ const UserType = new GraphQLObjectType({
         name: { type: GraphQLString },
         email: { type: GraphQLString },
         elo: { type: GraphQLInt },
+        elo_history: { 
+            type: new GraphQLList(EloType),
+            resolve(parent, args){
+                return Elo.find({'_id': { $in: parent.elo_history_ids}});
+            }
+        },
         friends: {
             type: new GraphQLList(UserType),
             resolve(parent, args){
@@ -82,4 +98,4 @@ const GameType = new GraphQLObjectType({
     })
 });
 
-module.exports = { UserType, PlayerType, CommentType, GameType };
+module.exports = { EloType, UserType, PlayerType, CommentType, GameType };
