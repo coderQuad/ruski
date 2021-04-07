@@ -1,5 +1,6 @@
 const { GraphQLObjectType, GraphQLString, GraphQLInt,
        GraphQLID, GraphQLList} = require('graphql');
+const { GraphQLDateTime } = require('graphql-iso-date');
 
 const User = require('../models/user');
 const Player = require('../models/player');
@@ -11,8 +12,8 @@ const EloType = new GraphQLObjectType({
     fields: () => ({
         id: { type: GraphQLID },
         elo: { type: GraphQLInt },
-        createdAt: { type: GraphQLString },
-        updatedAt: { type: GraphQLString }
+        createdAt: { type: GraphQLDateTime },
+        updatedAt: { type: GraphQLDateTime }
     })
 });
 
@@ -58,7 +59,8 @@ const CommentType = new GraphQLObjectType({
     name: 'Comment',
     fields: () => ({
         id: { type: GraphQLID },
-        timestamp: { type: GraphQLString },
+        createdAt: { type: GraphQLDateTime },
+        updatedAt: { type: GraphQLDateTime },
         text: { type: GraphQLString },
         likes: { type: GraphQLInt },
         user: {
@@ -74,8 +76,8 @@ const GameType = new GraphQLObjectType({
     name: 'Game',
     fields: () => ({
         id: { type: GraphQLID },
-        createdAt: { type: GraphQLString },
-        updatedAt: { type: GraphQLString },
+        createdAt: { type: GraphQLDateTime },
+        updatedAt: { type: GraphQLDateTime },
         location: { type: GraphQLString },
         description: { type: GraphQLString },
         likes: { type: GraphQLInt }, 
