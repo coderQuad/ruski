@@ -332,6 +332,49 @@ const Mutation = new GraphQLObjectType({
             resolve(parent, args){
                 return Game.findByIdAndDelete(args.delete);
             }
+        },
+
+        /* Special Mutations */
+        incrementGameLike: {
+            type: GameType,
+            args: {
+                id: {type: new GraphQLNonNull(GraphQLID)}
+            },
+            resolve(parent, args){
+                return Game.findById(args.id)
+                    .then(response => {
+                        return Game.findByIdAndUpdate(
+                            args.id, 
+                            {
+                                winning_team_player_ids: response.winning_team_player_ids,
+                                losing_team_player_ids: response.losing_team_player_ids,
+                                location: response.location,
+                                description: response.description,
+                                comment_ids: response.comment_ids,
+                                likes: response.likes + 1
+                            }
+                        );
+                    });
+            }
+        },
+        incrementCommentLike: {
+            type: CommentType,
+            args: {
+                id: {type: new GraphQLNonNull(GraphQLID)}
+            },
+            resolve(parent, args){
+                return Comment.findById(args.id)
+                    .then(response => {
+                        return Comment.findByIdAndUpdate(
+                            args.id, 
+                            {
+                                text: response.text,
+                                user_id: response.user_id,
+                                likes: response.likes + 1
+                            }
+                        );
+                    });
+            }
         }
     }
 });
