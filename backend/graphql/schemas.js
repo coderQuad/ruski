@@ -3,6 +3,9 @@ const { GraphQLObjectType, GraphQLID, GraphQLString, GraphQLInt,
 
 const { EloType, UserType, PlayerType, CommentType, GameType } = require('./objects');
 
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
+
 const User = require('../models/user');
 const Player = require('../models/player');
 const Comment = require('../models/comment');
@@ -371,6 +374,31 @@ const Mutation = new GraphQLObjectType({
                                 text: response.text,
                                 user_id: response.user_id,
                                 likes: response.likes + 1
+                            }
+                        );
+                    });
+            }
+        },
+        addFriend: {
+            type: UserType,
+            args: {
+                id: {type: new GraphQLNonNull(GraphQLID)},
+                friend_id: {type: new GraphQLNonNull(GraphQLID)}
+            },
+            resolve(parent, args){
+                return User.findById(args.id)
+                    .then(response => {
+                        let new_friend_id = mongoose.Types.ObjectId(args.friend_id);
+                        response.friend_ids.push(new_friend_id);
+                        return User.findByIdAndUpdate(
+                            args.id,
+                            {
+                                handle: response.handle,
+                                name: response.name,
+                                email: response.email,
+                                elo: response.elo,
+                                elo_history_ids: response.elo_history_ids,
+                                friend_ids: response.friend_ids
                             }
                         );
                     });
