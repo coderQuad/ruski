@@ -4,7 +4,6 @@ const { GraphQLObjectType, GraphQLID, GraphQLString, GraphQLInt,
 const { EloType, UserType, PlayerType, CommentType, GameType } = require('./objects');
 
 const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
 
 const User = require('../models/user');
 const Player = require('../models/player');
@@ -117,7 +116,7 @@ const Mutation = new GraphQLObjectType({
             type: EloType,
             args: {
                 id: {type: new GraphQLNonNull(GraphQLID)},
-                elo: {type: GraphQLInt}
+                elo: {type: new GraphQLNonNull(GraphQLInt)}
             },
             resolve(parent, args){
                 return Elo.findByIdAndUpdate(
@@ -144,8 +143,8 @@ const Mutation = new GraphQLObjectType({
             args:{
                 handle: { type: new GraphQLNonNull(GraphQLString)}, // GraphQLNonNull makes field required
                 name: { type: new GraphQLNonNull(GraphQLString)},
-                email: { type: GraphQLString },
-                elo: { type: GraphQLInt },
+                email: { type: new GraphQLNonNull(GraphQLString) },
+                elo: { type: new GraphQLNonNull(GraphQLInt) },
                 friend_ids: {type: new GraphQLList(GraphQLID)}
             },
             resolve(parent,args){
@@ -163,10 +162,10 @@ const Mutation = new GraphQLObjectType({
             type: UserType,
             args: {
                 id: { type: GraphQLNonNull(GraphQLID)},
-                handle: { type: GraphQLString}, // GraphQLNonNull makes field required
-                name: { type: GraphQLString},
-                email: { type: GraphQLString },
-                elo: { type: GraphQLInt },
+                handle: { type: new GraphQLNonNull(GraphQLString)}, // GraphQLNonNull makes field required
+                name: { type: new GraphQLNonNull(GraphQLString)},
+                email: { type: new GraphQLNonNull(GraphQLString) },
+                elo: { type: new GraphQLNonNull(GraphQLInt)},
                 friend_ids: {type: new GraphQLList(GraphQLID)}
             },
             resolve(parent,args){
@@ -214,9 +213,9 @@ const Mutation = new GraphQLObjectType({
             type: PlayerType,
             args: {
                 id: { type: new GraphQLNonNull(GraphQLID)},
-                cups: { type: GraphQLInt},
-                penalties: { type: GraphQLInt},
-                user_id: { type: GraphQLID}
+                cups: { type: new GraphQLNonNull(GraphQLInt)},
+                penalties: { type: new GraphQLNonNull(GraphQLInt)},
+                user_id: { type: new GraphQLNonNull(GraphQLID)}
             },
             resolve(parent, args){
                 return Player.findByIdAndUpdate(
@@ -250,6 +249,7 @@ const Mutation = new GraphQLObjectType({
                 let comment = new Comment({
                     text: args.text,
                     likes: 0,
+                    liked_by_ids: [],
                     user_id: args.user_id
                 });
 
@@ -260,18 +260,22 @@ const Mutation = new GraphQLObjectType({
             type: CommentType,
             args: {
                 id: { type: new GraphQLNonNull(GraphQLID)},
-                text: { type: GraphQLString},
-                user_id: { type: GraphQLID}
+                text: { type: new GraphQLNonNull(GraphQLString)},
+                user_id: { type: new GraphQLNonNull(GraphQLID)}
             },
             resolve(parent, args){
-                return Comment.findByIdAndUpdate(
-                    args.id,
-                    {
-                        text: args.text,
-                        likes: 0,
-                        user_id: args.user_id
-                    }
+                return Comment.findById(args.id)
+                    .then(response => {
+                        Comment.findByIdAndUpdate(
+                        args.id,
+                        {
+                            text: args.text,
+                            likes: response.likes,
+                            user_id: args.user_id,
+                            liked_by_ids: response.liked_by_ids
+                        }
                 );
+                });
             }
         },
         deleteComment: {
@@ -300,7 +304,8 @@ const Mutation = new GraphQLObjectType({
                     likes: 0,
                     winning_team_player_ids: args.winning_team_player_ids,
                     losing_team_player_ids: args.losing_team_player_ids,
-                    comment_ids: []
+                    comment_ids: [],
+                    liked_by_ids: []
                 });
 
                 return game.save();
@@ -311,20 +316,26 @@ const Mutation = new GraphQLObjectType({
             args: {
                 id: {type: new GraphQLNonNull(GraphQLID)},
                 location: {type: GraphQLString},
-                description: { type: GraphQLString},
+                description: { type: new GraphQLNonNull(GraphQLString)},
                 winning_team_player_ids: {type: new GraphQLList(GraphQLID)},
                 losing_team_player_ids: {type: new GraphQLList(GraphQLID)}
             },
             resolve(parent, args){
-                return Game.findByIdAndUpdate(
-                    args.id,
-                    {
-                        location: args.location,
-                        description: args.description,
-                        winning_team_player_ids: args.winning_team_player_ids,
-                        losing_team_player_ids: args.losing_team_player_ids
-                    }
-                );
+                return Game.findById(args.id)
+                    .then( response => {
+                        return Game.findByIdAndUpdate(
+                        args.id,
+                        {
+                            location: args.location,
+                            description: args.description,
+                            winning_team_player_ids: args.winning_team_player_ids,
+                            losing_team_player_ids: args.losing_team_player_ids,
+                            comment_ids: response.comment_ids,
+                            likes: response.likes,
+                            liked_by_ids: response.liked_by_ids
+                        }
+                        );
+                    });
             }
         },
         deleteGame: {
@@ -341,11 +352,14 @@ const Mutation = new GraphQLObjectType({
         incrementGameLike: {
             type: GameType,
             args: {
-                id: {type: new GraphQLNonNull(GraphQLID)}
+                id: {type: new GraphQLNonNull(GraphQLID)},
+                liked_by_id: {type: new GraphQLNonNull(GraphQLID)}
             },
             resolve(parent, args){
                 return Game.findById(args.id)
                     .then(response => {
+                        let new_liked_by_id = mongoose.Types.ObjectId(args.liked_by_id);
+                        response.liked_by_ids.push(new_liked_by_id);
                         return Game.findByIdAndUpdate(
                             args.id, 
                             {
@@ -354,7 +368,8 @@ const Mutation = new GraphQLObjectType({
                                 location: response.location,
                                 description: response.description,
                                 comment_ids: response.comment_ids,
-                                likes: response.likes + 1
+                                likes: response.likes + 1,
+                                liked_by_ids: response.liked_by_ids
                             }
                         );
                     });
@@ -363,17 +378,21 @@ const Mutation = new GraphQLObjectType({
         incrementCommentLike: {
             type: CommentType,
             args: {
-                id: {type: new GraphQLNonNull(GraphQLID)}
+                id: {type: new GraphQLNonNull(GraphQLID)},
+                liked_by_id: {type: new GraphQLNonNull(GraphQLID)}
             },
             resolve(parent, args){
                 return Comment.findById(args.id)
                     .then(response => {
+                        let new_liked_by_id = mongoose.Types.ObjectId(args.liked_by_id);
+                        response.liked_by_ids.push(new_liked_by_id);
                         return Comment.findByIdAndUpdate(
                             args.id, 
                             {
                                 text: response.text,
                                 user_id: response.user_id,
-                                likes: response.likes + 1
+                                likes: response.likes + 1,
+                                liked_by_ids: response.liked_by_ids
                             }
                         );
                     });
