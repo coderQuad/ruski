@@ -68,6 +68,12 @@ const CommentType = new GraphQLObjectType({
             resolve(parent, args){
                 return User.findById(parent.user_id);
             }
+        },
+        liked_by: {
+            type: UserType,
+            resolve(parent, args){
+                return User.find({'_id': {$in: parent.liked_by_ids}});
+            }
         }
     })
 });
@@ -97,6 +103,12 @@ const GameType = new GraphQLObjectType({
             type: new GraphQLList(CommentType),
             resolve(parent, args){
                 return Comment.find({'_id': { $in: parent.comment_ids }});
+            }
+        },
+        liked_by: {
+            type: UserType,
+            resolve(parent, args){
+                return User.find({'_id': {$in: parent.liked_by_ids}});
             }
         }
     })

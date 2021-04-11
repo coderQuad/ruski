@@ -7,7 +7,8 @@ const gameSchema = new Schema({
     location: String, 
     description: String,
     comment_ids: [Schema.Types.ObjectId],
-    likes: Number
+    likes: Number,
+    liked_by_ids: [Schema.Types.ObjectId]
 }, { timestamps: true });
 
 module.exports = mongoose.model('Game', gameSchema);
