@@ -375,6 +375,32 @@ const Mutation = new GraphQLObjectType({
                     });
             }
         },
+        decrementGameLike: {
+            type: GameType,
+            args: {
+                id: {type: new GraphQLNonNull(GraphQLID)},
+                liked_by_id: {type: new GraphQLNonNull(GraphQLID)}
+            },
+            resolve(parent, args){
+                return Game.findById(args.id)
+                    .then(response => {
+                        let new_liked_by_id = mongoose.Types.ObjectId(args.liked_by_id);
+                        response.liked_by_ids.push(new_liked_by_id);
+                        return Game.findByIdAndUpdate(
+                            args.id, 
+                            {
+                                winning_team_player_ids: response.winning_team_player_ids,
+                                losing_team_player_ids: response.losing_team_player_ids,
+                                location: response.location,
+                                description: response.description,
+                                comment_ids: response.comment_ids,
+                                likes: response.likes - 1,
+                                liked_by_ids: response.liked_by_ids
+                            }
+                        );
+                    });
+            }
+        },
         incrementCommentLike: {
             type: CommentType,
             args: {
@@ -392,6 +418,29 @@ const Mutation = new GraphQLObjectType({
                                 text: response.text,
                                 user_id: response.user_id,
                                 likes: response.likes + 1,
+                                liked_by_ids: response.liked_by_ids
+                            }
+                        );
+                    });
+            }
+        },
+        decrementCommentLike: {
+            type: CommentType,
+            args: {
+                id: {type: new GraphQLNonNull(GraphQLID)},
+                liked_by_id: {type: new GraphQLNonNull(GraphQLID)}
+            },
+            resolve(parent, args){
+                return Comment.findById(args.id)
+                    .then(response => {
+                        let new_liked_by_id = mongoose.Types.ObjectId(args.liked_by_id);
+                        response.liked_by_ids.push(new_liked_by_id);
+                        return Comment.findByIdAndUpdate(
+                            args.id, 
+                            {
+                                text: response.text,
+                                user_id: response.user_id,
+                                likes: response.likes - 1,
                                 liked_by_ids: response.liked_by_ids
                             }
                         );
