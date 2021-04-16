@@ -1,0 +1,26 @@
+.flex-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.item {
+    width: 500px;
+    margin: auto;
+    mat-form-field {
+        padding-left: 50px;
+        width: 200px;
+    }
+}
+
+.submit {
+    width: 500px;
+    margin: auto;
+
+    button {
+        font-size: 25px;
+        height: 50px;
+        width: 200px;
+        margin-left: 175px;
+    }
+}

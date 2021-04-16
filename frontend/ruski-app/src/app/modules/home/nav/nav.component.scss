@@ -1,0 +1,10 @@
+mat-toolbar {
+    display: flex;
+    font-size: 25px;
+    height: 7vh;
+    justify-content: space-between;
+}
+
+mat-icon:hover {
+    cursor: pointer;
+}
