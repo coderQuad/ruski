@@ -1,0 +1,57 @@
+<div class="flex-container">
+    <div class="form">
+        <div class="item">
+            <mat-form-field appearance="standard">
+                <mat-label>Your name:</mat-label>
+                <input matInput placeholder="Enter" [formControl]="myName" />
+            </mat-form-field>
+            <mat-form-field appearance="standard">
+                <mat-label>Cups:</mat-label>
+                <input matInput placeholder="Cups" [formControl]="myCups" />
+            </mat-form-field>
+        </div>
+        <div class="item">
+            <mat-form-field appearance="standard">
+                <mat-label>Partner:</mat-label>
+                <input
+                    matInput
+                    placeholder="Enter"
+                    [formControl]="partnerName"
+                />
+            </mat-form-field>
+            <mat-form-field appearance="standard">
+                <mat-label>Cups:</mat-label>
+                <input
+                    matInput
+                    placeholder="Cups"
+                    [formControl]="partnerCups"
+                />
+            </mat-form-field>
+        </div>
+        <div class="item">
+            <mat-form-field appearance="standard">
+                <mat-label>Player 1:</mat-label>
+                <input matInput placeholder="Enter" [formControl]="oneName" />
+            </mat-form-field>
+            <mat-form-field appearance="standard">
+                <mat-label>Cups:</mat-label>
+                <input matInput placeholder="Cups" [formControl]="oneCups" />
+            </mat-form-field>
+        </div>
+        <div class="item">
+            <mat-form-field appearance="standard">
+                <mat-label>Player 2:</mat-label>
+                <input matInput placeholder="Enter" [formControl]="twoName" />
+            </mat-form-field>
+            <mat-form-field appearance="standard">
+                <mat-label>Cups:</mat-label>
+                <input matInput placeholder="Cups" [formControl]="twoCups" />
+            </mat-form-field>
+        </div>
+    </div>
+    <div class="submit">
+        <button mat-flat-button (click)="submitInfo()" color="primary">
+            Submit
+        </button>
+    </div>
+</div>
