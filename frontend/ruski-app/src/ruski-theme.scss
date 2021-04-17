@@ -1,0 +1,70 @@
+// Custom Theming for Angular Material
+
+// For more information: https://material.angular.io/guide/theming
+
+@import "~@angular/material/theming";
+// Plus imports for other components in your app.
+
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+
+@include mat-core();
+
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue. Available color palettes: https://material.io/design/color/
+
+// custom palettes
+
+// "sophisticated"
+$mat-ruski: (
+    50 : #e1e8e3,
+    100 : #b4c5b8,
+    200 : #839f89,
+    300 : #517959,
+    400 : #2b5c36,
+    500 : #063f12,
+    600 : #053910,
+    700 : #04310d,
+    800 : #03290a,
+    900 : #021b05,
+    A100 : #EBEBEB,
+    A200 : #DEDEDE,
+    A400 : #C7C7C7,
+    A700 : #AEAEAE,
+    contrast: (
+        50 : #000000,
+        100 : #000000,
+        200 : #000000,
+        300 : #ffffff,
+        400 : #ffffff,
+        500 : #ffffff,
+        600 : #ffffff,
+        700 : #ffffff,
+        800 : #ffffff,
+        900 : #ffffff,
+        A100 : #000000,
+        A200 : #000000,
+        A400 : #000000,
+        A700 : #000000,
+    )
+);
+
+// more exciting maybe
+
+$ruski-theme-primary: mat-palette($mat-ruski);
+$ruski-theme-accent: mat-palette($mat-ruski, A200, A100, A400);
+
+// Create the theme object (a Sass map containing all of the palettes).
+
+$ruski-theme: mat-light-theme(
+    $ruski-theme-primary,
+    $ruski-theme-accent
+);
+
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+
+@include angular-material-theme($ruski-theme);
