@@ -16,8 +16,6 @@
 // hue. Available color palettes: https://material.io/design/color/
 
 // custom palettes
-
-// "sophisticated"
 $mat-ruski: (
     50 : #e1e8e3,
     100 : #b4c5b8,
@@ -51,7 +49,6 @@ $mat-ruski: (
     )
 );
 
-// more exciting maybe
 
 $ruski-theme-primary: mat-palette($mat-ruski);
 $ruski-theme-accent: mat-palette($mat-ruski, A200, A100, A400);
