@@ -11,6 +11,8 @@ import { MainComponent } from './main/main.component';
 
 // Import the module from the SDK
 import { AuthModule } from '@auth0/auth0-angular';
+import { GraphQLModule } from './graphql.module';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
     declarations: [AppComponent, MainComponent],
@@ -26,6 +28,8 @@ import { AuthModule } from '@auth0/auth0-angular';
             domain: 'playruski.us.auth0.com',
             clientId: 'aOLAfBpRiRBIsNZk2kr9xxdqRPuvOysL',
         }),
+        GraphQLModule,
+        HttpClientModule,
     ],
     providers: [],
     bootstrap: [AppComponent],
