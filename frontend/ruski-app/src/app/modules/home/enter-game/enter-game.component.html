@@ -3,11 +3,40 @@
         <div class="item">
             <mat-form-field appearance="standard">
                 <mat-label>Your name:</mat-label>
-                <input matInput placeholder="Enter" [formControl]="myName" />
+                <input
+                    matInput
+                    placeholder="Enter"
+                    [formControl]="myName"
+                    [matAutocomplete]="auto"
+                    (focus)="filterHandler(myName)"
+                />
+                <mat-autocomplete #auto="matAutocomplete">
+                    <mat-option
+                        *ngFor="let name of filteredUsers | async"
+                        [value]="name"
+                        >{{ name }}
+                    </mat-option>
+                </mat-autocomplete>
             </mat-form-field>
             <mat-form-field appearance="standard">
                 <mat-label>Cups:</mat-label>
-                <input matInput placeholder="Cups" [formControl]="myCups" />
+                <input
+                    matInput
+                    placeholder="Cups"
+                    [formControl]="myCups"
+                    type="number"
+                    min="0"
+                    max="10"
+                />
+            </mat-form-field>
+            <mat-form-field appearance="standard">
+                <mat-label>Yaks:</mat-label>
+                <input
+                    matInput
+                    placeholder="Yaks"
+                    [formControl]="myPenalties"
+                    type="number"
+                />
             </mat-form-field>
         </div>
         <div class="item">
@@ -17,7 +46,16 @@
                     matInput
                     placeholder="Enter"
                     [formControl]="partnerName"
+                    [matAutocomplete]="auto"
+                    (focus)="filterHandler(partnerName)"
                 />
+                <mat-autocomplete #auto="matAutocomplete">
+                    <mat-option
+                        *ngFor="let name of filteredUsers | async"
+                        [value]="name"
+                        >{{ name }}
+                    </mat-option>
+                </mat-autocomplete>
             </mat-form-field>
             <mat-form-field appearance="standard">
                 <mat-label>Cups:</mat-label>
@@ -25,29 +63,112 @@
                     matInput
                     placeholder="Cups"
                     [formControl]="partnerCups"
+                    type="number"
+                    min="0"
+                    max="10"
+                />
+            </mat-form-field>
+            <mat-form-field appearance="standard">
+                <mat-label>Yaks:</mat-label>
+                <input
+                    matInput
+                    placeholder="Yaks"
+                    [formControl]="myPenalties"
+                    type="number"
                 />
             </mat-form-field>
         </div>
         <div class="item">
             <mat-form-field appearance="standard">
                 <mat-label>Player 1:</mat-label>
-                <input matInput placeholder="Enter" [formControl]="oneName" />
+                <input
+                    matInput
+                    placeholder="Enter"
+                    [formControl]="oneName"
+                    [matAutocomplete]="auto"
+                    (focus)="filterHandler(oneName)"
+                />
+                <mat-autocomplete #auto="matAutocomplete">
+                    <mat-option
+                        *ngFor="let name of filteredUsers | async"
+                        [value]="name"
+                        >{{ name }}
+                    </mat-option>
+                </mat-autocomplete>
             </mat-form-field>
             <mat-form-field appearance="standard">
                 <mat-label>Cups:</mat-label>
-                <input matInput placeholder="Cups" [formControl]="oneCups" />
+                <input
+                    matInput
+                    placeholder="Cups"
+                    [formControl]="oneCups"
+                    type="number"
+                    min="0"
+                    max="10"
+                />
+            </mat-form-field>
+            <mat-form-field appearance="standard">
+                <mat-label>Yaks:</mat-label>
+                <input
+                    matInput
+                    placeholder="Yaks"
+                    [formControl]="onePenalties"
+                    type="number"
+                />
             </mat-form-field>
         </div>
         <div class="item">
             <mat-form-field appearance="standard">
                 <mat-label>Player 2:</mat-label>
-                <input matInput placeholder="Enter" [formControl]="twoName" />
+                <input
+                    matInput
+                    placeholder="Enter"
+                    [formControl]="twoName"
+                    [matAutocomplete]="auto"
+                    (focus)="filterHandler(twoName)"
+                />
+                <mat-autocomplete #auto="matAutocomplete">
+                    <mat-option
+                        *ngFor="let name of filteredUsers | async"
+                        [value]="name"
+                        >{{ name }}
+                    </mat-option>
+                </mat-autocomplete>
             </mat-form-field>
             <mat-form-field appearance="standard">
                 <mat-label>Cups:</mat-label>
-                <input matInput placeholder="Cups" [formControl]="twoCups" />
+                <input
+                    matInput
+                    placeholder="Cups"
+                    [formControl]="twoCups"
+                    type="number"
+                    min="0"
+                    max="10"
+                />
+            </mat-form-field>
+            <mat-form-field appearance="standard">
+                <mat-label>Yaks:</mat-label>
+                <input
+                    matInput
+                    placeholder="Yaks"
+                    [formControl]="twoPenalties"
+                    type="number"
+                />
             </mat-form-field>
         </div>
+        <div class="description">
+            <mat-form-field class="desc-form">
+                <mat-label>Add description</mat-label>
+                <textarea
+                    matInput
+                    [formControl]="descriptionControl"
+                    placeholder="Dennis is a pussy... "
+                ></textarea>
+            </mat-form-field>
+        </div>
+    </div>
+    <div class="error">
+        <p *ngIf="errorFlag">{{ errorMessage }}</p>
     </div>
     <div class="submit">
         <button mat-flat-button (click)="submitInfo()" color="primary">
