@@ -36,6 +36,9 @@
             </mat-form-field>
         </div>
     </div>
+    <div class="error">
+        <p *ngIf="errorFlag">{{ errorMessage }}</p>
+    </div>
     <div class="submit">
         <button mat-flat-button (click)="submitInfo()" color="primary">
             Submit
