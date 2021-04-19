@@ -14,7 +14,7 @@ import { AuthService } from '@auth0/auth0-angular';
     providedIn: 'root',
 })
 export class AuthGuard implements CanActivate {
-    constructor(private auth: AuthService, private router: Router) {}
+    constructor(private router: Router, public auth: AuthService) {}
     canActivate(
         route: ActivatedRouteSnapshot,
         state: RouterStateSnapshot
@@ -24,17 +24,22 @@ export class AuthGuard implements CanActivate {
         | boolean
         | UrlTree {
         const url: string = state.url;
-        if (this.isLoggedIn()) {
-            return true;
-        } else {
-            this.router.navigate(['/login']);
-            return false;
-        }
+        console.log(
+            this.auth.isAuthenticated$.pipe(
+                map((response) => {
+                    console.log(response);
+                })
+            )
+        );
+        console.log('here');
+        return true;
     }
 
     isLoggedIn() {
+        console.log('nah');
         return this.auth.isAuthenticated$.pipe(
             map((response) => {
+                console.log(response);
                 return response;
             })
         );
