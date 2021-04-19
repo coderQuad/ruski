@@ -472,6 +472,52 @@ const Mutation = new GraphQLObjectType({
                     });
             }
         },
+        modifyEmail: {
+            type: UserType,
+            args: {
+                id: {type: new GraphQLNonNull(GraphQLID)},
+                email: {type: new GraphQLNonNull(GraphQLString)}
+            },
+            resolve(parent, args){
+                return User.findById(args.id)
+                    .then(response => {
+                        return User.findByIdAndUpdate(
+                            args.id,
+                            {
+                                handle: response.handle,
+                                name: response.name,
+                                email: args.email,
+                                elo: response.elo,
+                                elo_history_ids: response.elo_history_ids,
+                                friend_ids: response.friend_ids
+                            }
+                        );
+                    });
+            }
+        },
+        modifyHandle: {
+            type: UserType,
+            args: {
+                id: {type: new GraphQLNonNull(GraphQLID)},
+                handle: {type: new GraphQLNonNull(GraphQLString)}
+            },
+            resolve(parent, args){
+                return User.findById(args.id)
+                    .then(response => {
+                        return User.findByIdAndUpdate(
+                            args.id,
+                            {
+                                handle: args.handle,
+                                name: response.name,
+                                email: response.email,
+                                elo: response.elo,
+                                elo_history_ids: response.elo_history_ids,
+                                friend_ids: response.friend_ids
+                            }
+                        );
+                    });
+            }
+        },
         addComment: {
             type: GameType,
             args: {
