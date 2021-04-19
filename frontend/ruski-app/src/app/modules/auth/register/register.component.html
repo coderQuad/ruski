@@ -1,1 +1,44 @@
 <p>register works!</p>
+<div>
+    <h3>This is your first time registering!</h3>
+    <p>Please select a name from the dropdown</p>
+    <p>If your name is not in the dropdown, enter your name</p>
+</div>
+<div class="flex-container">
+    <div class="form">
+        <div class="item">
+            <mat-form-field appearance="standard">
+                <mat-label>Your name:</mat-label>
+                <input
+                    matInput
+                    placeholder="Enter"
+                    [matAutocomplete]="auto"
+                    [formControl]="nameControl"
+                />
+            </mat-form-field>
+            <mat-autocomplete #auto="matAutocomplete">
+                <mat-option
+                    *ngFor="let name of filteredNames | async"
+                    [value]="name"
+                    >{{ name }}
+                </mat-option>
+            </mat-autocomplete>
+        </div>
+        <div class="item">
+            <mat-form-field appearance="standard">
+                <mat-label>Desired Handle:</mat-label>
+                <span matPrefix>@ &nbsp;</span>
+                <input
+                    matInput
+                    placeholder="Handle"
+                    [formControl]="handleControl"
+                />
+            </mat-form-field>
+        </div>
+    </div>
+    <div class="submit">
+        <button mat-flat-button (click)="submitInfo()" color="primary">
+            Submit
+        </button>
+    </div>
+</div>

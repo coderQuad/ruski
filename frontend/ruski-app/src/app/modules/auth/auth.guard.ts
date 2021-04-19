@@ -6,7 +6,7 @@ import {
     UrlTree,
     Router,
 } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { AuthService } from '@auth0/auth0-angular';
 
@@ -24,20 +24,25 @@ export class AuthGuard implements CanActivate {
         | boolean
         | UrlTree {
         const url: string = state.url;
-        console.log(
-            this.auth.isAuthenticated$.pipe(
-                map((response) => {
-                    console.log(response);
-                })
-            )
-        );
         console.log('here');
-        return true;
+        return this.auth.user$.pipe(
+            map((response: Response) => {
+                if (response['https://example.com/roles'][0] === 'new') {
+                    return true;
+                }
+                this.router.navigate(['/register']);
+                return false;
+            }),
+            catchError((error: any) => {
+                console.log(error);
+                return of(null);
+            })
+        );
     }
 
-    isLoggedIn() {
+    isNewUser() {
         console.log('nah');
-        return this.auth.isAuthenticated$.pipe(
+        return this.auth.user$.pipe(
             map((response) => {
                 console.log(response);
                 return response;

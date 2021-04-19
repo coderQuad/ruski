@@ -5,7 +5,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './modules/auth/login/login.component';
 import { MainComponent } from './main/main.component';
-// import { AuthGuard } from './modules/auth/auth.guard';
+import { AuthGuard as Custom } from './modules/auth/auth.guard';
 import { AuthGuard } from '@auth0/auth0-angular';
 
 const routes: Routes = [

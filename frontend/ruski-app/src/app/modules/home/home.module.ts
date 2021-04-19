@@ -10,12 +10,13 @@ import { MainComponent } from 'src/app/main/main.component';
 import { AuthGuard } from '@auth0/auth0-angular';
 import { FeedComponent } from './feed/feed.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AuthGuard as RegGuard } from '../auth/auth.guard';
 
 const homeRoutes: Routes = [
     {
         path: 'main',
         component: MainComponent,
-        canActivate: [AuthGuard],
+        canActivate: [AuthGuard, RegGuard],
         children: [
             { path: '', component: FeedComponent },
             { path: 'enter', component: EnterGameComponent },
