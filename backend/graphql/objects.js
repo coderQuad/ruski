@@ -36,7 +36,8 @@ const UserType = new GraphQLObjectType({
             resolve(parent, args){
                 return User.find({'_id': { $in: parent.friend_ids }});
             }
-        }
+        },
+        profile_url: { type: GraphQLString}
     })
 });
 

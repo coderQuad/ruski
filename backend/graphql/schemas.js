@@ -145,7 +145,8 @@ const Mutation = new GraphQLObjectType({
                 name: { type: new GraphQLNonNull(GraphQLString)},
                 email: { type: new GraphQLNonNull(GraphQLString) },
                 elo: { type: new GraphQLNonNull(GraphQLInt) },
-                friend_ids: {type: new GraphQLList(GraphQLID)}
+                friend_ids: {type: new GraphQLList(GraphQLID)},
+                profile_url: { type: new GraphQLNonNull(GraphQLString)}
             },
             resolve(parent,args){
                 let user = new User({
@@ -153,7 +154,8 @@ const Mutation = new GraphQLObjectType({
                     name: args.name,
                     email: args.email,
                     elo: args.elo,
-                    friend_ids: args.friend_ids
+                    friend_ids: args.friend_ids,
+                    profile_url: args.profile_url
                 });
                 return user.save();
             }
@@ -166,7 +168,8 @@ const Mutation = new GraphQLObjectType({
                 name: { type: new GraphQLNonNull(GraphQLString)},
                 email: { type: new GraphQLNonNull(GraphQLString) },
                 elo: { type: new GraphQLNonNull(GraphQLInt)},
-                friend_ids: {type: new GraphQLList(GraphQLID)}
+                friend_ids: {type: new GraphQLList(GraphQLID)},
+                profile_url: {type: new GraphQLNonNull(GraphQLString)}
             },
             resolve(parent,args){
                 return User.findByIdAndUpdate(
@@ -176,7 +179,8 @@ const Mutation = new GraphQLObjectType({
                         name: args.name,
                         email: args.email,
                         elo: args.elo,
-                        friend_ids: args.friend_ids
+                        friend_ids: args.friend_ids,
+                        profile_url: args.profile_url
                     }
                 );
             }
@@ -490,6 +494,30 @@ const Mutation = new GraphQLObjectType({
                                 elo: response.elo,
                                 elo_history_ids: response.elo_history_ids,
                                 friend_ids: response.friend_ids
+                            }
+                        );
+                    });
+            }
+        },
+        modifyProfileURL: {
+            type: UserType,
+            args: {
+                id: {type: new GraphQLNonNull(GraphQLID)},
+                profile_url: {type: new GraphQLNonNull(GraphQLString)}
+            },
+            resolve(parent, args){
+                return User.findById(args.id)
+                    .then(response => {
+                        return User.findByIdAndUpdate(
+                            args.id,
+                            {
+                                handle: response.handle,
+                                name: response.name,
+                                email: response.email,
+                                elo: response.elo,
+                                elo_history_ids: response.elo_history_ids,
+                                friend_ids: response.friend_ids,
+                                profile_url: args.profile_url
                             }
                         );
                     });
