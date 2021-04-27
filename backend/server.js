@@ -11,6 +11,7 @@ if (process.env.NODE_ENV !== "production") {
 const s3 = new aws.S3({
   accessKeyId: process.env.ACCESS_KEY_ID, // aws access id here
   secretAccessKey: process.env.SECRET_ACCESS_KEY, // aws secret access key here
+  region: 'us-east-2',
   useAccelerateEndpoint: true,
 });
 
@@ -32,7 +33,7 @@ connection.once("open", function () {
 app.get("/get_presigned_url_jpeg/:user_id", (req, res) => {
   const params = {
     Bucket: "playruski.com",
-    Key: `profiles/${req.params.user_id}`,
+    Key: `profiles/${req.params.user_id}.jpeg`,
     Expires: 3600,
     ContentType: "image/jpeg",
   };
@@ -56,7 +57,7 @@ app.get("/get_presigned_url_jpeg/:user_id", (req, res) => {
 app.get("/get_presigned_url_png/:user_id", (req, res) => {
   const params = {
     Bucket: "playruski.com",
-    Key: `profiles/${req.params.user_id}`,
+    Key: `profiles/${req.params.user_id}.png`,
     Expires: 3600,
     ContentType: "image/png",
   };
