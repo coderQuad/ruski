@@ -11,6 +11,7 @@ import { AuthGuard } from '@auth0/auth0-angular';
 import { FeedComponent } from './feed/feed.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthGuard as RegGuard } from '../auth/auth.guard';
+import { LeaderboardComponent } from './leaderboard/leaderboard.component';
 
 const homeRoutes: Routes = [
     {
@@ -20,6 +21,7 @@ const homeRoutes: Routes = [
         children: [
             { path: '', component: FeedComponent },
             { path: 'enter', component: EnterGameComponent },
+            { path: 'leaderboard', component: LeaderboardComponent },
         ],
     },
 ];
@@ -30,6 +32,7 @@ const homeRoutes: Routes = [
         NavComponent,
         EnterGameComponent,
         FeedComponent,
+        LeaderboardComponent,
     ],
     imports: [
         CommonModule,
