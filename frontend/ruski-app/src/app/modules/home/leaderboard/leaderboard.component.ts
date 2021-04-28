@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { PageEvent } from '@angular/material/paginator';
+import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 
 import { FetchLeaderboardService } from './../services/fetch-leaderboard.service';
@@ -11,36 +11,49 @@ import { FetchLeaderboardService } from './../services/fetch-leaderboard.service
 
 export class LeaderboardComponent implements OnInit {
 
-    // leaderboard basic data body
+    // leaderboard data body
     users? = [];
 
     // paginator params
     length: number;
-    pageSize: number = 25;
-    pageSizeOptions: number[] = [5, 10, 25, 100];
+    pageSize: number = 20;
+    pageSizeOptions: number[] = [5, 10, 20, 50];
 
     // paginator output
     pageEvent: PageEvent;
 
+    // columns
+    columnsToDisplay = ["rank", "profile", "name", "elo"];
+
+    // interact w paginator
+    dataSource: MatTableDataSource<leaderboardRow>;
+    @ViewChild(MatPaginator) paginator: MatPaginator;
+
     constructor(private leaderboardFetcher: FetchLeaderboardService) {}
 
-    getLeaderboard(): void {
+    getLeaderboard(): any {
         this.leaderboardFetcher.fetchLeaders()
         .subscribe(response => {
-            this.users = response;
-            this.length = this.users.length;
-            // console.log(this.users);
-            //TODO: matdatasource stuff
+            this.length = response.length;
+            this.users = response.map( (user, index) => ({
+                ...user, 
+                profile: 'https://d26n5v24zcmg6e.cloudfront.net/profiles/default.jpeg',
+                rank: index + 1
+            }));
+            this.dataSource = new MatTableDataSource<leaderboardRow>(this.users);
+            this.dataSource.paginator = this.paginator;
         });
     }
-
 
     ngOnInit(): void {
         this.getLeaderboard();
     }
 }
+
+// class for data source
 export interface leaderboardRow {
-    id: string;
-    name: string;
-    elo: number;
+    rank: number,
+    profile: string,
+    name: string,
+    elo: number
 }
