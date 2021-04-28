@@ -16,14 +16,14 @@ export class LeaderboardComponent implements OnInit {
 
     // paginator params
     length: number;
-    pageSize: number = 20;
-    pageSizeOptions: number[] = [5, 10, 20, 50];
+    pageSize: number = 15;
+    pageSizeOptions: number[] = [5, 10, 15, 25];
 
     // paginator output
     pageEvent: PageEvent;
 
     // columns
-    columnsToDisplay = ["rank", "profile", "name", "elo"];
+    columnsToDisplay = ["rank", "name", "elo"];
 
     // interact w paginator
     dataSource: MatTableDataSource<leaderboardRow>;

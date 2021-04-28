@@ -1,33 +1,32 @@
-<table mat-table *ngIf="length" [dataSource]="dataSource">
+<mat-table *ngIf="length" [dataSource]="dataSource">
 
-    <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
-    <tr mat-row *matRowDef="let users; columns: columnsToDisplay"></tr>
+    <mat-header-row *matHeaderRowDef="columnsToDisplay"></mat-header-row>
+    <mat-row *matRowDef="let users; columns: columnsToDisplay"></mat-row>
 
     <!-- Displays the users rank -->
     <ng-container matColumnDef="rank">
-        <th mat-header-cell *matHeaderCellDef> Rank </th>
-        <td mat-cell *matCellDef="let element"> {{element.rank}} </td>
+        <mat-header-cell *matHeaderCellDef> Rank </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.rank}} </mat-cell>
     </ng-container>
 
     <!-- Displays the profile image -->
     <ng-container matColumnDef="profile">
-        <th mat-header-cell *matHeaderCellDef>Profile</th>
-        <td mat-cell *matCellDef="let element"> <img src="{{element.profile}}"/></td>
+        <mat-header-cell *matHeaderCellDef> Profile </mat-header-cell>
+        <mat-cell *matCellDef="let element"> <img src="{{element.profile}}"/> </mat-cell>
     </ng-container>
 
-    <!-- User Name -->
     <ng-container matColumnDef="name">
-        <th mat-header-cell *matHeaderCellDef> Name </th>
-        <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+        <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+        <mat-cell *matCellDef="let element"> <img src="{{element.profile}}"/> {{element.name}} </mat-cell>
     </ng-container>
 
     <!-- Show elo -->
     <ng-container matColumnDef="elo">
-        <th mat-header-cell *matHeaderCellDef> Elo </th>
-        <td mat-cell *matCellDef="let element"> {{element.elo}} </td>
+        <mat-header-cell *matHeaderCellDef> Elo </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.elo}} </mat-cell>
     </ng-container>
       
-</table>
+</mat-table>
 <mat-paginator [length]="length"
             [pageSize]="pageSize"
             [pageSizeOptions]="pageSizeOptions"
