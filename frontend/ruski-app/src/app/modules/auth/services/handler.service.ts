@@ -9,12 +9,12 @@ export class HandlerService {
     constructor() {}
 
     changeRegistered() {
-        console.log('here');
+        // console.log('here');
         this.isRegistered = true;
     }
 
     getStatus() {
-        console.log(this.isRegistered);
+        // console.log(this.isRegistered);
         return this.isRegistered;
     }
 }

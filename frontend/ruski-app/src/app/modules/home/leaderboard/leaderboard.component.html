@@ -1,1 +1,8 @@
-<p>leaderboard works!</p>
+<table mat-table *ngIf="length" [dataSource]="users">
+
+</table>
+<mat-paginator [length]="length"
+            [pageSize]="pageSize"
+            [pageSizeOptions]="pageSizeOptions"
+            (page)="pageEvent = $event">
+</mat-paginator>

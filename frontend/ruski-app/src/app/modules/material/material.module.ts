@@ -6,6 +6,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatRadioModule } from '@angular/material/radio';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatTableModule } from '@angular/material/table';
 
 const material = [
     MatToolbarModule,
@@ -15,6 +17,8 @@ const material = [
     MatInputModule,
     MatAutocompleteModule,
     MatRadioModule,
+    MatPaginatorModule,
+    MatTableModule,
 ];
 
 @NgModule({
