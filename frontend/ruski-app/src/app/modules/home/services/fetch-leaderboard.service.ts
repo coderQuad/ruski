@@ -20,6 +20,7 @@ export class FetchLeaderboardService {
       users { 
         id
         name
+        handle
         elo
       }
     } 

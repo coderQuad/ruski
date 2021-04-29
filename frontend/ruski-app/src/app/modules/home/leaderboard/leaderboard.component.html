@@ -1,7 +1,7 @@
 <mat-table *ngIf="length" [dataSource]="dataSource">
 
-    <mat-header-row *matHeaderRowDef="columnsToDisplay"></mat-header-row>
-    <mat-row *matRowDef="let users; columns: columnsToDisplay"></mat-row>
+    <mat-header-row *matHeaderRowDef="columnsToDisplay" sticky></mat-header-row>
+    <mat-row *matRowDef="let dataSource; columns: columnsToDisplay"></mat-row>
 
     <!-- Displays the users rank -->
     <ng-container matColumnDef="rank">
@@ -9,15 +9,12 @@
         <mat-cell *matCellDef="let element"> {{element.rank}} </mat-cell>
     </ng-container>
 
-    <!-- Displays the profile image -->
-    <ng-container matColumnDef="profile">
-        <mat-header-cell *matHeaderCellDef> Profile </mat-header-cell>
-        <mat-cell *matCellDef="let element"> <img src="{{element.profile}}"/> </mat-cell>
-    </ng-container>
-
+    <!-- profile image and name-->
     <ng-container matColumnDef="name">
         <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
         <mat-cell *matCellDef="let element"> <img src="{{element.profile}}"/> {{element.name}} </mat-cell>
+        <!-- hypothetical future link to profile page -->
+        <!-- <mat-cell *matCellDef="let element"> <a href="/users/{{element.handle}}"> <img src="{{element.profile}}"/> {{element.name}} </a></mat-cell> -->
     </ng-container>
 
     <!-- Show elo -->

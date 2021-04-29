@@ -55,5 +55,6 @@ export interface leaderboardRow {
     rank: number,
     profile: string,
     name: string,
-    elo: number
+    elo: number,
+    handle: string
 }
