@@ -1,31 +1,54 @@
-<mat-table *ngIf="length" [dataSource]="dataSource">
+<div *ngIf="loaded">
+    <mat-table *ngIf="length" [dataSource]="dataSource">
 
-    <mat-header-row *matHeaderRowDef="columnsToDisplay" sticky></mat-header-row>
-    <mat-row *matRowDef="let dataSource; columns: columnsToDisplay"></mat-row>
+        <mat-header-row *matHeaderRowDef="columnsToDisplay; sticky:true"></mat-header-row>
+        <mat-header-row *matHeaderRowDef="columnsToScheme; sticky:true"></mat-header-row>
+        <mat-row *matRowDef="let dataSource; columns: columnsToDisplay"></mat-row>
 
-    <!-- Displays the users rank -->
-    <ng-container matColumnDef="rank">
-        <mat-header-cell *matHeaderCellDef> Rank </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.rank}} </mat-cell>
-    </ng-container>
+        <!-- column definitions -->
+        <!-- Displays the user's rank -->
+        <ng-container matColumnDef="rank">
+            <mat-header-cell *matHeaderCellDef> Rank </mat-header-cell>
+            <!-- <mat-header-cell *matHeaderCellDef> 24 </mat-header-cell> -->
+            <mat-cell *matCellDef="let element"> {{element.rank}} </mat-cell>
+        </ng-container>
 
-    <!-- profile image and name-->
-    <ng-container matColumnDef="name">
-        <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
-        <mat-cell *matCellDef="let element"> <img src="{{element.profile}}"/> {{element.name}} </mat-cell>
-        <!-- hypothetical future link to profile page -->
-        <!-- <mat-cell *matCellDef="let element"> <a href="/users/{{element.handle}}"> <img src="{{element.profile}}"/> {{element.name}} </a></mat-cell> -->
-    </ng-container>
+        <!-- profile image and name-->
+        <ng-container matColumnDef="name">
+            <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+            <mat-cell *matCellDef="let element"> <img src="{{element.profile}}"/> {{element.name}} </mat-cell>
+            <!-- hypothetical future link to profile page -->
+            <!-- <mat-cell *matCellDef="let element"> <a href="/users/{{element.handle}}"> <img src="{{element.profile}}"/> {{element.name}} </a></mat-cell> -->
+        </ng-container>
 
-    <!-- Show elo -->
-    <ng-container matColumnDef="elo">
-        <mat-header-cell *matHeaderCellDef> Elo </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.elo}} </mat-cell>
-    </ng-container>
-      
-</mat-table>
-<mat-paginator [length]="length"
-            [pageSize]="pageSize"
-            [pageSizeOptions]="pageSizeOptions"
-            (page)="pageEvent = $event">
-</mat-paginator>
+        <!-- Show elo -->
+        <ng-container matColumnDef="elo">
+            <mat-header-cell *matHeaderCellDef> Elo </mat-header-cell>
+            <!-- <mat-header-cell *matHeaderCellDef> 1224 </mat-header-cell> -->
+            <mat-cell *matCellDef="let element"> {{element.elo}} </mat-cell>
+        </ng-container>
+
+
+        <!-- column definitions for the false header -->
+        <!-- logged in users rank -->
+        <ng-container matColumnDef="falseRank">
+            <mat-header-cell *matHeaderCellDef> {{userRank}} </mat-header-cell>
+        </ng-container>
+
+        <!-- current users name-->
+        <ng-container matColumnDef="falseName">
+            <mat-header-cell *matHeaderCellDef> {{userName}} </mat-header-cell>
+        </ng-container>
+
+        <!-- current users elo -->
+        <ng-container matColumnDef="falseElo">
+            <mat-header-cell *matHeaderCellDef> {{userElo}} </mat-header-cell>
+        </ng-container>
+        
+    </mat-table>
+    <mat-paginator [length]="length"
+                [pageSize]="pageSize"
+                [pageSizeOptions]="pageSizeOptions"
+                (page)="pageEvent = $event">
+    </mat-paginator>
+</div>

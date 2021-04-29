@@ -8,10 +8,10 @@ img {
     font-size: 1em;
 }
 
-.mat-column-rank{
+.mat-column-rank, .mat-column-falseRank{
     flex: 0 0 10%;
 }
-.mat-column-name{
+.mat-column-name, .mat-column-falseName{
     flex: 0 0 60%;
 }
 
@@ -19,8 +19,7 @@ img {
    img {
        max-height: 30px;
    }
-
+   .mat-header-cell{
+        font-size: 0.75em;
+    }
 }
-
-// @media screen and (min-width: 601px){
-// }

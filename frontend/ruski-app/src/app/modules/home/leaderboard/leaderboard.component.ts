@@ -14,6 +14,15 @@ export class LeaderboardComponent implements OnInit {
     // leaderboard data body
     users? = [];
 
+    // current user false header info
+    loggedInUser = [
+        24,
+        'https://d26n5v24zcmg6e.cloudfront.net/profiles/default.jpeg',
+        'Steemer',
+        1230,
+        'stanleysteemer'
+    ];
+
     // paginator params
     length: number;
     pageSize: number = 15;
@@ -24,6 +33,15 @@ export class LeaderboardComponent implements OnInit {
 
     // columns
     columnsToDisplay = ["rank", "name", "elo"];
+
+    // false header
+    columnsToScheme = ["falseRank", "falseName", "falseElo"];
+    userRank: number;
+    userPro: string;
+    userName: string;
+    userElo: number;
+    userHandle: string;
+    loaded= false;
 
     // interact w paginator
     dataSource: MatTableDataSource<leaderboardRow>;
@@ -45,8 +63,19 @@ export class LeaderboardComponent implements OnInit {
         });
     }
 
+    fillUser(): void {
+        this.leaderboardFetcher.fetchSticky();
+        this.userRank= 24;
+        this.userPro= 'https://d26n5v24zcmg6e.cloudfront.net/profiles/default.jpeg';
+        this.userName= 'Steemer';
+        this.userElo= 1224;
+        this.userHandle= 'stanleysteemer';
+        this.loaded= true;
+    }
+
     ngOnInit(): void {
         this.getLeaderboard();
+        this.fillUser();
     }
 }
 

@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
+import { AuthService } from '@auth0/auth0-angular';
 import { Apollo, gql } from 'apollo-angular';
 import { of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
-import Observable from 'zen-observable';
 
 @Injectable({
   providedIn: 'root'
@@ -26,7 +26,7 @@ export class FetchLeaderboardService {
     } 
   `;
 
-  constructor(private apollo: Apollo) { }
+  constructor(private apollo: Apollo, private auth: AuthService) { }
 
   // query all users and sort by elo
   fetchLeaders() {
@@ -36,6 +36,14 @@ export class FetchLeaderboardService {
       map(response => [...response.data.users].sort((a,b) => b.elo - a.elo)),
       catchError(this.handleError())
     );
+  }
+
+  fetchSticky() {
+    this.auth.user$.subscribe(
+      response => {
+        console.log(response.email);
+      }
+    )
   }
 
   handleError(){
