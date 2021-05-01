@@ -11,7 +11,7 @@ import { AuthGuard } from '@auth0/auth0-angular';
 import { FeedComponent } from './feed/feed.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthGuard as RegGuard } from '../auth/auth.guard';
-
+import {MatStepperModule} from '@angular/material/stepper';
 const homeRoutes: Routes = [
     {
         path: 'main',
@@ -36,6 +36,7 @@ const homeRoutes: Routes = [
         MaterialModule,
         FormsModule,
         ReactiveFormsModule,
+        MatStepperModule,
         RouterModule.forChild(homeRoutes),
     ],
     exports: [HomeComponent, NavComponent],

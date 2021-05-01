@@ -1,7 +1,7 @@
 import { SubmitGameService } from './../services/submit-game.service';
 import { Game } from './../game-template';
 import { Component, OnInit } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
+import { AbstractControl, FormControl, Validators, FormBuilder,FormGroup } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 
@@ -24,13 +24,14 @@ export class EnterGameComponent implements OnInit {
     twoCups = new FormControl();
     twoPenalties = new FormControl(0);
     descriptionControl = new FormControl();
+    formGroup = this._formBuilder.group({});
     usersOptions: string[] = [];
     userMap: Map<string, string> = new Map();
     filteredUsers: Observable<string[]>;
     errorFlag: boolean = false;
     errorMessage: string = '';
 
-    constructor(private gameSubmitter: SubmitGameService) {}
+    constructor(private gameSubmitter: SubmitGameService, private _formBuilder: FormBuilder) {}
 
     ngOnInit(): void {
         this.gameSubmitter.fetchUsers().valueChanges.subscribe((response) => {
@@ -39,6 +40,33 @@ export class EnterGameComponent implements OnInit {
                 this.usersOptions.push(user.name);
             }
         });
+        this.formGroup = this._formBuilder.group({
+            formArray: this._formBuilder.array([
+              this._formBuilder.group({
+                myName : this.myName,
+                myCups: this.myCups,
+                myPenalties : this.myPenalties,
+                partnerName : this.partnerName,
+                partnerCups : this.partnerCups,
+                partnerPenalties : this.partnerPenalties,
+                
+              }),
+              this._formBuilder.group({
+                oneName : this.oneName,
+                oneCups : this.oneCups,
+                onePenalties : this.onePenalties,
+                twoName : this.twoName,
+                twoCups : this.twoCups,
+                twoPenalties : this.twoPenalties
+              }),
+              this._formBuilder.group({
+                descriptionControl : this.descriptionControl,
+              }),
+            ])
+          });
+    }
+    get formArray(): AbstractControl | null {
+        return this.formGroup.get('formArray');
     }
 
     filterHandler(formy: FormControl) {
@@ -178,4 +206,5 @@ export class EnterGameComponent implements OnInit {
         returnValue = returnValue.slice(0, 10);
         return returnValue;
     }
+    
 }
