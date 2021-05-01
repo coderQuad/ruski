@@ -22,6 +22,7 @@ export class FetchLeaderboardService {
         id
         name
         handle
+        profile_url
         elo
       }
     } 
@@ -49,6 +50,7 @@ export class FetchLeaderboardService {
               id
               name
               handle
+              profile_url
               elo
             }
           }

@@ -55,7 +55,7 @@ export class LeaderboardComponent implements OnInit {
             this.length = response.length;
             this.users = response.map( (user, index) => ({
                 ...user, 
-                profile: 'https://d26n5v24zcmg6e.cloudfront.net/profiles/default.jpeg',
+                profile: user.profile_url,
                 rank: index + 1
             }));
             this.dataSource = new MatTableDataSource<leaderboardRow>(this.users);
@@ -67,8 +67,10 @@ export class LeaderboardComponent implements OnInit {
         this.leaderboardFetcher.fetchSticky()
         .subscribe(response => {
             response.subscribe(res => {
+                console.log(res);
                 const user = res.data.userByEmail[0];
-                this.userPro= 'https://d26n5v24zcmg6e.cloudfront.net/profiles/default.jpeg';
+                console.log(user);
+                this.userPro= user.profile_url;
                 this.userName= user.name;
                 this.userElo= user.elo;
                 this.userHandle= user.handle;
