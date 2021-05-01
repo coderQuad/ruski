@@ -12,6 +12,27 @@
     flex-shrink: 1;
     flex-basis: auto;
 }
+.foot{
+    flex-grow: 0;
+    flex-shrink: 1;
+    flex-basis: auto;
+}
+.logoAndButton{
+    flex-grow: 1;
+    flex-shrink: 1;
+    flex-basis: auto;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    display: flex;
+}
+.logo{
+    margin: 15px;
+}
+.login-button{
+    margin: 15px;
+}
+
 
 button {
     border-radius: 10px;
@@ -24,4 +45,16 @@ img {
     border-radius: 5px;
     height: 300px;
     width: 330px;
+}
+
+@media (max-width: 428px){
+    button {
+        height: 65px;
+        width: 165px;
+        font-size: 16px;
+    }
+    img {
+        height: 200px;
+        width: 220px;
+    }
 }
