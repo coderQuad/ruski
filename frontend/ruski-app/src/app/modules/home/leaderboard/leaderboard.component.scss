@@ -1,9 +1,15 @@
+@import "~@angular/material/theming";
+@import '/src/ruski-theme.scss';
+
 img {
     max-height: 45px;
     width: auto;
     border-radius: 50%;
 }
 
+.mat-header-row{
+    background-color: mat-color($ruski-theme-accent, A200);
+}
 .mat-header-cell{
     font-size: 1em;
 }
