@@ -49,7 +49,7 @@ export class LeaderboardComponent implements OnInit {
 
     constructor(private leaderboardFetcher: FetchLeaderboardService) {}
 
-    getLeaderboard(): any {
+    getLeaderboard(): void {
         this.leaderboardFetcher.fetchLeaders()
         .subscribe(response => {
             this.length = response.length;
@@ -64,13 +64,26 @@ export class LeaderboardComponent implements OnInit {
     }
 
     fillUser(): void {
-        this.leaderboardFetcher.fetchSticky();
-        this.userRank= 24;
-        this.userPro= 'https://d26n5v24zcmg6e.cloudfront.net/profiles/default.jpeg';
-        this.userName= 'Steemer';
-        this.userElo= 1224;
-        this.userHandle= 'stanleysteemer';
+        this.leaderboardFetcher.fetchSticky()
+        .subscribe(response => {
+            response.subscribe(res => {
+                const user = res.data.userByEmail[0];
+                this.userPro= 'https://d26n5v24zcmg6e.cloudfront.net/profiles/default.jpeg';
+                this.userName= user.name;
+                this.userElo= user.elo;
+                this.userHandle= user.handle;
+                this.userRank = this.getRank(user.id);
+            })
+        });
         this.loaded= true;
+    }
+
+    getRank(id: string): number {
+        for(let user of this.users){
+            if(user.id === id){
+                return user.rank;
+            }
+        }
     }
 
     ngOnInit(): void {

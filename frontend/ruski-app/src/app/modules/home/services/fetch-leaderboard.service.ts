@@ -3,6 +3,7 @@ import { AuthService } from '@auth0/auth0-angular';
 import { Apollo, gql } from 'apollo-angular';
 import { of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
+import Observable from 'zen-observable';
 
 @Injectable({
   providedIn: 'root'
@@ -34,23 +35,40 @@ export class FetchLeaderboardService {
       query: this.GET_LEADERS
     }).pipe(
       map(response => [...response.data.users].sort((a,b) => b.elo - a.elo)),
-      catchError(this.handleError())
+      catchError(this.handleError([]))
     );
   }
 
   fetchSticky() {
-    this.auth.user$.subscribe(
-      response => {
-        console.log(response.email);
-      }
-    )
+    return this.auth.user$.pipe(
+      map(response => {
+        // query to get logged in user 
+        const GET_USER = gql`
+          query GetUser {
+            userByEmail(email: "${response.email}") {
+              id
+              name
+              handle
+              elo
+            }
+          }
+        `;
+        return this.apollo.query<any>({
+          query: GET_USER
+        }).pipe(
+          map(response => response)
+        );
+      })
+    );
+
   }
 
-  handleError(){
+  handleError<T>(result: T){
     return (err) => {
       console.error(err);
-      return of([]);
+      return of(result as T);
     }
-
   }
+
+
 }
