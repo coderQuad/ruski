@@ -32,7 +32,7 @@ export class LeaderboardComponent implements OnInit {
     pageEvent: PageEvent;
 
     // columns
-    columnsToDisplay = ["rank", "name", "elo"];
+    columnsToDisplay = ["rank", "user", "elo"];
 
     // false header
     columnsToScheme = ["falseRank", "falseName", "falseElo"];
@@ -56,7 +56,7 @@ export class LeaderboardComponent implements OnInit {
             this.users = response.map( (user, index) => ({
                 ...user, 
                 profile: user.profile_url,
-                rank: index + 1
+                rank: index
             }));
             this.dataSource = new MatTableDataSource<leaderboardRow>(this.users);
             this.dataSource.paginator = this.paginator;
@@ -67,9 +67,7 @@ export class LeaderboardComponent implements OnInit {
         this.leaderboardFetcher.fetchSticky()
         .subscribe(response => {
             response.subscribe(res => {
-                console.log(res);
                 const user = res.data.userByEmail[0];
-                console.log(user);
                 this.userPro= user.profile_url;
                 this.userName= user.name;
                 this.userElo= user.elo;

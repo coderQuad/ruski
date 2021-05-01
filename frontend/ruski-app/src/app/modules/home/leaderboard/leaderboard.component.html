@@ -9,14 +9,21 @@
         <!-- Displays the user's rank -->
         <ng-container matColumnDef="rank">
             <mat-header-cell *matHeaderCellDef> Rank </mat-header-cell>
-            <!-- <mat-header-cell *matHeaderCellDef> 24 </mat-header-cell> -->
-            <mat-cell *matCellDef="let element"> {{element.rank}} </mat-cell>
+            <mat-cell *matCellDef="let element"> {{element.rank}}. </mat-cell>
         </ng-container>
 
         <!-- profile image and name-->
-        <ng-container matColumnDef="name">
-            <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
-            <mat-cell *matCellDef="let element"> <img src="{{element.profile}}"/> {{element.name}} </mat-cell>
+        <ng-container matColumnDef="user">
+            <mat-header-cell *matHeaderCellDef> User </mat-header-cell>
+            <mat-cell *matCellDef="let element">
+                <div id="user">
+                    <img src="{{element.profile}}"/> 
+                    <div id="user-details">
+                        <div id="user-name">{{element.name}}</div>
+                        <div id="user-handle">(@{{element.handle}})</div>
+                    </div>
+                </div>
+            </mat-cell>
             <!-- hypothetical future link to profile page -->
             <!-- <mat-cell *matCellDef="let element"> <a href="/users/{{element.handle}}"> <img src="{{element.profile}}"/> {{element.name}} </a></mat-cell> -->
         </ng-container>
@@ -24,7 +31,6 @@
         <!-- Show elo -->
         <ng-container matColumnDef="elo">
             <mat-header-cell *matHeaderCellDef> Elo </mat-header-cell>
-            <!-- <mat-header-cell *matHeaderCellDef> 1224 </mat-header-cell> -->
             <mat-cell *matCellDef="let element"> {{element.elo}} </mat-cell>
         </ng-container>
 
