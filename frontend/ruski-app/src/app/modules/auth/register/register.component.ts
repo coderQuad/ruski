@@ -29,7 +29,7 @@ export class RegisterComponent implements OnInit {
 
     ngOnInit(): void {
         this.reg.fetchUnregUsers().subscribe((response) => {
-            console.log(response);
+            // console.log(response);
             this.namesOptions = response.map((user) => user.name);
             for (const user of response) {
                 this.nameIdMap.set(user.name, user.id);

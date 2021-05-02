@@ -14,4 +14,8 @@ export class NavComponent implements OnInit {
     enterGame() {
         this.router.navigate(['/main/enter']);
     }
+
+    showLeaderboard() {
+        this.router.navigate(['/main/leaderboard']);
+    }
 }

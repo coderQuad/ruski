@@ -1,8 +1,15 @@
 <mat-toolbar color="primary">
     <div class="title">Ruski</div>
-    <div (click)="enterGame()">
-        <mat-icon aria-hidden="false" aria-label="Example home icon">
-            create
-        </mat-icon>
+    <div class="icons">
+        <div (click)="showLeaderboard()">
+            <mat-icon aria-hidden="false" aria-label="Example home icon">
+                leaderboard
+            </mat-icon>
+        </div>
+        <div (click)="enterGame()">
+            <mat-icon aria-hidden="false" aria-label="Example home icon">
+                create
+            </mat-icon>
+        </div>
     </div>
 </mat-toolbar>

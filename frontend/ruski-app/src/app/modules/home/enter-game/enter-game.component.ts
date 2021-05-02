@@ -220,10 +220,11 @@ export class EnterGameComponent implements OnInit {
         this.current.fetchUser()
         .subscribe(response => {
             response.subscribe(res => {
-                const user = res.data.userByEmail[0];
-                this.userPro= user.profile_url;
-                this.userName= user.name;
-                this.userHandle= user.handle;
+                console.log(res);
+                // const user = res.data.userByEmail[0];
+                // this.userPro= user.profile_url;
+                // this.userName= user.name;
+                // this.userHandle= user.handle;
                 this.usered=true;
             })
         });

@@ -29,7 +29,7 @@ export class CurrentUserService {
         return this.apollo.query<any>({
           query: GET_USER
         }).pipe(
-          map(response => response)
+          tap(response => console.log(response))
         );
       })
     );
