@@ -1,19 +1,30 @@
 <div class="login">
-    <div>
-        <ng-container *ngIf="auth.isAuthenticated$ | async; else loggedOut">
-            <button
-                mat-flat-button
-                color="primary"
-                (click)="auth.logout({ returnTo: document.location.origin })"
-            >
-                Log out
-            </button>
-        </ng-container>
+    <div class="head">
+        <h3>Welcome</h3>
+    </div>
+    <div class="logoAndButton">
+        <div class="logo">
+            <img src="https://d26n5v24zcmg6e.cloudfront.net/Ruski_Logo.jpeg" alt="Ruski Logo">
+        </div>
+        <div class="login-button">
+            <ng-container *ngIf="auth.isAuthenticated$ | async; else loggedOut">
+                <button
+                    mat-flat-button
+                    color="primary"
+                    (click)="auth.logout({ returnTo: document.location.origin })"
+                >
+                    Log out
+                </button>
+            </ng-container>
+        </div>
+    </div>
+    <div class="foot">
+        <h5>playruski.com asks you to please drink responsibly</h5>
     </div>
 </div>
 
 <ng-template #loggedOut>
     <button mat-flat-button color="primary" (click)="auth.loginWithRedirect()">
-        Log in
+        Log in or sign up
     </button>
 </ng-template>
