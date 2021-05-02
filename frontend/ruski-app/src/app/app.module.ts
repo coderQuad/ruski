@@ -13,9 +13,10 @@ import { MainComponent } from './main/main.component';
 import { AuthModule } from '@auth0/auth0-angular';
 import { GraphQLModule } from './graphql.module';
 import { HttpClientModule } from '@angular/common/http';
+import { LoadingComponent } from './loading/loading.component';
 
 @NgModule({
-    declarations: [AppComponent, MainComponent],
+    declarations: [AppComponent, MainComponent, LoadingComponent],
     imports: [
         BrowserModule,
         AppRoutingModule,
