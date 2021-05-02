@@ -4,6 +4,13 @@
         <mat-horizontal-stepper formArrayName="formArray" id="form-content"> 
             <mat-step formGroupName="0" [stepControl]="formArray.get([0])">
                 <div class="player-entry">
+                    <!-- <div class="player-name" id="current-user" *ngIf="usered">
+                        <img src="{{element.profile}}"/> 
+                        <div id="user-details">
+                            <div id="user-name">{{element.name}}</div>
+                            <div id="user-handle">(@{{element.handle}})</div>
+                        </div> 
+                    </div> -->
                     <mat-form-field appearance="outline" class="player-name">
                         <mat-label>Your name:</mat-label>
                         <input

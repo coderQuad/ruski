@@ -1,4 +1,5 @@
 import { SubmitGameService } from './../services/submit-game.service';
+import { CurrentUserService } from './../services/current-user.service';
 import { Game } from './../game-template';
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, Validators, FormBuilder,FormGroup } from '@angular/forms';
@@ -31,7 +32,14 @@ export class EnterGameComponent implements OnInit {
     errorFlag: boolean = false;
     errorMessage: string = '';
 
-    constructor(private gameSubmitter: SubmitGameService, private _formBuilder: FormBuilder) {}
+
+    // properties for current user display
+    userPro: string;
+    userName: string;
+    userHandle: string;
+    usered: boolean;
+
+    constructor(private gameSubmitter: SubmitGameService, private _formBuilder: FormBuilder, private current:CurrentUserService) {}
 
     ngOnInit(): void {
         this.gameSubmitter.fetchUsers().valueChanges.subscribe((response) => {
@@ -64,6 +72,7 @@ export class EnterGameComponent implements OnInit {
               }),
             ])
           });
+        this.fillUser();
     }
     get formArray(): AbstractControl | null {
         return this.formGroup.get('formArray');
@@ -205,6 +214,20 @@ export class EnterGameComponent implements OnInit {
         returnValue.sort();
         returnValue = returnValue.slice(0, 10);
         return returnValue;
+    }
+
+    fillUser(){
+        this.current.fetchUser()
+        .subscribe(response => {
+            response.subscribe(res => {
+                const user = res.data.userByEmail[0];
+                this.userPro= user.profile_url;
+                this.userName= user.name;
+                this.userHandle= user.handle;
+                this.usered=true;
+            })
+        });
+
     }
     
 }
