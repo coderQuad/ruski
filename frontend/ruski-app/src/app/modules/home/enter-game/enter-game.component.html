@@ -4,30 +4,13 @@
         <mat-horizontal-stepper formArrayName="formArray" id="form-content"> 
             <mat-step formGroupName="0" [stepControl]="formArray.get([0])">
                 <div class="player-entry">
-                    <!-- <div class="player-name" id="current-user" *ngIf="usered">
-                        <img src="{{element.profile}}"/> 
+                    <div class="player-name" id="current-user" *ngIf="usered">
+                        <img src="{{userPro}}"/> 
                         <div id="user-details">
-                            <div id="user-name">{{element.name}}</div>
-                            <div id="user-handle">(@{{element.handle}})</div>
+                            <div id="user-name">{{userName}}</div>
+                            <div id="user-handle">(@{{userHandle}})</div>
                         </div> 
-                    </div> -->
-                    <mat-form-field appearance="outline" class="player-name">
-                        <mat-label>Your name:</mat-label>
-                        <input
-                            matInput
-                            placeholder="Enter"
-                            [formControl]="myName"
-                            [matAutocomplete]="auto"
-                            (focus)="filterHandler(myName)"
-                        />
-                        <mat-autocomplete #auto="matAutocomplete">
-                            <mat-option
-                                *ngFor="let name of filteredUsers | async"
-                                [value]="name"
-                                >{{ name }}
-                            </mat-option>
-                        </mat-autocomplete>
-                    </mat-form-field>
+                    </div>
                     <mat-form-field appearance="outline" class="player-stats">
                         <mat-label>Cups:</mat-label>
                         <input
