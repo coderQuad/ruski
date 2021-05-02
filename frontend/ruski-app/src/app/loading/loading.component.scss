@@ -1,0 +1,86 @@
+.loading {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+.head{
+    flex-grow: 0;
+    flex-shrink: 1;
+    flex-basis: auto;
+}
+.foot{
+    flex-grow: 0;
+    flex-shrink: 1;
+    flex-basis: auto;
+}
+.logoAndCounters{
+    flex-grow: 1;
+    flex-shrink: 1;
+    flex-basis: auto;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    display: flex;
+}
+.logo{
+    margin: 15px;
+}
+
+.beers{
+    margin: 15px;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    display: flex;
+    color: #063512;
+}
+.beers-count{
+    margin: 0px;
+}
+.beers-label{
+    margin: 0px;
+}
+
+.yaks{
+    margin: 15px;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    display: flex;
+    color: #063512;
+}
+.yaks-count{
+    margin: 0px;
+}
+.yaks-label{
+    margin: 0px;
+}
+
+img {
+    border-radius: 5px;
+    height: 300px;
+    width: 330px;
+}
+
+@media (max-width: 428px){
+    img {
+        height: 200px;
+        width: 220px;
+    }
+    .beers-count{
+        font-size: 26px;
+    }
+    .beers-label{
+        font-size: 18px;
+    }
+    .yaks-count{
+        font-size: 26px;
+    }
+    .yaks-label{
+        font-size: 18px;
+    }
+}
