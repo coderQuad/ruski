@@ -4,6 +4,7 @@ const { graphqlHTTP } = require("express-graphql");
 const cors = require("cors");
 const schema = require("./graphql/schemas");
 const aws = require("aws-sdk");
+const fs = require('fs');
 if (process.env.NODE_ENV !== "production") {
   require("dotenv").config();
 }
@@ -18,6 +19,7 @@ const s3 = new aws.S3({
 const app = express();
 app.use(cors());
 
+
 mongoose.connect("mongodb://127.0.0.1:27017/ruski", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -27,6 +29,11 @@ const connection = mongoose.connection;
 
 connection.once("open", function () {
   console.log("MongoDB database connection established successfully");
+});
+
+// api endpoint for getting beer and yak totals from yack-beer-totals.json
+app.get("/get_yack_beer_totals", (req, res) => {
+    res.send(fs.readFileSync('./yack-beer-totals.json', 'utf8'));
 });
 
 // api endpoint for getting presigned url to upload user profile pictures to s3 bucket
