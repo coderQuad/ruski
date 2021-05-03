@@ -8,3 +8,10 @@ mat-toolbar {
 mat-icon:hover {
     cursor: pointer;
 }
+
+.icons {
+    display: flex;
+    flex-direction: row;
+    width: 300px;
+    justify-content: space-between;
+}
