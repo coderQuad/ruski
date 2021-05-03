@@ -4,7 +4,8 @@ import { ActivatedRoute } from '@angular/router';
 import { ProfileService } from './../services/profile.service';
 import { CurrentUserService } from './../services/current-user.service';
 
-import { catchError, map, tap, switchMap } from 'rxjs/operators';
+import { forkJoin, combineLatest } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 
 @Component({
@@ -19,16 +20,27 @@ export class ProfileComponent implements OnInit {
   name: string;
   profile_url: string;
 
-  constructor(private route:ActivatedRoute, private profile:ProfileService) { 
+  constructor(private route:ActivatedRoute, private profile:ProfileService, private user:CurrentUserService) { 
   }
 
   ngOnInit(): void {
-    this.route.params.pipe(
-      map(response => {
-        return response;
-      }).subscribe(data => )
-    );
+    this.determineHandle();
     this.getInfo();
+  }
+
+  determineHandle() {
+    const 
+    combineLatest(
+      [
+        this.route.params,
+        this.user.getHandle(),
+      ]
+    // ).pipe(
+    //   map(([route, user]) => {
+    //     console.log(route);
+    //     console.log(user);
+    //   })
+    ).subscribe(response => console.log(response));
   }
 
   getInfo(): void{
