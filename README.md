@@ -10,3 +10,6 @@
 [![Netlify Status](https://api.netlify.com/api/v1/badges/b38d1203-5ac3-4507-b501-62164c868824/deploy-status)](https://app.netlify.com/sites/peaceful-tereshkova-8310b6/deploys)
 ##### playruski.com (deploys from prod branch)
 [![Netlify Status](https://api.netlify.com/api/v1/badges/908d0111-f240-48e9-a374-7d187cc5596b/deploy-status)](https://app.netlify.com/sites/silly-bose-6a26f4/deploys)
+
+## Contributing
+All pull requests must be branched off of and then requested to merge into the [dev](https://github.com/danerwilliams/ruski/tree/dev) branch. We will periodically merge the dev branch into the main prod branch as releases. 
