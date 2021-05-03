@@ -5,17 +5,15 @@ import { Apollo, gql } from 'apollo-angular';
 import { catchError, map, tap } from 'rxjs/operators';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root',
 })
 export class CurrentUserService {
-
-  constructor(private auth: AuthService, private apollo: Apollo) { }
-
-  fetchUser(){
-    return this.auth.user$.pipe(
-      map(response => {
-        // query to get logged in user 
-        const GET_USER = gql`
+    constructor(private auth: AuthService, private apollo: Apollo) {}
+    fetchUser() {
+        return this.auth.user$.pipe(
+            map((response) => {
+                // query to get logged in user
+                const GET_USER = gql`
           query GetUser {
             userByEmail(email: "${response.email}") {
               id
@@ -26,12 +24,12 @@ export class CurrentUserService {
             }
           }
         `;
-        return this.apollo.query<any>({
-          query: GET_USER
-        }).pipe(
-          tap(response => console.log(response))
+                return this.apollo
+                    .query<any>({
+                        query: GET_USER,
+                    })
+                    .pipe(tap((response) => console.log(response)));
+            })
         );
-      })
-    );
-  }
+    }
 }

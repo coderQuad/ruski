@@ -11,8 +11,9 @@ import { AuthGuard } from '@auth0/auth0-angular';
 import { FeedComponent } from './feed/feed.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthGuard as RegGuard } from '../auth/auth.guard';
-import {MatStepperModule} from '@angular/material/stepper';
+import { MatStepperModule } from '@angular/material/stepper';
 import { LeaderboardComponent } from './leaderboard/leaderboard.component';
+import { SocialFeedComponent } from './social-feed/social-feed.component';
 
 const homeRoutes: Routes = [
     {
@@ -23,6 +24,7 @@ const homeRoutes: Routes = [
             { path: '', component: FeedComponent },
             { path: 'enter', component: EnterGameComponent },
             { path: 'leaderboard', component: LeaderboardComponent },
+            { path: 'feed', component: SocialFeedComponent },
         ],
     },
 ];
@@ -34,6 +36,7 @@ const homeRoutes: Routes = [
         EnterGameComponent,
         FeedComponent,
         LeaderboardComponent,
+        SocialFeedComponent,
     ],
     imports: [
         CommonModule,
