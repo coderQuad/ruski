@@ -1,4 +1,5 @@
 import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 
@@ -14,15 +15,6 @@ export class LeaderboardComponent implements OnInit {
 
     // leaderboard data body
     users? = [];
-
-    // current user false header info
-    loggedInUser = [
-        24,
-        'https://d26n5v24zcmg6e.cloudfront.net/profiles/default.jpeg',
-        'Steemer',
-        1230,
-        'stanleysteemer'
-    ];
 
     // paginator params
     length: number;
@@ -48,7 +40,7 @@ export class LeaderboardComponent implements OnInit {
     dataSource: MatTableDataSource<leaderboardRow>;
     @ViewChild(MatPaginator) paginator: MatPaginator;
 
-    constructor(private leaderboardFetcher: FetchLeaderboardService, private user: CurrentUserService) {}
+    constructor(private leaderboardFetcher: FetchLeaderboardService, private user: CurrentUserService, private router: Router) {}
 
     getLeaderboard(): void {
         this.leaderboardFetcher.fetchLeaders()
@@ -86,6 +78,9 @@ export class LeaderboardComponent implements OnInit {
         return 0;
     }
 
+    goToProfile(handle: string): void {
+        this.router.navigate([`/main/user/${handle}`])
+    }
     ngOnInit(): void {
         this.getLeaderboard();
         this.fillUser();
