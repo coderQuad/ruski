@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ProfileService } from './../services/profile.service';
 import { CurrentUserService } from './../services/current-user.service';
 
-import { forkJoin, combineLatest } from 'rxjs';
+import { forkJoin, combineLatest, from } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 
@@ -19,6 +19,7 @@ export class ProfileComponent implements OnInit {
   elo: number;
   name: string;
   profile_url: string;
+  my_profile: boolean;
 
   constructor(private route:ActivatedRoute, private profile:ProfileService, private user:CurrentUserService) { 
   }
@@ -29,18 +30,17 @@ export class ProfileComponent implements OnInit {
   }
 
   determineHandle() {
-    const 
-    combineLatest(
-      [
-        this.route.params,
-        this.user.getHandle(),
-      ]
-    // ).pipe(
-    //   map(([route, user]) => {
-    //     console.log(route);
-    //     console.log(user);
-    //   })
-    ).subscribe(response => console.log(response));
+    combineLatest([
+      this.route.params,
+      this.user.getHandle()
+    ]).subscribe(response => {
+      this.handle = response[0].handle;
+      if(this.handle !== response[1].handle){
+        this.my_profile = false;
+      } else {
+        this.my_profile = true;
+      }
+    });
   }
 
   getInfo(): void{
