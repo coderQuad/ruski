@@ -36,7 +36,7 @@ def main():
     beers = 30 * len(games) #30 beers per game
 
     result = {}
-    result['yaks'] = yaks
+    result['yacks'] = yaks
     result['beers'] = beers
 
     with open('yack-beer-totals.json', 'w') as file:
