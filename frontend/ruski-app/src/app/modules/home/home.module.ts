@@ -13,6 +13,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthGuard as RegGuard } from '../auth/auth.guard';
 import {MatStepperModule} from '@angular/material/stepper';
 import { LeaderboardComponent } from './leaderboard/leaderboard.component';
+import { ProfileComponent } from './profile/profile.component';
 
 const homeRoutes: Routes = [
     {
@@ -23,6 +24,7 @@ const homeRoutes: Routes = [
             { path: '', component: FeedComponent },
             { path: 'enter', component: EnterGameComponent },
             { path: 'leaderboard', component: LeaderboardComponent },
+            { path: 'user/:handle', component: ProfileComponent},
         ],
     },
 ];
@@ -34,6 +36,7 @@ const homeRoutes: Routes = [
         EnterGameComponent,
         FeedComponent,
         LeaderboardComponent,
+        ProfileComponent,
     ],
     imports: [
         CommonModule,

@@ -53,4 +53,33 @@ export class CurrentUserService {
       })
     );
   }
+
+  getHandle(){
+    return this.auth.user$.pipe(
+      switchMap(response => {
+        // query to get logged in user 
+        const GET_USER = gql`
+          query GetUser {
+            userByEmail(email: "${response.email}") {
+              handle
+            }
+          }
+        `;
+        return this.apollo.query<any>({
+          query: GET_USER
+        }).pipe(
+          map(response => {
+            if(!response.data.userByEmail.length){
+              return {
+                      'handle': 'yourhandle',
+              }
+            }
+            else{
+              return response.data.userByEmail[0].handle;
+            }
+          })
+        );
+      })
+    );
+  }
 }
