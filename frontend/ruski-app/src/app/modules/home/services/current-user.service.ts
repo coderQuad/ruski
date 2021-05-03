@@ -5,7 +5,7 @@ import { Apollo, gql } from 'apollo-angular';
 import { catchError, map, tap, switchMap } from 'rxjs/operators';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root',
 })
 export class CurrentUserService {
 
@@ -50,7 +50,5 @@ export class CurrentUserService {
             }
           })
         );
-      })
-    );
-  }
+    }
 }

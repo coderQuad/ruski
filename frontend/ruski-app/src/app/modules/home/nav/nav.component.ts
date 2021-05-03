@@ -18,4 +18,8 @@ export class NavComponent implements OnInit {
     showLeaderboard() {
         this.router.navigate(['/main/leaderboard']);
     }
+
+    showFeed() {
+        this.router.navigate(['/main/feed']);
+    }
 }
