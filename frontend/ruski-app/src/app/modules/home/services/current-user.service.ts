@@ -45,6 +45,9 @@ export class CurrentUserService {
                 }
               }
             }
+            else{
+              return response;
+            }
           })
         );
       })
