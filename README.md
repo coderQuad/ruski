@@ -1,5 +1,9 @@
 # Ruski
-> The Game of Games
+> The Game of Games  
+
+<p align="center">
+<img height=300 width=360 src="https://d26n5v24zcmg6e.cloudfront.net/Ruski_Logo.jpeg">
+</p>
 
 ## Deployments
 ##### dev.playruski.com (deploys from dev branch)
