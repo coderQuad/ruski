@@ -40,31 +40,6 @@ export class FetchLeaderboardService {
     );
   }
 
-  fetchSticky() {
-    return this.auth.user$.pipe(
-      map(response => {
-        // query to get logged in user 
-        const GET_USER = gql`
-          query GetUser {
-            userByEmail(email: "${response.email}") {
-              id
-              name
-              handle
-              profile_url
-              elo
-            }
-          }
-        `;
-        return this.apollo.query<any>({
-          query: GET_USER
-        }).pipe(
-          map(response => response)
-        );
-      })
-    );
-
-  }
-
   handleError<T>(result: T){
     return (err) => {
       console.error(err);

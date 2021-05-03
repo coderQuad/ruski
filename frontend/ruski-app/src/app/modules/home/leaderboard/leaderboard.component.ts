@@ -3,6 +3,7 @@ import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 
 import { FetchLeaderboardService } from './../services/fetch-leaderboard.service';
+import { CurrentUserService } from './../services/current-user.service';
 @Component({
     selector: 'app-leaderboard',
     templateUrl: './leaderboard.component.html',
@@ -47,7 +48,7 @@ export class LeaderboardComponent implements OnInit {
     dataSource: MatTableDataSource<leaderboardRow>;
     @ViewChild(MatPaginator) paginator: MatPaginator;
 
-    constructor(private leaderboardFetcher: FetchLeaderboardService) {}
+    constructor(private leaderboardFetcher: FetchLeaderboardService, private user: CurrentUserService) {}
 
     getLeaderboard(): void {
         this.leaderboardFetcher.fetchLeaders()
@@ -64,7 +65,7 @@ export class LeaderboardComponent implements OnInit {
     }
 
     fillUser(): void {
-        this.leaderboardFetcher.fetchSticky()
+        this.user.fetchUser()
         .subscribe(response => {
             response.subscribe(res => {
                 const user = res.data.userByEmail[0];
@@ -84,6 +85,7 @@ export class LeaderboardComponent implements OnInit {
                 return user.rank;
             }
         }
+        return 0;
     }
 
     ngOnInit(): void {

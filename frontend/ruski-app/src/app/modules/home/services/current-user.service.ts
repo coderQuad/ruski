@@ -29,7 +29,26 @@ export class CurrentUserService {
         return this.apollo.query<any>({
           query: GET_USER
         }).pipe(
-          tap(response => console.log(response))
+          map(response => {
+            if(!response.data.userByEmail.length){
+              return {
+                'data': {
+                  'userByEmail': [
+                    {
+                      'profile_url': 'https://d26n5v24zcmg6e.cloudfront.net/profiles/default.jpeg',
+                      'name': 'YourName',
+                      'elo': 1200,
+                      'handle': 'yourhandle',
+                      'id': 'abcdefghijklmnop',
+                    }
+                  ]
+                }
+              }
+            }
+            else{
+              return response;
+            }
+          })
         );
       })
     );

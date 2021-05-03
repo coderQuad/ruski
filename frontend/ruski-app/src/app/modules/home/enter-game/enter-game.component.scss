@@ -37,6 +37,24 @@
     }
 }
 
+#current-user{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+#user-details{
+    display: flex;
+    flex-direction: row;
+    font-size: 1em;
+}
+img {
+    width: 5%;
+    width: 5%;
+    height: auto;
+    border-radius: 50%;
+    margin: 0 0.5em 0 0.5em;
+}
+
 .description {
     width: 60%;
     margin: auto;
@@ -56,6 +74,10 @@
     .submit{
         width: 40%;
     } 
+    img {
+        width: 10%;
+        height: 10%;
+    }
 }
 @media screen and (min-width: 601px){
     .player-entry{
