@@ -41,6 +41,7 @@ export class FetchLeaderboardService {
             );
     }
 
+
     fetchSticky() {
         return this.auth.user$.pipe(
             map((response) => {
