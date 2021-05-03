@@ -31,9 +31,6 @@ connection.once("open", function () {
   console.log("MongoDB database connection established successfully");
 });
 
-
-console.log(fs.readFileSync('./yack-beer-totals.json', 'utf8'));
-
 // api endpoint for getting beer and yak totals from yack-beer-totals.json
 app.get("/get_yack_beer_totals", (req, res) => {
     res.send(fs.readFileSync('./yack-beer-totals.json', 'utf8'));
