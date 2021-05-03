@@ -8,14 +8,13 @@ import { catchError, map, tap, switchMap } from 'rxjs/operators';
     providedIn: 'root',
 })
 export class CurrentUserService {
+    constructor(private auth: AuthService, private apollo: Apollo) {}
 
-  constructor(private auth: AuthService, private apollo: Apollo) { }
-
-  fetchUser(){
-    return this.auth.user$.pipe(
-      switchMap(response => {
-        // query to get logged in user 
-        const GET_USER = gql`
+    fetchUser() {
+        return this.auth.user$.pipe(
+            switchMap((response) => {
+                // query to get logged in user
+                const GET_USER = gql`
           query GetUser {
             userByEmail(email: "${response.email}") {
               id
@@ -26,29 +25,33 @@ export class CurrentUserService {
             }
           }
         `;
-        return this.apollo.query<any>({
-          query: GET_USER
-        }).pipe(
-          map(response => {
-            if(!response.data.userByEmail.length){
-              return {
-                'data': {
-                  'userByEmail': [
-                    {
-                      'profile_url': 'https://d26n5v24zcmg6e.cloudfront.net/profiles/default.jpeg',
-                      'name': 'YourName',
-                      'elo': 1200,
-                      'handle': 'yourhandle',
-                      'id': 'abcdefghijklmnop',
-                    }
-                  ]
-                }
-              }
-            }
-            else{
-              return response;
-            }
-          })
+                return this.apollo
+                    .query<any>({
+                        query: GET_USER,
+                    })
+                    .pipe(
+                        map((response) => {
+                            if (!response.data.userByEmail.length) {
+                                return {
+                                    data: {
+                                        userByEmail: [
+                                            {
+                                                profile_url:
+                                                    'https://d26n5v24zcmg6e.cloudfront.net/profiles/default.jpeg',
+                                                name: 'YourName',
+                                                elo: 1200,
+                                                handle: 'yourhandle',
+                                                id: 'abcdefghijklmnop',
+                                            },
+                                        ],
+                                    },
+                                };
+                            } else {
+                                return response;
+                            }
+                        })
+                    );
+            })
         );
     }
 }
