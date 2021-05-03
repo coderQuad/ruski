@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AuthService } from '@auth0/auth0-angular';
 
 import { Apollo, gql } from 'apollo-angular';
-import { catchError, map, tap } from 'rxjs/operators';
+import { catchError, map, tap, switchMap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +13,7 @@ export class CurrentUserService {
 
   fetchUser(){
     return this.auth.user$.pipe(
-      map(response => {
+      switchMap(response => {
         // query to get logged in user 
         const GET_USER = gql`
           query GetUser {

@@ -67,14 +67,12 @@ export class LeaderboardComponent implements OnInit {
     fillUser(): void {
         this.user.fetchUser()
         .subscribe(response => {
-            response.subscribe(res => {
-                const user = res.data.userByEmail[0];
-                this.userPro= user.profile_url;
-                this.userName= user.name;
-                this.userElo= user.elo;
-                this.userHandle= user.handle;
-                this.userRank = this.getRank(user.id);
-            })
+            const user = response.data.userByEmail[0];
+            this.userPro= user.profile_url;
+            this.userName= user.name;
+            this.userElo= user.elo;
+            this.userHandle= user.handle;
+            this.userRank = this.getRank(user.id);
         });
         this.loaded= true;
     }
