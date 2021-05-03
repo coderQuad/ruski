@@ -39,7 +39,7 @@ def main():
     result['yaks'] = yaks
     result['beers'] = beers
 
-    with open('yak-beer-totals.json', 'w') as file:
+    with open('yack-beer-totals.json', 'w') as file:
         json.dump(result, file)
 
 
