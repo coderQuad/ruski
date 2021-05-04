@@ -15,9 +15,16 @@
 All pull requests must be branched off of and then requested to merge into the [dev](https://github.com/danerwilliams/ruski/tree/dev) branch. We will periodically merge the dev branch into the main prod branch as releases. 
 
 ## Configurations
-
+### Environment Variables
+Environment variables must either be set or included in .env files inside of the backend and frontend folders   
+##### Backend
+AWS access keys for S3 uploading:
+ACCESS_KEY_ID=******************
+SECRET_ACCESS_KEY=****************************
+##### Frontend
+RUSKI_API_URL=http://backend.server.url.goes.here:XXXX
 ### Cron
-Run `crontab -e` to edit your crontab and add the following line:
+Run `crontab -e` to edit your crontab and add the following line:  
 `* * * * * ~/ruski/backend/cronjob-script.py 1> ~/ruski/backend/yack-beer-totals.json`
 
 ### S3
