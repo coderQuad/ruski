@@ -29,22 +29,12 @@ export class AuthGuard implements CanActivate {
         | boolean
         | UrlTree {
         const url: string = state.url;
-        // console.log(route);
-        // console.log(route);
-        // console.log(state);
-        const isRegistered = this.hundler.getStatus();
-        // console.log('here');
-        return this.auth.user$.pipe(
-            map((response: Response) => {
-                // console.log(response);
-                if (response['https://example.com/roles'][0] === 'old') {
-                    // console.log('billy');
-                    return true;
-                } else if (isRegistered) {
-                    // console.log('hundy');
+        return this.hundler.checkUserExistsByEmail().pipe(
+            map((response: any) => {
+                console.log(response);
+                if (response.length > 0) {
                     return true;
                 }
-                this.router.navigate(['/register']);
                 return false;
             }),
             catchError((error: any) => {
