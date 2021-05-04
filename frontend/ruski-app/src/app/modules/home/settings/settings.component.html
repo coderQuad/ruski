@@ -4,9 +4,9 @@
 <div class="flex-container">
     <div class="form">
         <div id="profile">
-            <img src="{{oldPic}}"/>
+            <img [src]="pic"/>
             <button mat-button color="primary" type="button" md-button (click)="imgFileInput.click()">New Profile Image</button>
-            <input hidden type="file" #imgFileInput/>
+            <input hidden type="file" #imgFileInput accept=".jpeg,.png"/>
         </div>
         <div id="user-details">
             <mat-form-field appearance="standard">
@@ -14,7 +14,7 @@
                 <input 
                     matInput
                     [formControl]="nameControl"
-                    value="{{oldName}}"
+                    value="{{name}}"
                 />
             </mat-form-field>
             <mat-form-field appearance="standard" id="handle-form">
@@ -23,7 +23,7 @@
                 <input
                     matInput
                     [formControl]="handleControl"
-                    value="{{oldHandle}}"
+                    value="{{handle}}"
                 />
             </mat-form-field>
         </div> 

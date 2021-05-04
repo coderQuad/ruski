@@ -230,7 +230,7 @@ export class EnterGameComponent implements OnInit {
     }
 
     goToProfile(handle: string): void {
-        this.router.navigate([`/main/user/${handle.toLowerCase()}`])
+        this.router.navigate([`/main/user/${handle}`])
     }
     
 }

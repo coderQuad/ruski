@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AbstractControl, FormControl, Validators, FormBuilder,FormGroup } from '@angular/forms';
+import { AbstractControl, FormControl, Validators, FormBuilder,FormGroup, Form } from '@angular/forms';
 
 import { CurrentUserService } from './../services/current-user.service';
 
@@ -14,18 +14,26 @@ export class SettingsComponent implements OnInit {
   handleControl = new FormControl(null);
   imageControl = new FormControl(null);
 
+  name:string;
+  handle:string;
+  pic:string;
+
   oldName:string;
   oldHandle:string;
   oldPic: string;
 
-  constructor(private currentUser: CurrentUserService) { }
+  constructor(private currentUser: CurrentUserService, private _formBuilder: FormBuilder) { }
 
   ngOnInit(): void {
     this.currentUser.fetchUser().subscribe(response => {
       this.oldHandle = response.handle;
       this.oldName = response.name;
       this.oldPic = response.profile_url;
-    })
+
+      this.name = this.oldName;
+      this.handle = this.oldHandle;
+      this.pic = this.oldPic;
+    });
   }
 
   submitChanges(): void {
