@@ -1,1 +1,8 @@
-<p>profiles works!</p>
+<div id="header">
+    <img src="{{profile_url}}"/>
+    <div id="user-details">
+        <div id="name">{{name}}</div>
+        <div id="handle">@{{handle}}</div>
+    </div>
+    <button mat-flat-button *ngIf="my_profile" color="accent" (click)="editProfile()">Edit Profile</button>
+</div>

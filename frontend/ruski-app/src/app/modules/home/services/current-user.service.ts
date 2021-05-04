@@ -32,21 +32,15 @@ export class CurrentUserService {
           map(response => {
             if(!response.data.userByEmail.length){
               return {
-                'data': {
-                  'userByEmail': [
-                    {
-                      'profile_url': 'https://d26n5v24zcmg6e.cloudfront.net/profiles/default.jpeg',
-                      'name': 'YourName',
-                      'elo': 1200,
-                      'handle': 'yourhandle',
-                      'id': 'abcdefghijklmnop',
-                    }
-                  ]
-                }
+                'profile_url': 'https://d26n5v24zcmg6e.cloudfront.net/profiles/default.jpeg',
+                'name': 'YourName',
+                'elo': 1200,
+                'handle': 'yourhandle',
+                'id': 'abcdefghijklmnop',
               }
             }
             else{
-              return response;
+              return response.data.userByEmail[0];
             }
           })
         );

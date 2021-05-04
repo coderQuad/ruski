@@ -14,6 +14,7 @@ import { AuthGuard as RegGuard } from '../auth/auth.guard';
 import {MatStepperModule} from '@angular/material/stepper';
 import { LeaderboardComponent } from './leaderboard/leaderboard.component';
 import { ProfileComponent } from './profile/profile.component';
+import { SettingsComponent } from './settings/settings.component';
 
 const homeRoutes: Routes = [
     {
@@ -25,6 +26,7 @@ const homeRoutes: Routes = [
             { path: 'enter', component: EnterGameComponent },
             { path: 'leaderboard', component: LeaderboardComponent },
             { path: 'user/:handle', component: ProfileComponent},
+            { path: 'settings', component: SettingsComponent}
         ],
     },
 ];
@@ -37,6 +39,7 @@ const homeRoutes: Routes = [
         FeedComponent,
         LeaderboardComponent,
         ProfileComponent,
+        SettingsComponent,
     ],
     imports: [
         CommonModule,

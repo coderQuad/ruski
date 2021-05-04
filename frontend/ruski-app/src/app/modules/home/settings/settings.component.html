@@ -1,0 +1,39 @@
+<div id="header">
+    <div>Edit Profile</div>
+</div>
+<div class="flex-container">
+    <div class="form">
+        <div id="profile">
+            <img src="{{oldPic}}"/>
+            <button mat-button color="primary" type="button" md-button (click)="imgFileInput.click()">New Profile Image</button>
+            <input hidden type="file" #imgFileInput/>
+        </div>
+        <div id="user-details">
+            <mat-form-field appearance="standard">
+                <mat-label>New Name:</mat-label>
+                <input 
+                    matInput
+                    [formControl]="nameControl"
+                    value="{{oldName}}"
+                />
+            </mat-form-field>
+            <mat-form-field appearance="standard" id="handle-form">
+                <mat-label>New Handle:</mat-label>
+                <span matPrefix>@ &nbsp;</span>
+                <input
+                    matInput
+                    [formControl]="handleControl"
+                    value="{{oldHandle}}"
+                />
+            </mat-form-field>
+        </div> 
+    </div>
+    <!-- <div class="error"> -->
+        <!-- <p *ngIf="errorFlag">{{ errorMessage }}</p> -->
+    <!-- </div> -->
+    <div class="submit">
+        <button mat-flat-button (click)="submitChanges()" color="primary">
+            Save Changes
+        </button>
+    </div>
+</div>

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 
 import { ProfileService } from './../services/profile.service';
 import { CurrentUserService } from './../services/current-user.service';
@@ -21,12 +22,11 @@ export class ProfileComponent implements OnInit {
   profile_url: string;
   my_profile: boolean;
 
-  constructor(private route:ActivatedRoute, private profile:ProfileService, private user:CurrentUserService) { 
+  constructor(private route:ActivatedRoute, private router: Router, private profile:ProfileService, private user:CurrentUserService) { 
   }
 
   ngOnInit(): void {
     this.determineHandle();
-    this.getInfo();
   }
 
   determineHandle() {
@@ -35,7 +35,8 @@ export class ProfileComponent implements OnInit {
       this.user.getHandle()
     ]).subscribe(response => {
       this.handle = response[0].handle;
-      if(this.handle !== response[1].handle){
+      this.getInfo();
+      if(this.handle !== response[1]){
         this.my_profile = false;
       } else {
         this.my_profile = true;
@@ -49,6 +50,10 @@ export class ProfileComponent implements OnInit {
       this.name = response.name;
       this.profile_url = response.profile_url;
     });
+  }
+
+  editProfile(): void{
+    this.router.navigate(['/main/settings']);
   }
 
 }
