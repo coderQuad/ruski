@@ -24,7 +24,7 @@ AWS access keys for S3 uploading:
 
 ### Cron
 Run `crontab -e` to edit your crontab and add the following line:  
-`* * * * * ~/ruski/backend/cronjob-script.py 1> ~/ruski/backend/yack-beer-totals.json`
+`11 23 * * * ~/ruski/backend/cronjob-script.py 1> ~/ruski/backend/yack-beer-totals.json`
 
 ### S3
 ##### Bucket policy
