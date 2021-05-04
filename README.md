@@ -13,3 +13,9 @@
 
 ## Contributing
 All pull requests must be branched off of and then requested to merge into the [dev](https://github.com/danerwilliams/ruski/tree/dev) branch. We will periodically merge the dev branch into the main prod branch as releases. 
+
+## Configurations
+
+### Cron
+Run `crontab -e` to edit your crontab and add the following line:
+`* * * * * ~/ruski/backend/cronjob-script.py 1> ~/ruski/backend/yack-beer-totals.json`
