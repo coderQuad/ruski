@@ -103,6 +103,7 @@ const GameType = new GraphQLObjectType({
         comments: {
             type: new GraphQLList(CommentType),
             resolve(parent, args) {
+                console.log(parent.comment_ids);
                 return Comment.find({ '_id': { $in: parent.comment_ids } });
             }
         },

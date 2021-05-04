@@ -553,7 +553,7 @@ const Mutation = new GraphQLObjectType({
                     });
             }
         },
-        addComment: {
+        addCommentToGame: {
             type: GameType,
             args: {
                 id: {type: new GraphQLNonNull(GraphQLID)},
@@ -562,7 +562,7 @@ const Mutation = new GraphQLObjectType({
             resolve(parent, args){
                 return Game.findById(args.id)
                     .then(response => {
-                        let new_comment_id = mongoose.Types.ObjectId(args.friend_id);
+                        let new_comment_id = mongoose.Types.ObjectId(args.comment_id);
                         response.comment_ids.push(new_comment_id);
                         return Game.findByIdAndUpdate(
                             args.id,
@@ -577,7 +577,33 @@ const Mutation = new GraphQLObjectType({
                         )
                     });
             }
+        },
+        deleteCommentFromGame: {
+            type: GameType,
+            args: {
+                id: {type: new GraphQLNonNull(GraphQLID)},
+                comment_id: {type: new GraphQLNonNull(GraphQLID)}
+            },
+            resolve(parent, args){
+                return Game.findById(args.id)
+                    .then(response => {
+                        let new_comment_id = mongoose.Types.ObjectId(args.comment_id);
+                        filtered = response.comment_ids.filter(function(el) { return el != new_comment_id})
+                        return Game.findByIdAndUpdate(
+                            args.id,
+                            {
+                                winning_team_player_ids: response.winning_team_player_ids,
+                                losing_team_player_ids: response.losing_team_player_ids,
+                                location: response.location,
+                                description: response.description,
+                                comment_ids: response.comment_ids,
+                                likes: response.likes
+                            }
+                        )
+                    });
+            }
         }
+
     }
 });
 
