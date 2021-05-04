@@ -8,6 +8,9 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
+import { MatCardModule } from '@angular/material/card';
+import { MatDividerModule } from '@angular/material/divider';
+import { ScrollingModule } from '@angular/cdk/scrolling';
 
 const material = [
     MatToolbarModule,
@@ -19,6 +22,9 @@ const material = [
     MatRadioModule,
     MatPaginatorModule,
     MatTableModule,
+    MatCardModule,
+    MatDividerModule,
+    ScrollingModule,
 ];
 
 @NgModule({

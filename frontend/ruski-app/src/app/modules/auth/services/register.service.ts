@@ -96,17 +96,6 @@ export class RegisterService {
                 }
             }
         `;
-        this.apollo
-            .mutate({
-                mutation: ADD_EMAIL,
-                variables: {
-                    id: id,
-                    email: 'yo@billy.com',
-                },
-            })
-            .subscribe((response) => {
-                console.log(response);
-            });
         this.auth.user$
             .pipe(
                 switchMap((response: any) => {

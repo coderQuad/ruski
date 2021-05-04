@@ -8,7 +8,37 @@ import { catchError, map, tap, switchMap } from 'rxjs/operators';
     providedIn: 'root',
 })
 export class CurrentUserService {
+    userId = '';
+
     constructor(private auth: AuthService, private apollo: Apollo) {}
+
+    getUserID() {
+        const GET_USER = gql`
+            query UserByEmail($email: String!) {
+                userByEmail(email: $email) {
+                    id
+                }
+            }
+        `;
+        return this.auth.user$.pipe(
+            switchMap((response: any) => {
+                const email = response.email;
+
+                return this.apollo
+                    .query<any>({
+                        query: GET_USER,
+                        variables: {
+                            email: email,
+                        },
+                    })
+                    .pipe(
+                        map((response) => {
+                            return response.data.userByEmail[0].id;
+                        })
+                    );
+            })
+        );
+    }
 
     fetchUser() {
         return this.auth.user$.pipe(
