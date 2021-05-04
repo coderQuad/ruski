@@ -19,3 +19,45 @@ All pull requests must be branched off of and then requested to merge into the [
 ### Cron
 Run `crontab -e` to edit your crontab and add the following line:
 `* * * * * ~/ruski/backend/cronjob-script.py 1> ~/ruski/backend/yack-beer-totals.json`
+
+### S3
+##### Bucket policy
+```
+{
+    "Version": "2008-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Principal": {
+                "AWS": "arn:aws:iam::***********:user/username"
+            },
+            "Action": "s3:PutObject",
+            "Resource": "arn:aws:s3:::myBucket/*"
+        },
+        {
+            "Effect": "Allow",
+            "Principal": "*",
+            "Action": "s3:GetObject",
+            "Resource": "arn:aws:s3:::myBucket/*"
+        }
+    ]
+}
+```
+
+##### CORS policy
+```
+[
+    {
+        "AllowedHeaders": [
+            "*"
+        ],
+        "AllowedMethods": [
+            "PUT"
+        ],
+        "AllowedOrigins": [
+            "*"
+        ],
+        "ExposeHeaders": []
+    }
+]
+```
