@@ -31,6 +31,10 @@ connection.once("open", function () {
   console.log("MongoDB database connection established successfully");
 });
 
+app.get("/", (req, res) => {
+    res.send('cum');
+});
+
 // api endpoint for getting beer and yak totals from yack-beer-totals.json
 app.get("/get_yack_beer_totals", (req, res) => {
     res.send(fs.readFileSync('./yack-beer-totals.json', 'utf8'));
@@ -94,6 +98,6 @@ app.use(
   })
 );
 
-app.listen(4000, () => {
-  console.log("Running a GraphQL API server at http://localhost:4000/graphql");
+app.listen(80, () => {
+  console.log("Running a GraphQL API server at http://localhost/graphql (port 80)");
 });
