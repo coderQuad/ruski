@@ -11,10 +11,12 @@ import { AuthGuard } from '@auth0/auth0-angular';
 import { FeedComponent } from './feed/feed.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthGuard as RegGuard } from '../auth/auth.guard';
-import {MatStepperModule} from '@angular/material/stepper';
+import { MatStepperModule } from '@angular/material/stepper';
 import { LeaderboardComponent } from './leaderboard/leaderboard.component';
 import { ProfileComponent } from './profile/profile.component';
 import { SettingsComponent } from './settings/settings.component';
+import { ImageCropperModule } from 'ngx-image-cropper';
+import { HammerModule } from '@angular/platform-browser';
 
 const homeRoutes: Routes = [
     {
@@ -48,6 +50,8 @@ const homeRoutes: Routes = [
         ReactiveFormsModule,
         MatStepperModule,
         RouterModule.forChild(homeRoutes),
+        ImageCropperModule,
+        HammerModule,
     ],
     exports: [HomeComponent, NavComponent],
 })

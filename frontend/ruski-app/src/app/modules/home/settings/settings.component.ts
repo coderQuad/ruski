@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, Validators, FormBuilder,FormGroup, Form } from '@angular/forms';
+import { ImageCroppedEvent } from 'ngx-image-cropper';
+
 
 import { CurrentUserService } from './../services/current-user.service';
 
@@ -10,21 +12,39 @@ import { CurrentUserService } from './../services/current-user.service';
 })
 export class SettingsComponent implements OnInit {
 
-  nameControl = new FormControl(null);
-  handleControl = new FormControl(null);
+  // form properties 
+  nameControl = new FormControl(null, {validators: [Validators.maxLength(20)]});
+  handleControl = new FormControl(null, {validators: [Validators.maxLength(20)]});
   imageControl = new FormControl(null);
 
+  formGroup = this._formBuilder.group({});
+
+  // values for html
   name:string;
   handle:string;
   pic:string;
 
+  // values for comparison
   oldName:string;
   oldHandle:string;
   oldPic: string;
 
+  // cropper properties
+  imageChangedEvent;
+  croppedImage;
+
   constructor(private currentUser: CurrentUserService, private _formBuilder: FormBuilder) { }
 
   ngOnInit(): void {
+    this.compareHandles();
+    this.formGroup = this._formBuilder.group({
+      name: this.nameControl,
+      handle: this.handleControl,
+      image: this.imageControl,
+    })
+  }
+
+  compareHandles(): void {
     this.currentUser.fetchUser().subscribe(response => {
       this.oldHandle = response.handle;
       this.oldName = response.name;
@@ -41,6 +61,27 @@ export class SettingsComponent implements OnInit {
     const name = this.nameControl.value;
     console.log(handle);
     console.log(name);
+  }
+
+  onSelect(event: Event) {
+    const file = (event.target as HTMLInputElement).files[0];
+    this.formGroup.patchValue({image: file});
+    this.formGroup.get('image').updateValueAndValidity();
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    this.imageChangedEvent = event;
+  }
+
+  imageCropped(event: ImageCroppedEvent) {
+    this.croppedImage = event.base64;
+    this.pic = this.croppedImage;
+    this.formGroup.patchValue({image: this.croppedImage});
+  }
+  imageLoaded(image: HTMLImageElement) {
+      // show cropper
+  }
+  cropperReady() {
+      // cropper ready
   }
 
 }

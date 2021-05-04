@@ -16,11 +16,19 @@ import { map } from 'rxjs/operators';
 })
 export class ProfileComponent implements OnInit {
 
+  // current page member data
+  id: string;
   handle: string;
   elo: number;
   name: string;
   profile_url: string;
-  my_profile: boolean;
+
+  // user data
+  myHandle:string;
+
+  // gating properties
+  myProfile: boolean;
+  isFriend: boolean;
 
   constructor(private route:ActivatedRoute, private router: Router, private profile:ProfileService, private user:CurrentUserService) { 
   }
@@ -35,11 +43,13 @@ export class ProfileComponent implements OnInit {
       this.user.getHandle()
     ]).subscribe(response => {
       this.handle = response[0].handle;
+      this.myHandle = response[1];
       this.getInfo();
-      if(this.handle !== response[1]){
-        this.my_profile = false;
+      if(this.handle !== this.myHandle){
+        this.myProfile = false;
+        this.areFriends(this.id, this.myHandle);
       } else {
-        this.my_profile = true;
+        this.myProfile = true;
       }
     });
   }
@@ -52,8 +62,24 @@ export class ProfileComponent implements OnInit {
     });
   }
 
+  areFriends(pageId: string, myHandle: string): void {
+    this.profile.checkFriends(pageId, myHandle).subscribe(response => {
+      this.isFriend = response;
+    });
+  }
+
   editProfile(): void{
     this.router.navigate(['/main/settings']);
+  }
+
+  addFriend(): void {
+
+    this.areFriends(this.id, this.myHandle);
+  }
+
+  removeFriend(): void {
+
+    this.areFriends(this.id, this.myHandle);
   }
 
 }

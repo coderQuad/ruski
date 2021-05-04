@@ -1,12 +1,22 @@
 <div id="header">
     <div>Edit Profile</div>
 </div>
-<div class="flex-container">
-    <div class="form">
+<form [formGroup]="formGroup" (ngSubmit)="submitChanges()" class="flex-container">
+    <div class="form-elements">
         <div id="profile">
-            <img [src]="pic"/>
+            <img id="pro-pic" [src]="pic"/>
             <button mat-button color="primary" type="button" md-button (click)="imgFileInput.click()">New Profile Image</button>
-            <input hidden type="file" #imgFileInput accept=".jpeg,.png"/>
+            <input hidden type="file" #imgFileInput (change)="onSelect($event)" accept=".jpg,.png,.jpeg"/>
+        </div>
+        <div id="cropper">
+            <image-cropper
+                [imageChangedEvent]="imageChangedEvent"
+                [maintainAspectRatio]="true"
+                [aspectRatio]="1 / 1"
+                format="png"
+                (imageCropped)="imageCropped($event)"
+                (cropperReady)="cropperReady()"
+            ></image-cropper>
         </div>
         <div id="user-details">
             <mat-form-field appearance="standard">
@@ -32,8 +42,8 @@
         <!-- <p *ngIf="errorFlag">{{ errorMessage }}</p> -->
     <!-- </div> -->
     <div class="submit">
-        <button mat-flat-button (click)="submitChanges()" color="primary">
+        <button mat-flat-button type="submit" color="primary">
             Save Changes
         </button>
     </div>
-</div>
+</form>

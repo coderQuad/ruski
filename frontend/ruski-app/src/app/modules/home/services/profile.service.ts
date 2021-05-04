@@ -42,4 +42,32 @@ export class ProfileService {
       })
     );
   }
+
+  checkFriends(prospectiveId: string, baseHandle: string) {
+    const FIND_FRIEND_HANDLES = gql`
+      query GetUser {
+        userByHandle(handle: "${baseHandle}") {
+          id
+          friends {
+            handle
+          }
+        }
+      }
+    `;
+
+    return this.apollo.query<any>({
+      query: FIND_FRIEND_HANDLES
+    }).pipe(
+      map(response => {
+        if(!response.data.userByHandle.length){
+          return false;
+        }
+        else{
+          let friends_list = response.data.userByHandle[0].friends;
+          return friends_list.includes(prospectiveId)  
+        }
+      })
+    );
+  }
+
 }
