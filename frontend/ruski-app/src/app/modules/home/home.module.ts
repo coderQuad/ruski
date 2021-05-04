@@ -16,7 +16,6 @@ import { LeaderboardComponent } from './leaderboard/leaderboard.component';
 import { ProfileComponent } from './profile/profile.component';
 import { SettingsComponent } from './settings/settings.component';
 import { ImageCropperModule } from 'ngx-image-cropper';
-import { HammerModule } from '@angular/platform-browser';
 
 const homeRoutes: Routes = [
     {
@@ -51,7 +50,6 @@ const homeRoutes: Routes = [
         MatStepperModule,
         RouterModule.forChild(homeRoutes),
         ImageCropperModule,
-        HammerModule,
     ],
     exports: [HomeComponent, NavComponent],
 })

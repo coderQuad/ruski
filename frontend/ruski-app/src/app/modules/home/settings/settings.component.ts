@@ -1,10 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, Validators, FormBuilder,FormGroup, Form } from '@angular/forms';
-import { ImageCroppedEvent } from 'ngx-image-cropper';
-
+import Cropper from "cropperjs";
 
 import { CurrentUserService } from './../services/current-user.service';
-
 @Component({
   selector: 'app-settings',
   templateUrl: './settings.component.html',
@@ -68,20 +66,11 @@ export class SettingsComponent implements OnInit {
     this.formGroup.patchValue({image: file});
     this.formGroup.get('image').updateValueAndValidity();
     const reader = new FileReader();
+    reader.onload = () => {
+      this.pic = reader.result.toString();
+    };
     reader.readAsDataURL(file);
     this.imageChangedEvent = event;
-  }
-
-  imageCropped(event: ImageCroppedEvent) {
-    this.croppedImage = event.base64;
-    this.pic = this.croppedImage;
-    this.formGroup.patchValue({image: this.croppedImage});
-  }
-  imageLoaded(image: HTMLImageElement) {
-      // show cropper
-  }
-  cropperReady() {
-      // cropper ready
   }
 
 }

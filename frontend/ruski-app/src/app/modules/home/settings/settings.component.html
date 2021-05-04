@@ -9,14 +9,6 @@
             <input hidden type="file" #imgFileInput (change)="onSelect($event)" accept=".jpg,.png,.jpeg"/>
         </div>
         <div id="cropper">
-            <image-cropper
-                [imageChangedEvent]="imageChangedEvent"
-                [maintainAspectRatio]="true"
-                [aspectRatio]="1 / 1"
-                format="png"
-                (imageCropped)="imageCropped($event)"
-                (cropperReady)="cropperReady()"
-            ></image-cropper>
         </div>
         <div id="user-details">
             <mat-form-field appearance="standard">

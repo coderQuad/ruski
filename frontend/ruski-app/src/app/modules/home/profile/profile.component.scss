@@ -11,8 +11,8 @@
 }
 
 #header img {
-    border-radius: 50%;
     margin: 0.75em;
+    border-radius: 50%;
     height: 50%;
     width: auto;
 }
@@ -27,6 +27,11 @@
 #name {
     font-size: 2em;
 }
+
+#rating {
+    font-size: 1.75em;
+}
+
 #handle {
     color: mat-color($ruski-theme-accent, A700);
 }
