@@ -14,8 +14,8 @@ export class FeedService {
     fetchGlobal() {}
 
     fetchSpecGame(id: string) {
-        console.log('here');
-        console.log(id);
+        // console.log('here');
+        // console.log(id);
         const GET_GAME = gql`
             query GetGameByID($id: ID!) {
                 game(id: $id) {
@@ -27,6 +27,8 @@ export class FeedService {
                             name
                             profile_url
                         }
+                        id
+                        likes
                     }
                     winning_team {
                         user {
@@ -59,7 +61,7 @@ export class FeedService {
             })
             .pipe(
                 map((response) => {
-                    console.log(response);
+                    // console.log(response);
                     const gamesList = [];
                     const game = response.data.game;
                     const tempGame = {
@@ -249,5 +251,63 @@ export class FeedService {
                     return liked_by;
                 })
             );
+    }
+
+    incCommentLike(commentId: string, userId: string) {
+        // console.log(gameId, userId);
+        const INC_LIKE = gql`
+            mutation IncrementCommentLike($id: ID!, $liked_by_id: ID!) {
+                incrementCommentLike(id: $id, liked_by_id: $liked_by_id) {
+                    id
+                }
+            }
+        `;
+
+        this.auth.user$
+            .pipe(
+                switchMap((response: any) => {
+                    const email = response.email;
+
+                    return this.apollo.mutate({
+                        mutation: INC_LIKE,
+                        variables: {
+                            id: commentId,
+                            liked_by_id: userId,
+                        },
+                    });
+                })
+            )
+            .subscribe((response) => {
+                // console.log(response);
+            });
+    }
+
+    decCommentLike(commentId: string, userId: string) {
+        // console.log(gameId, userId);
+        const DEC_LIKE = gql`
+            mutation DecrementCommentLike($id: ID!, $liked_by_id: ID!) {
+                decrementCommentLike(id: $id, liked_by_id: $liked_by_id) {
+                    id
+                }
+            }
+        `;
+
+        this.auth.user$
+            .pipe(
+                switchMap((response: any) => {
+                    const email = response.email;
+
+                    return this.apollo.mutate({
+                        mutation: DEC_LIKE,
+                        variables: {
+                            id: commentId,
+                            liked_by_id: userId,
+                        },
+                    });
+                })
+            )
+            .subscribe((response) => {
+                // console.log(response);
+            });
     }
 }

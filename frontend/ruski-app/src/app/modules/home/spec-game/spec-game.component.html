@@ -1,4 +1,5 @@
 <mat-card *ngIf="game">
+    <mat-icon (click)="goBack()">arrow_back_ios</mat-icon>
     <div class="flex-container">
         <div class="winners">
             <img class="w1" src="{{ game.w1Image }}" />
@@ -47,3 +48,59 @@
         </div>
     </div>
 </mat-card>
+<div *ngIf="game" class="commenty">
+    <div *ngIf="game.comments.length > 0">
+        <cdk-virtual-scroll-viewport itemSize="50" class="viewport">
+            <div
+                *cdkVirtualFor="let comment of game.comments; let i = index"
+                class="comment-container"
+            >
+                <div class="placeholder">
+                    <img
+                        class="comment-image"
+                        src="{{ comment.user.profile_url }}"
+                    />
+                    <span class="comment-name">{{ comment.user.name }}</span>
+                    <mat-icon
+                        class="comment-likes"
+                        (click)="changeCommentLikeCount($event, i)"
+                        aria-hidden="false"
+                        aria-label="Example home icon"
+                        [ngStyle]="{
+                            color: alreadyLikedComment[i] ? 'red' : 'black'
+                        }"
+                    >
+                        {{
+                            !alreadyLikedComment[i]
+                                ? "favorite_border"
+                                : "favorite"
+                        }}
+                    </mat-icon>
+                    <span
+                        (click)="changeCommentLikeCount($event, i)"
+                        class="comment-like-count"
+                        >{{ commentLikeMirror[i] }}</span
+                    >
+                </div>
+                <div class="comment-text">{{ comment.text }}</div>
+                <mat-divider></mat-divider>
+            </div>
+        </cdk-virtual-scroll-viewport>
+    </div>
+    <div *ngIf="game.comments.length <= 0">Be the first to comment</div>
+    <div class="add-comment">
+        <mat-form-field appearance="outline">
+            <mat-label>Add Comment</mat-label>
+            <textarea
+                matInput
+                [formControl]="commentControl"
+                placeholder="Ex. Dennis is a pussy... "
+            ></textarea>
+        </mat-form-field>
+    </div>
+    <div class="submit-button">
+        <button mat-flat-button color="primary" (click)="postComment()">
+            Post
+        </button>
+    </div>
+</div>

@@ -1,7 +1,7 @@
 import { FeedService } from './../services/feed.service';
 import { CurrentUserService } from './../services/current-user.service';
 import { Game } from './../game-feed-template';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, OnChanges } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
     templateUrl: './indiv-game.component.html',
     styleUrls: ['./indiv-game.component.scss'],
 })
-export class IndivGameComponent implements OnInit {
+export class IndivGameComponent implements OnInit, OnChanges {
     @Input() game!: Game;
     @Input() userID!: string;
     winning_score: number;
@@ -32,15 +32,36 @@ export class IndivGameComponent implements OnInit {
             'Dennis is very cool. Everyone else sucks. Dennis is very cool. Everyone else sucks. Dennis is very cool. Everyone else sucks. Dennis is very cool. Everyone else sucks. Dennis is very cool. Everyone else sucks. Dennis is very cool. Everyone else sucks.';
         this.feedFetcher.getGameLikes(this.game.id).subscribe((response) => {
             if (response.includes(this.userID)) {
-                console.log('yessir');
+                // console.log('yessir');
                 this.alreadyLiked = true;
-                console.log(this.game.id);
+                // console.log(this.game.id);
+                // console.log(this.game.likes);
             } else {
-                console.log('nosir');
+                // console.log('nosir');
                 this.alreadyLiked = false;
+            }
+            if (this.alreadyLiked) {
+                // console.log(this.game.id);
             }
         });
         // console.log(this.userID);
+    }
+
+    ngOnChanges() {
+        this.feedFetcher.getGameLikes(this.game.id).subscribe((response) => {
+            if (response.includes(this.userID)) {
+                // console.log('yessir');
+                this.alreadyLiked = true;
+                // console.log(this.game.id);
+                // console.log(this.game.likes);
+            } else {
+                // console.log('nosir');
+                this.alreadyLiked = false;
+            }
+            if (this.alreadyLiked) {
+                // console.log(this.game.id);
+            }
+        });
     }
 
     getRandomInt(min: number, max: number) {
@@ -65,6 +86,9 @@ export class IndivGameComponent implements OnInit {
         if (this.alreadyLiked) {
             this.feedFetcher.decLike(this.game.id, this.userID);
             this.game.likes -= 1;
+            if (this.game.likes < 0) {
+                // console.log(this.game.id);
+            }
             this.alreadyLiked = false;
         } else {
             this.feedFetcher.incLike(this.game.id, this.userID);

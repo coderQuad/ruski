@@ -96,24 +96,20 @@ export class RegisterService {
                 }
             }
         `;
-        this.auth.user$
-            .pipe(
-                switchMap((response: any) => {
-                    const email = response.email;
-                    console.log(email);
+        return this.auth.user$.pipe(
+            switchMap((response: any) => {
+                const email = response.email;
+                console.log(email);
 
-                    return this.apollo.mutate({
-                        mutation: ADD_EMAIL,
-                        variables: {
-                            id: id,
-                            email: email,
-                        },
-                    });
-                })
-            )
-            .subscribe((response) => {
-                console.log(response);
-            });
+                return this.apollo.mutate({
+                    mutation: ADD_EMAIL,
+                    variables: {
+                        id: id,
+                        email: email,
+                    },
+                });
+            })
+        );
     }
 
     genUser(name: string) {
