@@ -26,5 +26,7 @@ export class NavComponent implements OnInit {
             const handle = response;
             this.router.navigate([`/main/user/${handle}`]);
         })
+    showFeed() {
+        this.router.navigate(['/main/feed']);
     }
 }
