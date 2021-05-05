@@ -15,6 +15,7 @@ import { MatStepperModule } from '@angular/material/stepper';
 import { LeaderboardComponent } from './leaderboard/leaderboard.component';
 import { SocialFeedComponent } from './social-feed/social-feed.component';
 import { IndivGameComponent } from './indiv-game/indiv-game.component';
+import { SearchComponent } from './search/search.component';
 
 const homeRoutes: Routes = [
     {
@@ -25,6 +26,7 @@ const homeRoutes: Routes = [
             { path: '', component: SocialFeedComponent },
             { path: 'enter', component: EnterGameComponent },
             { path: 'leaderboard', component: LeaderboardComponent },
+            { path: 'search', component: SearchComponent },
             { path: 'feed', component: SocialFeedComponent },
             { path: 'feed/:id', component: SpecGameComponent },
         ],
@@ -40,6 +42,7 @@ const homeRoutes: Routes = [
         SocialFeedComponent,
         SpecGameComponent,
         IndivGameComponent,
+        SearchComponent,
     ],
     imports: [
         CommonModule,

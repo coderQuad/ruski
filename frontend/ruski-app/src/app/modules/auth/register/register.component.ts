@@ -36,7 +36,7 @@ export class RegisterComponent implements OnInit {
             }
         });
         this.reg.fetchAllHandles().subscribe((response) => {
-            console.log(response);
+            // console.l/og(response);
             for (const user of response) {
                 this.allHandles.add(user.handle);
             }
@@ -81,19 +81,19 @@ export class RegisterComponent implements OnInit {
             const userId = this.nameIdMap.get(userName);
             this.reg.submitHandle(userId, userHandle);
             this.reg.submitEmail(userId).subscribe((response) => {
-                console.log(response);
+                // console.log(response);
                 setTimeout(() => {
                     this.router.navigate(['/main']);
                 }, 500);
             });
         } else {
-            console.log('HEREE');
+            // console.log('HEREE');
             this.reg.genUser(userName).subscribe((response) => {
-                console.log('HERE');
+                // console.log('HERE');
                 const userId = response;
                 this.reg.submitHandle(userId, userHandle);
                 this.reg.submitEmail(userId).subscribe((response) => {
-                    console.log(response);
+                    // console.log(response);
                     setTimeout(() => {
                         this.router.navigate(['/main']);
                     }, 500);

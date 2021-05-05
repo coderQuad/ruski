@@ -22,4 +22,8 @@ export class NavComponent implements OnInit {
     showFeed() {
         this.router.navigate(['/main/feed']);
     }
+
+    showSearch() {
+        this.router.navigate(['/main/search']);
+    }
 }
