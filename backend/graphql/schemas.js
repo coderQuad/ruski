@@ -47,6 +47,13 @@ const RootQuery = new GraphQLObjectType({
                 return User.find({email: args.email});
             }
         },
+        userByHandle: {
+            type: new GraphQLList(UserType),
+            args: { handle: { type: GraphQLString} },
+            resolve(parent, args) { 
+                return User.find({handle: args.handle});
+            }
+        },
         users: {
             type: new GraphQLList(UserType),
             resolve(parent, args) {
@@ -544,6 +551,29 @@ const Mutation = new GraphQLObjectType({
                             {
                                 handle: args.handle,
                                 name: response.name,
+                                email: response.email,
+                                elo: response.elo,
+                                elo_history_ids: response.elo_history_ids,
+                                friend_ids: response.friend_ids
+                            }
+                        );
+                    });
+            }
+        },
+        modifyName: {
+            type: UserType,
+            args: {
+                id: {type: new GraphQLNonNull(GraphQLID)},
+                name: {type: new GraphQLNonNull(GraphQLString)}
+            },
+            resolve(parent, args){
+                return User.findById(args.id)
+                    .then(response => {
+                        return User.findByIdAndUpdate(
+                            args.id,
+                            {
+                                handle: response.handle,
+                                name: args.name,
                                 email: response.email,
                                 elo: response.elo,
                                 elo_history_ids: response.elo_history_ids,
