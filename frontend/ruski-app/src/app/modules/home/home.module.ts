@@ -15,6 +15,7 @@ import { MatStepperModule } from '@angular/material/stepper';
 import { LeaderboardComponent } from './leaderboard/leaderboard.component';
 import { SocialFeedComponent } from './social-feed/social-feed.component';
 import { IndivGameComponent } from './indiv-game/indiv-game.component';
+import { SearchComponent } from './search/search.component';
 import { ProfileComponent } from './profile/profile.component';
 import { SettingsComponent } from './settings/settings.component';
 import { ImageCropperModule } from 'ngx-image-cropper';
@@ -29,6 +30,7 @@ const homeRoutes: Routes = [
             { path: '', component: SocialFeedComponent },
             { path: 'enter', component: EnterGameComponent },
             { path: 'leaderboard', component: LeaderboardComponent },
+            { path: 'search', component: SearchComponent },
             { path: 'feed', component: SocialFeedComponent },
             { path: 'feed/:id', component: SpecGameComponent },
             { path: 'user/:handle', component: ProfileComponent},
@@ -46,6 +48,7 @@ const homeRoutes: Routes = [
         SocialFeedComponent,
         SpecGameComponent,
         IndivGameComponent,
+        SearchComponent,
         ProfileComponent,
         SettingsComponent,
     ],

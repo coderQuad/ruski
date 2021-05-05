@@ -41,7 +41,7 @@ export class SpecGameComponent implements OnInit {
             }
             this.game.description =
                 'Dennis is very cool. Everyone else sucks. Dennis is very cool. Everyone else sucks. Dennis is very cool. Everyone else sucks. Dennis is very cool. Everyone else sucks. Dennis is very cool. Everyone else sucks. Dennis is very cool. Everyone else sucks.';
-            console.log(this.game);
+            // console.log(this.game);
             this.gameFetcher
                 .getGameLikes(this.game.id)
                 .subscribe((response) => {
@@ -55,7 +55,7 @@ export class SpecGameComponent implements OnInit {
                         this.alreadyLiked = false;
                     }
                 });
-            console.log(this.game.comments);
+            // console.log(this.game.comments);
             for (const comment of this.game.comments) {
                 this.alreadyLikedComment.push(false);
                 this.commentLikeMirror.push(comment['likes']);
