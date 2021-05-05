@@ -16,6 +16,10 @@ import { LeaderboardComponent } from './leaderboard/leaderboard.component';
 import { SocialFeedComponent } from './social-feed/social-feed.component';
 import { IndivGameComponent } from './indiv-game/indiv-game.component';
 import { SearchComponent } from './search/search.component';
+import { ProfileComponent } from './profile/profile.component';
+import { SettingsComponent } from './settings/settings.component';
+import { ImageCropperModule } from 'ngx-image-cropper';
+import { HammerModule } from '@angular/platform-browser';
 
 const homeRoutes: Routes = [
     {
@@ -29,6 +33,8 @@ const homeRoutes: Routes = [
             { path: 'search', component: SearchComponent },
             { path: 'feed', component: SocialFeedComponent },
             { path: 'feed/:id', component: SpecGameComponent },
+            { path: 'user/:handle', component: ProfileComponent},
+            { path: 'settings', component: SettingsComponent}
         ],
     },
 ];
@@ -43,6 +49,8 @@ const homeRoutes: Routes = [
         SpecGameComponent,
         IndivGameComponent,
         SearchComponent,
+        ProfileComponent,
+        SettingsComponent,
     ],
     imports: [
         CommonModule,
@@ -51,6 +59,8 @@ const homeRoutes: Routes = [
         ReactiveFormsModule,
         MatStepperModule,
         RouterModule.forChild(homeRoutes),
+        ImageCropperModule,
+        HammerModule,
     ],
     exports: [HomeComponent, NavComponent],
 })

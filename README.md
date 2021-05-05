@@ -18,7 +18,8 @@ All pull requests must be branched off of and then requested to merge into the [
 ### Environment Variables
 Environment variables must either be set or included in .env file inside of the backend folder.
 ##### Backend
-AWS access keys for S3 uploading:  
+AWS access keys for S3 uploading:
+Be sure to use `sudo -E` when running node on port 80 to pass environment variables to the root user. 
 `ACCESS_KEY_ID=******************`
 `SECRET_ACCESS_KEY=****************************`
 

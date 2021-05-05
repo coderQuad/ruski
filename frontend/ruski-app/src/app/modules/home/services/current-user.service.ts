@@ -55,33 +55,53 @@ export class CurrentUserService {
             }
           }
         `;
-                return this.apollo
-                    .query<any>({
-                        query: GET_USER,
-                    })
-                    .pipe(
-                        map((response) => {
-                            if (!response.data.userByEmail.length) {
-                                return {
-                                    data: {
-                                        userByEmail: [
-                                            {
-                                                profile_url:
-                                                    'https://d26n5v24zcmg6e.cloudfront.net/profiles/default.jpeg',
-                                                name: 'YourName',
-                                                elo: 1200,
-                                                handle: 'yourhandle',
-                                                id: 'abcdefghijklmnop',
-                                            },
-                                        ],
-                                    },
-                                };
-                            } else {
-                                return response;
-                            }
-                        })
-                    );
-            })
+        return this.apollo.query<any>({
+          query: GET_USER
+        }).pipe(
+          map(response => {
+            if(!response.data.userByEmail.length){
+              return {
+                'profile_url': 'https://d26n5v24zcmg6e.cloudfront.net/profiles/default.jpeg',
+                'name': 'YourName',
+                'elo': 1200,
+                'handle': 'yourhandle',
+                'id': 'abcdefghijklmnop',
+              }
+            }
+            else{
+              return response.data.userByEmail[0];
+            }
+          })
         );
-    }
+      })
+    );
+  }
+
+  getHandle(){
+    return this.auth.user$.pipe(
+      switchMap(response => {
+        // query to get logged in user 
+        const GET_USER = gql`
+          query GetUser {
+            userByEmail(email: "${response.email}") {
+              handle
+            }
+          }
+        `;
+        return this.apollo.query<any>({
+          query: GET_USER
+        }).pipe(
+          map(response => {
+            if(!response.data.userByEmail.length){
+              return {
+                      'handle': 'yourhandle',
+              }
+            }
+            else{
+              return response.data.userByEmail[0].handle;
+            }
+          }),
+        );
+    }));
+  }
 }
