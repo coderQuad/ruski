@@ -560,6 +560,29 @@ const Mutation = new GraphQLObjectType({
                     });
             }
         },
+        modifyName: {
+            type: UserType,
+            args: {
+                id: {type: new GraphQLNonNull(GraphQLID)},
+                name: {type: new GraphQLNonNull(GraphQLString)}
+            },
+            resolve(parent, args){
+                return User.findById(args.id)
+                    .then(response => {
+                        return User.findByIdAndUpdate(
+                            args.id,
+                            {
+                                handle: response.handle,
+                                name: args.name,
+                                email: response.email,
+                                elo: response.elo,
+                                elo_history_ids: response.elo_history_ids,
+                                friend_ids: response.friend_ids
+                            }
+                        );
+                    });
+            }
+        },
         addComment: {
             type: GameType,
             args: {

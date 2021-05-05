@@ -47,7 +47,7 @@ export class ProfileComponent implements OnInit {
       this.getInfo();
       if(this.handle !== this.myHandle){
         this.myProfile = false;
-        this.areFriends(this.id, this.myHandle);
+        // this.areFriends(this.id, this.myHandle);
       } else {
         this.myProfile = true;
       }

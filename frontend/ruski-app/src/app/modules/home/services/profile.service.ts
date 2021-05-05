@@ -70,4 +70,51 @@ export class ProfileService {
     );
   }
 
+  updateHandle(id: string, newHandle: string) {
+    const UPDATE_HANDLE = gql`
+        mutation ModifyHandle($id: ID!, $handle: String!) {
+            modifyHandle(id: $id, handle: $handle) {
+                id
+            }
+        }
+    `;
+    this.apollo
+        .mutate({
+            mutation: UPDATE_HANDLE,
+            variables: {
+                id: id,
+                handle: newHandle,
+            },
+        })
+        .subscribe((response) => {
+            console.log(response);
+        });
+  }
+
+  updateName(id: string, newName: string) {
+    const UPDATE_NAME = gql`
+        mutation ModifyName($id: ID!, $name: String!) {
+            modifyName(id: $id, name: $name) {
+                id
+            }
+        }
+    `;
+    this.apollo
+        .mutate({
+            mutation: UPDATE_NAME,
+            variables: {
+                id: id,
+                name: newName,
+            },
+        })
+        .subscribe((response) => {
+            console.log(response);
+        });
+  }
+
+  updatePic(id:string, picture: string) {
+    console.log(id);
+    console.log(picture.slice(0, 36));
+  }
+
 }
