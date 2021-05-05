@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 
 import { CurrentUserService } from './../services/current-user.service';
 import { ProfileService } from './../services/profile.service';
+import { combineLatest } from 'rxjs';
 
 @Component({
   selector: 'app-settings',
@@ -82,19 +83,29 @@ export class SettingsComponent implements OnInit {
     }
     this.errorFlag = false;      
 
+    let observables = [];
     if(handle && handle !== this.oldHandle){
       this.handle = handle;
-      this.profile.updateHandle(this.id, this.handle);
+      observables.push(this.profile.updateHandle(this.id, this.handle));
     }
     if(name && name !== this.oldName){
       this.name = name;
-      this.profile.updateName(this.id, this.name);
+      observables.push(this.profile.updateName(this.id, this.name));
     }
     if(pic){
-      this.profile.updatePic(this.id, pic);
+      observables.push(this.profile.updatePic(this.id, pic));
     }
 
-    this.router.navigate([`/main/user/${this.handle}`]);
+    if(!observables.length){
+      this.router.navigate([`/main/user/${this.handle}`]);
+    }
+
+    combineLatest(observables).subscribe(response => {
+      console.log(response);
+      this.router.navigate([`/main/user/${this.handle}`]);
+    });
+
+
   }
 
   onSelect(event: Event) {

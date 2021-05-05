@@ -72,7 +72,7 @@ app.get("/get_presigned_url_png/:user_id", (req, res) => {
         success: true,
         message: "AWS SDK S3 Pre-signed urls generated successfully.",
         presigned_url: url,
-        cdn_access_url: `https://d26n5v24zcmg6e.cloudfront.net/${params.Key}.png`,
+        cdn_access_url: `https://d26n5v24zcmg6e.cloudfront.net/${params.Key}`,
       });
     }
   });
