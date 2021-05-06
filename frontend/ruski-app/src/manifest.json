@@ -2,9 +2,9 @@
     "name": "Ruski™: The Game of Games",
     "short_name": "Ruski",
     "start_url": "./",
-    "theme_color": "#008080",
-    "background_color": "#008B8B",
-    "display": "standalone",
+    "theme_color": "#153F13",
+    "background_color": "#FAFAFA",
+    "display": "fullscreen",
     "description": "Progressive web app for Ruski™: The Game of Games",
     "icons": [
         {
