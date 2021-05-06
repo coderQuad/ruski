@@ -67,6 +67,8 @@ export class RegisterService {
             mutation ModifyHandle($id: ID!, $handle: String!) {
                 modifyHandle(id: $id, handle: $handle) {
                     id
+                    handle
+                    name
                 }
             }
         `;
@@ -96,35 +98,20 @@ export class RegisterService {
                 }
             }
         `;
-        this.apollo
-            .mutate({
-                mutation: ADD_EMAIL,
-                variables: {
-                    id: id,
-                    email: 'yo@billy.com',
-                },
-            })
-            .subscribe((response) => {
-                console.log(response);
-            });
-        this.auth.user$
-            .pipe(
-                switchMap((response: any) => {
-                    const email = response.email;
-                    console.log(email);
+        return this.auth.user$.pipe(
+            switchMap((response: any) => {
+                const email = response.email;
+                console.log(email);
 
-                    return this.apollo.mutate({
-                        mutation: ADD_EMAIL,
-                        variables: {
-                            id: id,
-                            email: email,
-                        },
-                    });
-                })
-            )
-            .subscribe((response) => {
-                console.log(response);
-            });
+                return this.apollo.mutate({
+                    mutation: ADD_EMAIL,
+                    variables: {
+                        id: id,
+                        email: email,
+                    },
+                });
+            })
+        );
     }
 
     genUser(name: string) {

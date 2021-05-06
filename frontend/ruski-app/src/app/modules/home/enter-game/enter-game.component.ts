@@ -5,6 +5,7 @@ import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, Validators, FormBuilder,FormGroup } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-enter-game',
@@ -39,7 +40,7 @@ export class EnterGameComponent implements OnInit {
     userHandle: string = '';
     usered: boolean;
 
-    constructor(private gameSubmitter: SubmitGameService, private _formBuilder: FormBuilder, private current:CurrentUserService) {}
+    constructor(private gameSubmitter: SubmitGameService, private _formBuilder: FormBuilder, private current:CurrentUserService, private router:Router) {}
 
     ngOnInit(): void {
         this.gameSubmitter.fetchUsers().valueChanges.subscribe((response) => {
@@ -219,13 +220,17 @@ export class EnterGameComponent implements OnInit {
     fillUser(){
         this.current.fetchUser()
         .subscribe(response => {
-            const user = response.data.userByEmail[0];
+            const user = response;
             this.userPro= user.profile_url;
             this.userName= user.name;
             this.userHandle= user.handle;
             this.usered=true;
         });
 
+    }
+
+    goToProfile(handle: string): void {
+        this.router.navigate([`/main/user/${handle}`])
     }
     
 }
