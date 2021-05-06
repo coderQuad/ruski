@@ -1,12 +1,13 @@
-<p>register works!</p>
-<div>
-    <h3>This is your first time registering!</h3>
-    <p>Please select a name from the dropdown</p>
-    <p>If your name is not in the dropdown, enter your name</p>
-</div>
-<div class="flex-container">
-    <div class="form">
-        <div class="item">
+<mat-toolbar color="primary">Registration</mat-toolbar>
+<mat-vertical-stepper [linear]="true" #stepper>
+    <mat-step>
+        <ng-template matStepLabel>Fill out name</ng-template>
+        <div class="description">
+            The dropdown contains names of people already in the database who
+            are not yet registered. <br /><br />If your name is not in dropdown,
+            enter your own!
+        </div>
+        <div>
             <mat-form-field appearance="standard">
                 <mat-label>Your name:</mat-label>
                 <input
@@ -24,7 +25,12 @@
                 </mat-option>
             </mat-autocomplete>
         </div>
-        <div class="item">
+        <button mat-button matStepperPrevious>Back</button>
+        <button mat-button matStepperNext>Next</button>
+    </mat-step>
+    <mat-step>
+        <ng-template matStepLabel>Fill out handle</ng-template>
+        <div>
             <mat-form-field appearance="standard">
                 <mat-label>Desired Handle:</mat-label>
                 <span matPrefix>@ &nbsp;</span>
@@ -35,13 +41,19 @@
                 />
             </mat-form-field>
         </div>
-    </div>
+    </mat-step>
+    <mat-step>
+        <ng-template matStepLabel>Fill out handle</ng-template>
+
+        <div class="submit">
+            <button mat-flat-button (click)="submitInfo()" color="primary">
+                Submit
+            </button>
+        </div>
+    </mat-step>
+</mat-vertical-stepper>
+<div class="flex-container">
     <div class="error">
         <p *ngIf="errorFlag">{{ errorMessage }}</p>
-    </div>
-    <div class="submit">
-        <button mat-flat-button (click)="submitInfo()" color="primary">
-            Submit
-        </button>
     </div>
 </div>

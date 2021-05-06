@@ -10,6 +10,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatStepperModule } from '@angular/material/stepper';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 
 const material = [
@@ -25,6 +26,7 @@ const material = [
     MatCardModule,
     MatDividerModule,
     ScrollingModule,
+    MatStepperModule,
 ];
 
 @NgModule({
