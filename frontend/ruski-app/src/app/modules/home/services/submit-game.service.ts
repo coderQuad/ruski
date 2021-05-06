@@ -107,9 +107,9 @@ export class SubmitGameService {
                         winning_ids.push(playerArray[2]);
                         winning_ids.push(playerArray[3]);
                     }
-                    console.log(losing_ids);
-                    console.log(winning_ids);
-                    console.log(game.description);
+                    // console.log(losing_ids);
+                    // console.log(winning_ids);
+                    // console.log(game.description);
                     return this.apollo.mutate({
                         mutation: ADD_GAME,
                         variables: {
@@ -121,7 +121,7 @@ export class SubmitGameService {
                 })
             )
             .subscribe((response) => {
-                // console.log(response);
+                // // console.log(response);
             });
     }
 

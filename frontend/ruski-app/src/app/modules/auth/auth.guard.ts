@@ -29,13 +29,13 @@ export class AuthGuard implements CanActivate {
         | boolean
         | UrlTree {
         const url: string = state.url;
-        console.log('here');
+        // console.log('here');
         if (this.hundler.getStatus()) {
             return true;
         }
         return this.hundler.checkUserExistsByEmail().pipe(
             map((response: any) => {
-                console.log(response);
+                // console.log(response);
                 if (response.length > 0) {
                     return true;
                 }
@@ -43,7 +43,7 @@ export class AuthGuard implements CanActivate {
                 return false;
             }),
             catchError((error: any) => {
-                console.log(error);
+                // console.log(error);
                 return of(null);
             })
         );

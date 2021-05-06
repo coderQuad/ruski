@@ -24,7 +24,7 @@ export class CommentService {
                 }
             }
         `;
-        console.log('here');
+        // console.log('here');
         return this.apollo
             .mutate({
                 mutation: ADD_COMMENT,
@@ -35,7 +35,7 @@ export class CommentService {
             })
             .pipe(
                 switchMap((response: any) => {
-                    console.log(response.data.addComment.id);
+                    // console.log(response.data.addComment.id);
                     return this.apollo.mutate({
                         mutation: ADD_COMMENT_TO_GAME,
                         variables: {

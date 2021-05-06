@@ -22,7 +22,7 @@ export class SearchComponent implements OnInit {
 
     ngOnInit(): void {
         this.searchFetcher.fetchAllUsersAndHandles().subscribe((response) => {
-            // console.log(response);
+            // // console.log(response);
             for (const user of response) {
                 this.namesOptions.push(user.name);
                 this.handleOptions.push(user.handle);
@@ -31,7 +31,7 @@ export class SearchComponent implements OnInit {
                 this.nameUrlMap.set(user.name, user.profile_url);
                 this.nameEloMap.set(user.name, user.elo);
             }
-            // console.log(this.nameUrlMap.get('Abby'));
+            // // console.log(this.nameUrlMap.get('Abby'));
         });
         this.filteredOptions = this.searchControl.valueChanges.pipe(
             startWith(''),
@@ -42,7 +42,7 @@ export class SearchComponent implements OnInit {
     private _filter(value: string): string[] {
         const filterValue = value.toLowerCase();
 
-        // console.log(this.handleToName);
+        // // console.log(this.handleToName);
 
         let returnName = this.namesOptions
             .filter((option) => option.toLowerCase().indexOf(filterValue) === 0)

@@ -2,7 +2,13 @@ import { SubmitGameService } from './../services/submit-game.service';
 import { CurrentUserService } from './../services/current-user.service';
 import { Game } from './../game-template';
 import { Component, OnInit } from '@angular/core';
-import { AbstractControl, FormControl, Validators, FormBuilder,FormGroup } from '@angular/forms';
+import {
+    AbstractControl,
+    FormControl,
+    Validators,
+    FormBuilder,
+    FormGroup,
+} from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { Router } from '@angular/router';
@@ -33,14 +39,18 @@ export class EnterGameComponent implements OnInit {
     errorFlag: boolean = false;
     errorMessage: string = '';
 
-
     // properties for current user display
     userPro: string = '';
     userName: string = '';
     userHandle: string = '';
     usered: boolean;
 
-    constructor(private gameSubmitter: SubmitGameService, private _formBuilder: FormBuilder, private current:CurrentUserService, private router:Router) {}
+    constructor(
+        private gameSubmitter: SubmitGameService,
+        private _formBuilder: FormBuilder,
+        private current: CurrentUserService,
+        private router: Router
+    ) {}
 
     ngOnInit(): void {
         this.gameSubmitter.fetchUsers().valueChanges.subscribe((response) => {
@@ -51,28 +61,27 @@ export class EnterGameComponent implements OnInit {
         });
         this.formGroup = this._formBuilder.group({
             formArray: this._formBuilder.array([
-              this._formBuilder.group({
-                myName : this.myName,
-                myCups: this.myCups,
-                myPenalties : this.myPenalties,
-                partnerName : this.partnerName,
-                partnerCups : this.partnerCups,
-                partnerPenalties : this.partnerPenalties,
-                
-              }),
-              this._formBuilder.group({
-                oneName : this.oneName,
-                oneCups : this.oneCups,
-                onePenalties : this.onePenalties,
-                twoName : this.twoName,
-                twoCups : this.twoCups,
-                twoPenalties : this.twoPenalties
-              }),
-              this._formBuilder.group({
-                descriptionControl : this.descriptionControl,
-              }),
-            ])
-          });
+                this._formBuilder.group({
+                    myName: this.myName,
+                    myCups: this.myCups,
+                    myPenalties: this.myPenalties,
+                    partnerName: this.partnerName,
+                    partnerCups: this.partnerCups,
+                    partnerPenalties: this.partnerPenalties,
+                }),
+                this._formBuilder.group({
+                    oneName: this.oneName,
+                    oneCups: this.oneCups,
+                    onePenalties: this.onePenalties,
+                    twoName: this.twoName,
+                    twoCups: this.twoCups,
+                    twoPenalties: this.twoPenalties,
+                }),
+                this._formBuilder.group({
+                    descriptionControl: this.descriptionControl,
+                }),
+            ]),
+        });
         this.fillUser();
     }
     get formArray(): AbstractControl | null {
@@ -87,10 +96,10 @@ export class EnterGameComponent implements OnInit {
     }
 
     watchValue(formy: FormControl, flag: number) {
-        console.log(flag);
+        // console.log(flag);
         formy.valueChanges.subscribe((response) => {
             if (response > 10) {
-                console.log(response);
+                // console.log(response);
                 if (flag === 1) {
                     this.myCups = new FormControl(10, [
                         Validators.min(1),
@@ -217,20 +226,17 @@ export class EnterGameComponent implements OnInit {
         return returnValue;
     }
 
-    fillUser(){
-        this.current.fetchUser()
-        .subscribe(response => {
+    fillUser() {
+        this.current.fetchUser().subscribe((response) => {
             const user = response;
-            this.userPro= user.profile_url;
-            this.userName= user.name;
-            this.userHandle= user.handle;
-            this.usered=true;
+            this.userPro = user.profile_url;
+            this.userName = user.name;
+            this.userHandle = user.handle;
+            this.usered = true;
         });
-
     }
 
     goToProfile(handle: string): void {
-        this.router.navigate([`/main/user/${handle}`])
+        this.router.navigate([`/main/user/${handle}`]);
     }
-    
 }

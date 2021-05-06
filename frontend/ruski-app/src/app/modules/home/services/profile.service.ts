@@ -116,10 +116,10 @@ export class ProfileService {
             .get(`http://localhost:4000/get_presigned_url_${type}/${id}`)
             .pipe(
                 switchMap((response: any) => {
-                    console.log(response);
+                    // console.log(response);
                     // const data = response.json();
                     const signedUrl = response.presigned_url;
-                    console.log(signedUrl);
+                    // console.log(signedUrl);
                     return this.http
                         .request('POST', signedUrl, {
                             headers: {
@@ -130,7 +130,7 @@ export class ProfileService {
                         })
                         .pipe(
                             map((response) => {
-                                console.log(response);
+                                // console.log(response);
                                 return response;
                             })
                         );

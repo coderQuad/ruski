@@ -24,41 +24,41 @@ export class IndivGameComponent implements OnInit, OnChanges {
 
     ngOnInit(): void {
         this.winning_score = 10;
-        console.log(this.game.likes);
+        // console.log(this.game.likes);
         this.losing_score = this.game.l1Cups + this.game.l2Cups;
         if (this.losing_score > 9) {
             this.losing_score = this.getRandomInt(5, 9);
         }
-        this.game.description =
-            'Dennis is very cool. Everyone else sucks. Dennis is very cool. Everyone else sucks. Dennis is very cool. Everyone else sucks. Dennis is very cool. Everyone else sucks. Dennis is very cool. Everyone else sucks. Dennis is very cool. Everyone else sucks.';
+        // this.game.description =
+        // 'Dennis is very cool. Everyone else sucks. Dennis is very cool. Everyone else sucks. Dennis is very cool. Everyone else sucks. Dennis is very cool. Everyone else sucks. Dennis is very cool. Everyone else sucks. Dennis is very cool. Everyone else sucks.';
         this.feedFetcher.getGameLikes(this.game.id).subscribe((response) => {
             if (response.includes(this.userID)) {
                 this.alreadyLiked = true;
-                // console.log(this.game.id);
+                // // console.log(this.game.id);
             } else {
-                // console.log('nosir');
+                // // console.log('nosir');
                 this.alreadyLiked = false;
             }
             if (this.alreadyLiked) {
-                // console.log(this.game.id);
+                // // console.log(this.game.id);
             }
         });
-        // console.log(this.userID);
+        // // console.log(this.userID);
     }
 
     ngOnChanges() {
         // this.feedFetcher.getGameLikes(this.game.id).subscribe((response) => {
         //     if (response.includes(this.userID)) {
-        //         // console.log('yessir');
+        //         // // console.log('yessir');
         //         this.alreadyLiked = true;
-        //         // console.log(this.game.id);
-        //         // console.log(this.game.likes);
+        //         // // console.log(this.game.id);
+        //         // // console.log(this.game.likes);
         //     } else {
-        //         // console.log('nosir');
+        //         // // console.log('nosir');
         //         this.alreadyLiked = false;
         //     }
         //     if (this.alreadyLiked) {
-        //         // console.log(this.game.id);
+        //         // // console.log(this.game.id);
         //     }
         // });
     }
@@ -72,7 +72,7 @@ export class IndivGameComponent implements OnInit, OnChanges {
     navToGame(e: any) {
         const srcClasses = e.srcElement.className.split(' ');
         if (srcClasses.includes('likeClick')) {
-            console.log('yo');
+            // console.log('yo');
         } else {
             this.router.navigate(['/main/feed', this.game.id]);
         }
@@ -80,13 +80,13 @@ export class IndivGameComponent implements OnInit, OnChanges {
     }
 
     changeLikeCount(e: any) {
-        // console.log('here');
-        // console.log(e.srcElement.className);
+        // // console.log('here');
+        // // console.log(e.srcElement.className);
         if (this.alreadyLiked) {
             this.feedFetcher.decLike(this.game.id, this.userID);
             this.game.likes -= 1;
             if (this.game.likes < 0) {
-                // console.log(this.game.id);
+                // // console.log(this.game.id);
             }
             this.alreadyLiked = false;
         } else {

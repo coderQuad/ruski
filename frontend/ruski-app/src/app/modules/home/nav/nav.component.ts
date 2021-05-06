@@ -31,7 +31,7 @@ export class NavComponent implements OnInit {
 
     showProfile() {
         this.user.getHandle().subscribe((response) => {
-            console.log(response);
+            // console.log(response);
             const handle = response;
             this.router.navigate([`/main/user/${handle}`]);
         });

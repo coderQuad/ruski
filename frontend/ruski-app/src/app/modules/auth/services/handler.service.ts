@@ -12,12 +12,12 @@ export class HandlerService {
     constructor(private apollo: Apollo, public auth: AuthService) {}
 
     changeRegistered() {
-        // console.log('here');
+        // // console.log('here');
         this.isRegistered = true;
     }
 
     getStatus() {
-        // console.log(this.isRegistered);
+        // // console.log(this.isRegistered);
         return this.isRegistered;
     }
 
@@ -32,7 +32,7 @@ export class HandlerService {
         return this.auth.user$.pipe(
             switchMap((response: any) => {
                 const email = response.email;
-                // console.log(response);
+                // // console.log(response);
                 return this.apollo
                     .query<any>({
                         query: GET_USER,
@@ -43,7 +43,7 @@ export class HandlerService {
                     })
                     .pipe(
                         map((response) => {
-                            // console.log(response);
+                            // // console.log(response);
                             return response.data.userByEmail;
                         })
                     );
