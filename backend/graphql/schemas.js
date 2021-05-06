@@ -506,6 +506,29 @@ const Mutation = new GraphQLObjectType({
                     });
             }
         },
+        modifyElo: {
+            type: UserType,
+            args: {
+                id: {type: new GraphQLNonNull(GraphQLID)},
+                elo: {type: new GraphQLNonNull(GraphQLInt)}
+            },
+            resolve(parent, args){
+                return User.findById(args.id)
+                    .then(response => {
+                        return User.findByIdAndUpdate(
+                            args.id,
+                            {
+                                handle: response.handle,
+                                name: response.name,
+                                email: response.email,
+                                elo: args.elo,
+                                elo_history_ids: response.elo_history_ids,
+                                friend_ids: response.friend_ids
+                            }
+                        );
+                    });
+            }
+        },
         modifyProfileURL: {
             type: UserType,
             args: {
