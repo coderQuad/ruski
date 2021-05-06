@@ -19,10 +19,10 @@ export class LoginComponent implements OnInit, OnChanges {
 
     ngOnInit() {
         this.auth.user$.subscribe((response) => {
-            // console.log(response);
+            // // console.log(response);
         });
         this.checkIfLoggedIn().subscribe((response) => {
-            // console.log(response);
+            // // console.log(response);
             if (response) {
                 this.router.navigate(['/main']);
             }

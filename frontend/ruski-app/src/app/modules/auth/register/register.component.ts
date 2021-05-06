@@ -29,7 +29,7 @@ export class RegisterComponent implements OnInit {
 
     ngOnInit(): void {
         this.reg.fetchUnregUsers().subscribe((response) => {
-            // console.log(response);
+            // // console.log(response);
             this.namesOptions = response.map((user) => user.name);
             for (const user of response) {
                 this.nameIdMap.set(user.name, user.id);
@@ -86,11 +86,11 @@ export class RegisterComponent implements OnInit {
             });
         } else {
             this.reg.genUser(userName).subscribe((response) => {
-                // console.log('HERE');
+                // // console.log('HERE');
                 const userId = response;
                 this.reg.submitHandle(userId, userHandle);
                 this.reg.submitEmail(userId).subscribe((response) => {
-                    // console.log(response);
+                    // // console.log(response);
                     this.router.navigate(['/main']);
                 });
             });

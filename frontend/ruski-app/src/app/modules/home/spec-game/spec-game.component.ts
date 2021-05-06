@@ -48,21 +48,21 @@ export class SpecGameComponent implements OnInit {
             }
             this.game.description =
                 'Dennis is very cool. Everyone else sucks. Dennis is very cool. Everyone else sucks. Dennis is very cool. Everyone else sucks. Dennis is very cool. Everyone else sucks. Dennis is very cool. Everyone else sucks. Dennis is very cool. Everyone else sucks.';
-            // console.log(this.game);
+            // // console.log(this.game);
             this.gameFetcher
                 .getGameLikes(this.game.id)
                 .subscribe((response) => {
                     if (response.includes(this.userID)) {
-                        // console.log('yessir');
+                        // // console.log('yessir');
                         this.alreadyLiked = true;
-                        // console.log(this.game.id);
-                        // console.log(this.game.likes);
+                        // // console.log(this.game.id);
+                        // // console.log(this.game.likes);
                     } else {
-                        // console.log('nosir');
+                        // // console.log('nosir');
                         this.alreadyLiked = false;
                     }
                 });
-            // console.log(this.game.comments);
+            // // console.log(this.game.comments);
             for (const comment of this.game.comments) {
                 this.alreadyLikedComment.push(false);
                 this.commentLikeMirror.push(comment['likes']);
@@ -91,9 +91,9 @@ export class SpecGameComponent implements OnInit {
 
     changeCommentLikeCount(e: any, i: number) {
         let id = this.commentIDMirror[i];
-        console.log(this.userID);
-        console.log(id);
-        console.log('here');
+        // console.log(this.userID);
+        // console.log(id);
+        // console.log('here');
         if (this.alreadyLikedComment[i]) {
             this.gameFetcher.decCommentLike(id, this.userID);
             this.commentLikeMirror[i] -= 1;
@@ -117,7 +117,7 @@ export class SpecGameComponent implements OnInit {
         this.commentService
             .addComment(this.userID, commentText, this.game.id)
             .subscribe((response) => {
-                console.log(response);
+                // console.log(response);
                 this.commentIDMirror.push(response.data['addCommentToGame'].id);
             });
         this.commentDBMirror.push(true);
@@ -126,7 +126,7 @@ export class SpecGameComponent implements OnInit {
         this.commentTextMirror = [...cloneText];
         this.commentLikeMirror.push(0);
         this.alreadyLikedComment.push(false);
-        console.log(this.commentTextMirror);
+        // console.log(this.commentTextMirror);
     }
 
     goBack() {

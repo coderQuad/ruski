@@ -11,7 +11,7 @@ export class RegisterService {
     constructor(private apollo: Apollo, public auth: AuthService) {}
 
     fetchUnregUsers() {
-        console.log('here');
+        // console.log('here');
         return this.apollo
             .watchQuery<any>({
                 query: gql`
@@ -62,7 +62,7 @@ export class RegisterService {
     }
 
     submitHandle(id: string, handle: string) {
-        console.log(id, handle);
+        // console.log(id, handle);
         const ADD_HANDLE = gql`
             mutation ModifyHandle($id: ID!, $handle: String!) {
                 modifyHandle(id: $id, handle: $handle) {
@@ -72,7 +72,7 @@ export class RegisterService {
                 }
             }
         `;
-        console.log('here');
+        // console.log('here');
         this.apollo
             .mutate({
                 mutation: ADD_HANDLE,
@@ -82,13 +82,13 @@ export class RegisterService {
                 },
             })
             .subscribe((response) => {
-                console.log(response);
+                // console.log(response);
             });
     }
 
     submitEmail(id: string) {
-        console.log('here');
-        console.log(id);
+        // console.log('here');
+        // console.log(id);
         const ADD_EMAIL = gql`
             mutation ModifyEmail($id: ID!, $email: String!) {
                 modifyEmail(id: $id, email: $email) {
@@ -101,7 +101,7 @@ export class RegisterService {
         return this.auth.user$.pipe(
             switchMap((response: any) => {
                 const email = response.email;
-                console.log(email);
+                // console.log(email);
 
                 return this.apollo.mutate({
                     mutation: ADD_EMAIL,
@@ -115,7 +115,7 @@ export class RegisterService {
     }
 
     genUser(name: string) {
-        console.log(name);
+        // console.log(name);
         const ADD_USER = gql`
             mutation AddUser(
                 $email: String!
@@ -137,7 +137,7 @@ export class RegisterService {
         `;
         return this.auth.user$.pipe(
             switchMap((response: any) => {
-                console.log(response);
+                // console.log(response);
                 let profile_pic =
                     'https://d26n5v24zcmg6e.cloudfront.net/profiles/default.jpeg';
                 if (response.hasOwnProperty('picture')) {

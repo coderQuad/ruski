@@ -11,6 +11,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { ScrollingModule } from '@angular/cdk/scrolling';
+import { MatStepperModule } from '@angular/material/stepper';
 
 const material = [
     MatToolbarModule,
@@ -24,6 +25,7 @@ const material = [
     MatTableModule,
     MatCardModule,
     MatDividerModule,
+    MatStepperModule,
     ScrollingModule,
 ];
 

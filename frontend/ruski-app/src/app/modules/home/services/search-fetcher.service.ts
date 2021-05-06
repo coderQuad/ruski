@@ -10,7 +10,7 @@ export class SearchFetcherService {
     constructor(private apollo: Apollo) {}
 
     fetchAllUsersAndHandles() {
-        // console.log('here');
+        // // console.log('here');
         return this.apollo
             .watchQuery<any>({
                 query: gql`

@@ -14,8 +14,8 @@ export class FeedService {
     fetchGlobal() {}
 
     fetchSpecGame(id: string) {
-        // console.log('here');
-        // console.log(id);
+        // // console.log('here');
+        // // console.log(id);
         const GET_GAME = gql`
             query GetGameByID($id: ID!) {
                 game(id: $id) {
@@ -62,7 +62,7 @@ export class FeedService {
             })
             .pipe(
                 map((response) => {
-                    // console.log(response);
+                    // // console.log(response);
                     const gamesList = [];
                     const game = response.data.game;
                     const tempGame = {
@@ -131,7 +131,7 @@ export class FeedService {
             })
             .pipe(
                 map((response) => {
-                    // console.log(response);
+                    // // console.log(response);
                     const gamesList = [];
                     for (const game of response.data.games) {
                         const tempGame = {
@@ -165,7 +165,7 @@ export class FeedService {
     }
 
     incLike(gameId: string, userId: string) {
-        // console.log(gameId, userId);
+        // // console.log(gameId, userId);
         const INC_LIKE = gql`
             mutation IncrementGameLike($id: ID!, $liked_by_id: ID!) {
                 incrementGameLike(id: $id, liked_by_id: $liked_by_id) {
@@ -189,12 +189,12 @@ export class FeedService {
                 })
             )
             .subscribe((response) => {
-                // console.log(response);
+                // // console.log(response);
             });
     }
 
     decLike(gameId: string, userId: string) {
-        // console.log(gameId, userId);
+        // // console.log(gameId, userId);
         const DEC_LIKE = gql`
             mutation DecrementGameLike($id: ID!, $liked_by_id: ID!) {
                 decrementGameLike(id: $id, liked_by_id: $liked_by_id) {
@@ -218,13 +218,13 @@ export class FeedService {
                 })
             )
             .subscribe((response) => {
-                // console.log(response);
+                // // console.log(response);
             });
     }
 
     getGameLikes(id: string) {
         // return of(['Billy', '606d262479a35ad0d582ec9c']);
-        // console.log(id);
+        // // console.log(id);
         const GET_GAME = gql`
             query GetGameLikes($id: ID!) {
                 game(id: $id) {
@@ -247,7 +247,7 @@ export class FeedService {
             .pipe(
                 map((response) => {
                     const liked_by = [];
-                    // console.log(response.data.game.liked_by);
+                    // // console.log(response.data.game.liked_by);
                     for (const user of response.data.game.liked_by) {
                         liked_by.push(user.id);
                     }
@@ -257,8 +257,8 @@ export class FeedService {
     }
 
     incCommentLike(commentId: string, userId: string) {
-        // console.log(gameId, userId);
-        console.log(userId);
+        // // console.log(gameId, userId);
+        // console.log(userId);
         const INC_LIKE = gql`
             mutation IncrementCommentLike($id: ID!, $liked_by_id: ID!) {
                 incrementCommentLike(id: $id, liked_by_id: $liked_by_id) {
@@ -282,12 +282,12 @@ export class FeedService {
                 })
             )
             .subscribe((response) => {
-                console.log(response);
+                // console.log(response);
             });
     }
 
     decCommentLike(commentId: string, userId: string) {
-        // console.log(gameId, userId);
+        // // console.log(gameId, userId);
         const DEC_LIKE = gql`
             mutation DecrementCommentLike($id: ID!, $liked_by_id: ID!) {
                 decrementCommentLike(id: $id, liked_by_id: $liked_by_id) {
@@ -311,7 +311,7 @@ export class FeedService {
                 })
             )
             .subscribe((response) => {
-                // console.log(response);
+                // // console.log(response);
             });
     }
 }
