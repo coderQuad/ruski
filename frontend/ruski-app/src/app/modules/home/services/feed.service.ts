@@ -58,6 +58,7 @@ export class FeedService {
                 variables: {
                     id: id,
                 },
+                fetchPolicy: 'no-cache',
             })
             .pipe(
                 map((response) => {
@@ -126,6 +127,7 @@ export class FeedService {
         return this.apollo
             .query<any>({
                 query: GET_GAMES,
+                fetchPolicy: 'no-cache',
             })
             .pipe(
                 map((response) => {
@@ -240,11 +242,12 @@ export class FeedService {
                 variables: {
                     id: id,
                 },
+                fetchPolicy: 'no-cache',
             })
             .pipe(
                 map((response) => {
                     const liked_by = [];
-                    console.log(response.data.game.liked_by);
+                    // console.log(response.data.game.liked_by);
                     for (const user of response.data.game.liked_by) {
                         liked_by.push(user.id);
                     }

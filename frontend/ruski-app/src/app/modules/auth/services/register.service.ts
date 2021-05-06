@@ -67,6 +67,8 @@ export class RegisterService {
             mutation ModifyHandle($id: ID!, $handle: String!) {
                 modifyHandle(id: $id, handle: $handle) {
                     id
+                    handle
+                    name
                 }
             }
         `;

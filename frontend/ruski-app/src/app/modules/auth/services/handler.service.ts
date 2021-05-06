@@ -39,6 +39,7 @@ export class HandlerService {
                         variables: {
                             email: email,
                         },
+                        fetchPolicy: 'no-cache',
                     })
                     .pipe(
                         map((response) => {

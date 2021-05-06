@@ -24,6 +24,7 @@ export class IndivGameComponent implements OnInit, OnChanges {
 
     ngOnInit(): void {
         this.winning_score = 10;
+        console.log(this.game.likes);
         this.losing_score = this.game.l1Cups + this.game.l2Cups;
         if (this.losing_score > 9) {
             this.losing_score = this.getRandomInt(5, 9);
@@ -32,10 +33,8 @@ export class IndivGameComponent implements OnInit, OnChanges {
             'Dennis is very cool. Everyone else sucks. Dennis is very cool. Everyone else sucks. Dennis is very cool. Everyone else sucks. Dennis is very cool. Everyone else sucks. Dennis is very cool. Everyone else sucks. Dennis is very cool. Everyone else sucks.';
         this.feedFetcher.getGameLikes(this.game.id).subscribe((response) => {
             if (response.includes(this.userID)) {
-                // console.log('yessir');
                 this.alreadyLiked = true;
                 // console.log(this.game.id);
-                // console.log(this.game.likes);
             } else {
                 // console.log('nosir');
                 this.alreadyLiked = false;
@@ -48,20 +47,20 @@ export class IndivGameComponent implements OnInit, OnChanges {
     }
 
     ngOnChanges() {
-        this.feedFetcher.getGameLikes(this.game.id).subscribe((response) => {
-            if (response.includes(this.userID)) {
-                // console.log('yessir');
-                this.alreadyLiked = true;
-                // console.log(this.game.id);
-                // console.log(this.game.likes);
-            } else {
-                // console.log('nosir');
-                this.alreadyLiked = false;
-            }
-            if (this.alreadyLiked) {
-                // console.log(this.game.id);
-            }
-        });
+        // this.feedFetcher.getGameLikes(this.game.id).subscribe((response) => {
+        //     if (response.includes(this.userID)) {
+        //         // console.log('yessir');
+        //         this.alreadyLiked = true;
+        //         // console.log(this.game.id);
+        //         // console.log(this.game.likes);
+        //     } else {
+        //         // console.log('nosir');
+        //         this.alreadyLiked = false;
+        //     }
+        //     if (this.alreadyLiked) {
+        //         // console.log(this.game.id);
+        //     }
+        // });
     }
 
     getRandomInt(min: number, max: number) {
