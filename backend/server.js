@@ -4,9 +4,23 @@ const { graphqlHTTP } = require("express-graphql");
 const cors = require("cors");
 const schema = require("./graphql/schemas");
 const aws = require("aws-sdk");
+const fs = require('fs');
+const yargs = require('yargs');
+
 if (process.env.NODE_ENV !== "production") {
   require("dotenv").config();
 }
+
+const argv = yargs
+    .option('port', {
+        alias: 'p',
+        description: 'Specify the port to run the server on',
+        type: 'number',
+        demand: 'You must specify the port'
+    })
+    .help()
+    .alias('help', 'h')
+    .argv;
 
 const s3 = new aws.S3({
   accessKeyId: process.env.ACCESS_KEY_ID, // aws access id here
@@ -18,6 +32,7 @@ const s3 = new aws.S3({
 const app = express();
 app.use(cors());
 
+
 mongoose.connect("mongodb://127.0.0.1:27017/ruski", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -27,6 +42,15 @@ const connection = mongoose.connection;
 
 connection.once("open", function () {
   console.log("MongoDB database connection established successfully");
+});
+
+app.get("/", (req, res) => {
+    res.send('cum');
+});
+
+// api endpoint for getting beer and yak totals from yack-beer-totals.json
+app.get("/get_yack_beer_totals", (req, res) => {
+    res.send(fs.readFileSync('./yack-beer-totals.json', 'utf8'));
 });
 
 // api endpoint for getting presigned url to upload user profile pictures to s3 bucket
@@ -48,7 +72,7 @@ app.get("/get_presigned_url_jpeg/:user_id", (req, res) => {
         success: true,
         message: "AWS SDK S3 Pre-signed urls generated successfully.",
         presigned_url: url,
-        cdn_access_url: `https://d26n5v24zcmg6e.cloudfront.net/${params.Key}`,
+        s3_access_url: `https://s3.us-east-2.amazonaws.com/playruski.com/${params.Key}`,
       });
     }
   });
@@ -72,7 +96,7 @@ app.get("/get_presigned_url_png/:user_id", (req, res) => {
         success: true,
         message: "AWS SDK S3 Pre-signed urls generated successfully.",
         presigned_url: url,
-        cdn_access_url: `https://d26n5v24zcmg6e.cloudfront.net/${params.Key}.png`,
+        s3_access_url: `https://s3.us-east-2.amazonaws.com/playruski.com/${params.Key}`,
       });
     }
   });
@@ -87,6 +111,6 @@ app.use(
   })
 );
 
-app.listen(4000, () => {
-  console.log("Running a GraphQL API server at http://localhost:4000/graphql");
+app.listen(argv.port, () => {
+  console.log(`API server running on port ${argv.port}`);
 });

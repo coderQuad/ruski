@@ -47,7 +47,7 @@ export class EnterGameComponent implements OnInit {
     userHandle: string = '';
     usered: boolean;
 
-    constructor(private gameSubmitter: SubmitGameService, private _formBuilder: FormBuilder, private current:CurrentUserService) {}
+    constructor(private gameSubmitter: SubmitGameService, private _formBuilder: FormBuilder, private current:CurrentUserService, private router:Router) {}
 
     ngOnInit(): void {
         this.gameSubmitter.fetchUsers().valueChanges.subscribe((response) => {
@@ -371,15 +371,17 @@ export class EnterGameComponent implements OnInit {
     fillUser(){
         this.current.fetchUser()
         .subscribe(response => {
-            response.subscribe(res => {
-                const user = res.data.userByEmail[0];
-                this.userPro= user.profile_url;
-                this.userName= user.name;
-                this.userHandle= user.handle;
-                this.usered=true;
-            })
+            const user = response;
+            this.userPro= user.profile_url;
+            this.userName= user.name;
+            this.userHandle= user.handle;
+            this.usered=true;
         });
 
+    }
+
+    goToProfile(handle: string): void {
+        this.router.navigate([`/main/user/${handle}`])
     }
     
 }

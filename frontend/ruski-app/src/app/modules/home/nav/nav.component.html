@@ -1,15 +1,32 @@
 <mat-toolbar color="primary">
-    <div class="title">Ruski</div>
-    <div class="icons">
-        <div (click)="showLeaderboard()">
-            <mat-icon aria-hidden="false" aria-label="Example home icon">
-                leaderboard
-            </mat-icon>
-        </div>
-        <div (click)="enterGame()">
-            <mat-icon aria-hidden="false" aria-label="Example home icon">
-                create
-            </mat-icon>
+    <div class="flex-container">
+        <div (click)="showFeed()" class="title">Ruski</div>
+        <div class="icons">
+            <span (click)="showFeed()">
+                <mat-icon aria-hidden="false" aria-label="Example home icon">
+                    public
+                </mat-icon>
+            </span>
+            <span (click)="showSearch()">
+                <mat-icon aria-hidden="false" aria-label="Example home icon">
+                    search
+                </mat-icon>
+            </span>
+            <span (click)="showProfile()">
+                <mat-icon aria-hidden="false" aria-label="Example home icon">
+                    account_circle
+                </mat-icon>
+            </span>
+            <span (click)="showLeaderboard()">
+                <mat-icon aria-hidden="false" aria-label="Example home icon">
+                    leaderboard
+                </mat-icon>
+            </span>
+            <span (click)="enterGame()">
+                <mat-icon aria-hidden="false" aria-label="Example home icon">
+                    create
+                </mat-icon>
+            </span>
         </div>
     </div>
 </mat-toolbar>

@@ -28,20 +28,15 @@ export class AuthGuard implements CanActivate {
         | Promise<boolean | UrlTree>
         | boolean
         | UrlTree {
-        // console.log(route);
         const url: string = state.url;
-        // console.log(route);
-        // console.log(state);
-        const isRegistered = this.hundler.getStatus();
-        // console.log('here');
-        return this.auth.user$.pipe(
-            map((response: Response) => {
-                // console.log(response);
-                if (response['https://example.com/roles'][0] === 'old') {
-                    // console.log('billy');
-                    return true;
-                } else if (isRegistered) {
-                    // console.log('hundy');
+        console.log('here');
+        if (this.hundler.getStatus()) {
+            return true;
+        }
+        return this.hundler.checkUserExistsByEmail().pipe(
+            map((response: any) => {
+                console.log(response);
+                if (response.length > 0) {
                     return true;
                 }
                 this.router.navigate(['/register']);
@@ -55,10 +50,8 @@ export class AuthGuard implements CanActivate {
     }
 
     isNewUser() {
-        // console.log('nah');
         return this.auth.user$.pipe(
             map((response) => {
-                // console.log(response);
                 return response;
             })
         );

@@ -1,8 +1,10 @@
 import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 
 import { FetchLeaderboardService } from './../services/fetch-leaderboard.service';
+import { CurrentUserService } from './../services/current-user.service';
 @Component({
     selector: 'app-leaderboard',
     templateUrl: './leaderboard.component.html',
@@ -13,15 +15,6 @@ export class LeaderboardComponent implements OnInit {
 
     // leaderboard data body
     users? = [];
-
-    // current user false header info
-    loggedInUser = [
-        24,
-        'https://d26n5v24zcmg6e.cloudfront.net/profiles/default.jpeg',
-        'Steemer',
-        1230,
-        'stanleysteemer'
-    ];
 
     // paginator params
     length: number;
@@ -47,7 +40,7 @@ export class LeaderboardComponent implements OnInit {
     dataSource: MatTableDataSource<leaderboardRow>;
     @ViewChild(MatPaginator) paginator: MatPaginator;
 
-    constructor(private leaderboardFetcher: FetchLeaderboardService) {}
+    constructor(private leaderboardFetcher: FetchLeaderboardService, private user: CurrentUserService, private router: Router) {}
 
     getLeaderboard(): void {
         this.leaderboardFetcher.fetchLeaders()
@@ -64,16 +57,14 @@ export class LeaderboardComponent implements OnInit {
     }
 
     fillUser(): void {
-        this.leaderboardFetcher.fetchSticky()
+        this.user.fetchUser()
         .subscribe(response => {
-            response.subscribe(res => {
-                const user = res.data.userByEmail[0];
-                this.userPro= user.profile_url;
-                this.userName= user.name;
-                this.userElo= user.elo;
-                this.userHandle= user.handle;
-                this.userRank = this.getRank(user.id);
-            })
+            const user = response;
+            this.userPro= user.profile_url;
+            this.userName= user.name;
+            this.userElo= user.elo;
+            this.userHandle= user.handle;
+            this.userRank = this.getRank(user.id);
         });
         this.loaded= true;
     }
@@ -84,8 +75,12 @@ export class LeaderboardComponent implements OnInit {
                 return user.rank;
             }
         }
+        return 0;
     }
 
+    goToProfile(handle: string): void {
+        this.router.navigate([`/main/user/${handle}`])
+    }
     ngOnInit(): void {
         this.getLeaderboard();
         this.fillUser();

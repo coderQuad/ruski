@@ -166,6 +166,7 @@ export class SubmitGameService {
                     }
                 }
             `,
+            fetchPolicy: 'no-cache',
         });
     }
 }
