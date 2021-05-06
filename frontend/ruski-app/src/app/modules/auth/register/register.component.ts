@@ -77,26 +77,21 @@ export class RegisterComponent implements OnInit {
             return;
         }
         this.errorFlag = false;
+        this.hundler.changeRegistered();
         if (this.nameIdMap.has(userName)) {
             const userId = this.nameIdMap.get(userName);
             this.reg.submitHandle(userId, userHandle);
             this.reg.submitEmail(userId).subscribe((response) => {
-                // console.log(response);
-                setTimeout(() => {
-                    this.router.navigate(['/main']);
-                }, 500);
+                this.router.navigate(['/main']);
             });
         } else {
-            // console.log('HEREE');
             this.reg.genUser(userName).subscribe((response) => {
                 // console.log('HERE');
                 const userId = response;
                 this.reg.submitHandle(userId, userHandle);
                 this.reg.submitEmail(userId).subscribe((response) => {
                     // console.log(response);
-                    setTimeout(() => {
-                        this.router.navigate(['/main']);
-                    }, 500);
+                    this.router.navigate(['/main']);
                 });
             });
         }

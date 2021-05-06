@@ -24,6 +24,7 @@ export class SearchFetcherService {
                         }
                     }
                 `,
+                fetchPolicy: 'no-cache',
             })
             .valueChanges.pipe(
                 map((data) => {

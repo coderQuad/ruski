@@ -33,8 +33,8 @@ const homeRoutes: Routes = [
             { path: 'search', component: SearchComponent },
             { path: 'feed', component: SocialFeedComponent },
             { path: 'feed/:id', component: SpecGameComponent },
-            { path: 'user/:handle', component: ProfileComponent},
-            { path: 'settings', component: SettingsComponent}
+            { path: 'user/:handle', component: ProfileComponent },
+            { path: 'settings', component: SettingsComponent },
         ],
     },
 ];

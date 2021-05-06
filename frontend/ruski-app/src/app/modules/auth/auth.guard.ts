@@ -30,6 +30,9 @@ export class AuthGuard implements CanActivate {
         | UrlTree {
         const url: string = state.url;
         console.log('here');
+        if (this.hundler.getStatus()) {
+            return true;
+        }
         return this.hundler.checkUserExistsByEmail().pipe(
             map((response: any) => {
                 console.log(response);
