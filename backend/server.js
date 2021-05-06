@@ -31,10 +31,6 @@ connection.once("open", function () {
   console.log("MongoDB database connection established successfully");
 });
 
-app.get("/", (req, res) => {
-    res.send('cum');
-});
-
 // api endpoint for getting beer and yak totals from yack-beer-totals.json
 app.get("/get_yack_beer_totals", (req, res) => {
     res.send(fs.readFileSync('./yack-beer-totals.json', 'utf8'));
@@ -83,7 +79,7 @@ app.get("/get_presigned_url_png/:user_id", (req, res) => {
         success: true,
         message: "AWS SDK S3 Pre-signed urls generated successfully.",
         presigned_url: url,
-        cdn_access_url: `https://d26n5v24zcmg6e.cloudfront.net/${params.Key}`,
+        cdn_access_url: `https://d26n5v24zcmg6e.cloudfront.net/${params.Key}.png`,
       });
     }
   });
@@ -99,5 +95,5 @@ app.use(
 );
 
 app.listen(4000, () => {
-  console.log("Running a GraphQL API server at http://localhost/graphql (port 80)");
+  console.log("Running a GraphQL API server at http://localhost:4000/graphql");
 });
