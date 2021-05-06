@@ -1,8 +1,9 @@
+import { User } from './../user-template';
+import { CurrentUserService } from './../services/current-user.service';
 import { CommentService } from './../services/comment.service';
 import { FeedService } from './../services/feed.service';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CurrentUserService } from '../services/current-user.service';
 import { Game } from '../game-feed-template';
 import { FormControl } from '@angular/forms';
 
@@ -14,6 +15,7 @@ import { FormControl } from '@angular/forms';
 export class SpecGameComponent implements OnInit {
     game!: Game;
     userID!: string;
+    currentUser: User;
     winning_score: number;
     losing_score: number;
     alreadyLiked = false;
@@ -21,6 +23,8 @@ export class SpecGameComponent implements OnInit {
     commentLikeMirror: number[] = [];
     commentTextMirror: string[] = [];
     commentUserMirror: string[] = [];
+    commentDBMirror: boolean[] = [];
+    commentIDMirror: string[] = [];
     commentControl = new FormControl();
     constructor(
         private gameFetcher: FeedService,
@@ -32,6 +36,9 @@ export class SpecGameComponent implements OnInit {
 
     ngOnInit(): void {
         const id = this.route.snapshot.paramMap.get('id');
+        this.hundy.fetchUser().subscribe((response) => {
+            this.currentUser = response;
+        });
         this.gameFetcher.fetchSpecGame(id).subscribe((response) => {
             this.game = response;
             this.winning_score = 10;
@@ -59,7 +66,9 @@ export class SpecGameComponent implements OnInit {
             for (const comment of this.game.comments) {
                 this.alreadyLikedComment.push(false);
                 this.commentLikeMirror.push(comment['likes']);
-                // this.commentTextMirror.push(comment['text']);
+                this.commentTextMirror.push(comment['text']);
+                this.commentDBMirror.push(false);
+                this.commentIDMirror.push(comment['id']);
                 // this.commentUserMirror.push(comment['user']['name']);
             }
         });
@@ -81,19 +90,16 @@ export class SpecGameComponent implements OnInit {
     }
 
     changeCommentLikeCount(e: any, i: number) {
+        let id = this.commentIDMirror[i];
+        console.log(this.userID);
+        console.log(id);
+        console.log('here');
         if (this.alreadyLikedComment[i]) {
-            this.gameFetcher.decCommentLike(
-                this.game.comments[i]['id'],
-                this.userID
-            );
+            this.gameFetcher.decCommentLike(id, this.userID);
             this.commentLikeMirror[i] -= 1;
             this.alreadyLikedComment[i] = false;
         } else {
-            this.gameFetcher.incCommentLike(
-                this.game.comments[i]['id'],
-                this.userID
-            );
-            console.log(this.userID);
+            this.gameFetcher.incCommentLike(id, this.userID);
             this.commentLikeMirror[i] += 1;
             this.alreadyLikedComment[i] = true;
         }
@@ -108,10 +114,19 @@ export class SpecGameComponent implements OnInit {
     postComment() {
         const commentText = this.commentControl.value;
         this.commentControl = new FormControl();
-        this.commentService.addComment(this.userID, commentText, this.game.id);
-        // this.commentTextMirror.push(commentText);
-        // this.commentUserMirror.push('thebilly');
-        // console.log(commentText);
+        this.commentService
+            .addComment(this.userID, commentText, this.game.id)
+            .subscribe((response) => {
+                console.log(response);
+                this.commentIDMirror.push(response.data['addCommentToGame'].id);
+            });
+        this.commentDBMirror.push(true);
+        const cloneText = Object.assign([], this.commentTextMirror);
+        cloneText.push(commentText);
+        this.commentTextMirror = [...cloneText];
+        this.commentLikeMirror.push(0);
+        this.alreadyLikedComment.push(false);
+        console.log(this.commentTextMirror);
     }
 
     goBack() {

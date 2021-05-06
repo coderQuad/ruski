@@ -135,22 +135,31 @@ export class RegisterService {
                 }
             }
         `;
-        return this.apollo
-            .mutate<any>({
-                mutation: ADD_USER,
-                variables: {
-                    email: '',
-                    handle: '',
-                    profile_url:
-                        'https://d26n5v24zcmg6e.cloudfront.net/profiles/default.jpeg',
-                    name: 'Billy',
-                    elo: 1200,
-                },
+        return this.auth.user$.pipe(
+            switchMap((response: any) => {
+                console.log(response);
+                let profile_pic =
+                    'https://d26n5v24zcmg6e.cloudfront.net/profiles/default.jpeg';
+                if (response.hasOwnProperty('picture')) {
+                    profile_pic = response.picture;
+                }
+                return this.apollo
+                    .mutate<any>({
+                        mutation: ADD_USER,
+                        variables: {
+                            email: '',
+                            handle: '',
+                            profile_url: profile_pic,
+                            name: 'Billy',
+                            elo: 1200,
+                        },
+                    })
+                    .pipe(
+                        map((response) => {
+                            return response.data.addUser.id;
+                        })
+                    );
             })
-            .pipe(
-                map((response) => {
-                    return response.data.addUser.id;
-                })
-            );
+        );
     }
 }
