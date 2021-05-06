@@ -1,9 +1,8 @@
 import { Injectable, Type } from '@angular/core';
 import { Apollo, gql } from 'apollo-angular';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { of } from 'rxjs';
-import { catchError, map, tap, switchMap } from 'rxjs/operators';
-
+import { catchError, map, tap, switchMap, timeout } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -108,40 +107,69 @@ export class ProfileService {
         })
   }
 
+  // updatePic(id:string, picture: string) {
+  //   const typeRegex = /data\:image\/(png|jpeg)/;
+  //   const type = typeRegex.exec(picture)[1];
+  //   return this.http.get(`http://localhost:4000/get_presigned_url_${type}/${id}`).pipe(
+  //     switchMap((response: any) => {
+  //       console.log(response);
+  //       // const data = response.json();
+  //       const signedUrl = response.presigned_url;
+  //       console.log(signedUrl); 
+  //       const HttpOptions = {
+  //         headers: new HttpHeaders({
+  //           'Content-Type': `image/${type}`,
+  //           'mode': 'cors',
+  //         }),
+  //         body: picture,
+  //       }
+  //       fetch(
+  //         signedUrl,
+  //         {
+  //           method: 'PUT',
+  //           mode: 'cors',
+  //           headers: {
+  //             'Content-Type': `image/${type}`,
+  //           },
+  //           body: picture
+  //         }
+  //       ).then(response => {
+  //         console.log(response.text())
+  //       });
+  //     })
+  //   );
+  // }
   updatePic(id:string, picture: string) {
     const typeRegex = /data\:image\/(png|jpeg)/;
     const type = typeRegex.exec(picture)[1];
     return this.http.get(`http://localhost:4000/get_presigned_url_${type}/${id}`).pipe(
-      switchMap((response: any) => {
+      map(
+        async (response: any) => {
         console.log(response);
-        // const data = response.json();
         const signedUrl = response.presigned_url;
         console.log(signedUrl); 
-        return this.http.request(
-          "POST",
+
+        const data = picture.replace(/^data:image\/\w+;base64,/, "");
+        const buff = Buffer.from(data, 'base64');
+
+        await fetch(
           signedUrl,
           {
+            method: 'PUT',
+            mode: 'cors',
             headers: {
               'Content-Type': `image/${type}`,
-              'mode': 'cors',
+              'Content-Encoding': 'base64'
             },
-            body: picture,
-          },
-        ).pipe(
-          map(response => {
-            console.log(response);
-            return response;
-          })
-        );
+            body: buff
+          }
+        ).then(result => result.text())
+        .then(result => {
+          console.log(result);
+          return response.s3_access_url;
+        })
       })
     );
   }
 
-  // signedUrl,
-          // picture,
-          // {
-          //   headers: {
-          //     'Content-Type': `image/${type}`,
-          //   }
-          // },
 }

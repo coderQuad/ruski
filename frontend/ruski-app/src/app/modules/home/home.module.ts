@@ -2,6 +2,7 @@ import { AppRoutingModule } from './../../app-routing.module';
 import { MaterialModule } from './../material/material.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
 import { HomeComponent } from './home/home.component';
 import { NavComponent } from './nav/nav.component';
 import { EnterGameComponent } from './enter-game/enter-game.component';
@@ -52,6 +53,7 @@ const homeRoutes: Routes = [
         RouterModule.forChild(homeRoutes),
         ImageCropperModule,
         HammerModule,
+        HttpClientModule,
     ],
     exports: [HomeComponent, NavComponent],
 })
