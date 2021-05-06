@@ -29,8 +29,8 @@ export class IndivGameComponent implements OnInit, OnChanges {
         if (this.losing_score > 9) {
             this.losing_score = this.getRandomInt(5, 9);
         }
-        this.game.description =
-            'Dennis is very cool. Everyone else sucks. Dennis is very cool. Everyone else sucks. Dennis is very cool. Everyone else sucks. Dennis is very cool. Everyone else sucks. Dennis is very cool. Everyone else sucks. Dennis is very cool. Everyone else sucks.';
+        // this.game.description =
+        //     'Dennis is very cool. Everyone else sucks. Dennis is very cool. Everyone else sucks. Dennis is very cool. Everyone else sucks. Dennis is very cool. Everyone else sucks. Dennis is very cool. Everyone else sucks. Dennis is very cool. Everyone else sucks.';
         this.feedFetcher.getGameLikes(this.game.id).subscribe((response) => {
             if (response.includes(this.userID)) {
                 this.alreadyLiked = true;

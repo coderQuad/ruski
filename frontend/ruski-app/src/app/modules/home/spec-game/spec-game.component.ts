@@ -46,8 +46,8 @@ export class SpecGameComponent implements OnInit {
             if (this.losing_score > 9) {
                 this.losing_score = this.getRandomInt(5, 9);
             }
-            this.game.description =
-                'Dennis is very cool. Everyone else sucks. Dennis is very cool. Everyone else sucks. Dennis is very cool. Everyone else sucks. Dennis is very cool. Everyone else sucks. Dennis is very cool. Everyone else sucks. Dennis is very cool. Everyone else sucks.';
+            // this.game.description =
+            //     'Dennis is very cool. Everyone else sucks. Dennis is very cool. Everyone else sucks. Dennis is very cool. Everyone else sucks. Dennis is very cool. Everyone else sucks. Dennis is very cool. Everyone else sucks. Dennis is very cool. Everyone else sucks.';
             // console.log(this.game);
             this.gameFetcher
                 .getGameLikes(this.game.id)
