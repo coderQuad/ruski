@@ -34,14 +34,12 @@ export class RegisterComponent implements OnInit {
             for (const user of response) {
                 this.nameIdMap.set(user.name, user.id);
             }
-            console.log(this.namesOptions);
         });
         this.reg.fetchAllHandles().subscribe((response) => {
-            console.log(response);
+            // console.l/og(response);
             for (const user of response) {
                 this.allHandles.add(user.handle);
             }
-            console.log(this.allHandles);
         });
         this.filteredNames = this.nameControl.valueChanges.pipe(
             startWith(''),
@@ -82,18 +80,26 @@ export class RegisterComponent implements OnInit {
         if (this.nameIdMap.has(userName)) {
             const userId = this.nameIdMap.get(userName);
             this.reg.submitHandle(userId, userHandle);
-            this.reg.submitEmail(userId);
+            this.reg.submitEmail(userId).subscribe((response) => {
+                // console.log(response);
+                setTimeout(() => {
+                    this.router.navigate(['/main']);
+                }, 500);
+            });
         } else {
+            // console.log('HEREE');
             this.reg.genUser(userName).subscribe((response) => {
+                // console.log('HERE');
                 const userId = response;
                 this.reg.submitHandle(userId, userHandle);
-                this.reg.submitEmail(userId);
+                this.reg.submitEmail(userId).subscribe((response) => {
+                    // console.log(response);
+                    setTimeout(() => {
+                        this.router.navigate(['/main']);
+                    }, 500);
+                });
             });
         }
-
-        // Submit email
-        this.hundler.changeRegistered();
-        this.router.navigate(['/main']);
     }
 
     private _filter(value: string): string[] {

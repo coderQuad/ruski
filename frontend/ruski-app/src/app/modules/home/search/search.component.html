@@ -1,0 +1,54 @@
+<div class="form">
+    <mat-form-field appearance="standard">
+        <mat-label>Name or handle:</mat-label>
+        <input
+            matInput
+            placeholder="Name or handle"
+            [formControl]="searchControl"
+        />
+    </mat-form-field>
+    <!-- <mat-autocomplete #auto="matAutocomplete">
+        <mat-option *ngFor="let name of filteredOptions | async" [value]="name"
+            >{{ name }}
+        </mat-option>
+    </mat-autocomplete> -->
+    <div class="dom">
+        <div *ngFor="let name of filteredOptions | async">
+            <mat-card>
+                <div class="flex-container">
+                    <div>
+                        <img
+                            class="photo"
+                            src="{{
+                                nameUrlMap.get(
+                                    name.split(' ').slice(0, -1).join(' ')
+                                )
+                            }}"
+                        />
+                        <span class="name"
+                            >{{ name.split(" ").slice(0, -1).join(" ") }}
+                            {{
+                                name.split(" ")[name.split(" ").length - 1]
+                            }}</span
+                        >
+                    </div>
+                    <span class="elo">
+                        {{
+                            nameEloMap.get(
+                                name.split(" ").slice(0, -1).join(" ")
+                            )
+                        }}
+                    </span>
+                </div>
+            </mat-card>
+        </div>
+        <div
+            *ngIf="
+                (filteredOptions | async).length === 0 &&
+                searchControl.value != null
+            "
+        >
+            <mat-card> No users found. </mat-card>
+        </div>
+    </div>
+</div>

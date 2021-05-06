@@ -1,6 +1,16 @@
 <mat-toolbar color="primary">
     <div class="title">Ruski</div>
     <div class="icons">
+        <div (click)="showFeed()">
+            <mat-icon aria-hidden="false" aria-label="Example home icon">
+                public
+            </mat-icon>
+        </div>
+        <div (click)="showSearch()">
+            <mat-icon aria-hidden="false" aria-label="Example home icon">
+                search
+            </mat-icon>
+        </div>
         <div (click)="showProfile()">
             <mat-icon aria-hidden="false" aria-label="Example home icon">
                 account_circle

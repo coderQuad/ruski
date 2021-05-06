@@ -21,6 +21,14 @@ export class NavComponent implements OnInit {
         this.router.navigate(['/main/leaderboard']);
     }
 
+    showFeed() {
+        this.router.navigate(['/main/feed']);
+    }
+  
+    showSearch() {
+        this.router.navigate(['/main/search']);
+    }
+  
     showProfile() {
         this.user.getHandle().subscribe( response => {
             const handle = response;

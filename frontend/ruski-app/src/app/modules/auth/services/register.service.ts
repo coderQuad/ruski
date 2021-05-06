@@ -19,16 +19,19 @@ export class RegisterService {
                         users {
                             id
                             name
-                            handle
+                            email
                         }
                     }
                 `,
             })
             .valueChanges.pipe(
                 map((user) => {
-                    return user.data.users.filter(
-                        (user: any) => user.handle.length === 0
-                    );
+                    return user.data.users.filter((user: any) => {
+                        return (
+                            !user.hasOwnProperty('email') ||
+                            user.email.length === 0
+                        );
+                    });
                 })
             );
     }
@@ -46,11 +49,16 @@ export class RegisterService {
             })
             .valueChanges.pipe(
                 map((user) => {
-                    return user.data.users.filter(
-                        (user: any) => user.handle.length > 0
-                    );
+                    return user.data.users.filter((user: any) => true);
                 })
             );
+        // .valueChanges.pipe(
+        //     map((user) => {
+        //         return user.data.users.filter(
+        //             (user: any) => user.email.length > 0
+        //         );
+        //     })
+        // );
     }
 
     submitHandle(id: string, handle: string) {
@@ -78,31 +86,30 @@ export class RegisterService {
 
     submitEmail(id: string) {
         console.log('here');
+        console.log(id);
         const ADD_EMAIL = gql`
             mutation ModifyEmail($id: ID!, $email: String!) {
                 modifyEmail(id: $id, email: $email) {
                     id
+                    email
+                    handle
                 }
             }
         `;
-        this.auth.user$
-            .pipe(
-                switchMap((response: any) => {
-                    const email = response.email;
-                    console.log(email);
+        return this.auth.user$.pipe(
+            switchMap((response: any) => {
+                const email = response.email;
+                console.log(email);
 
-                    return this.apollo.mutate({
-                        mutation: ADD_EMAIL,
-                        variables: {
-                            id: id,
-                            email: email,
-                        },
-                    });
-                })
-            )
-            .subscribe((response) => {
-                console.log(response);
-            });
+                return this.apollo.mutate({
+                    mutation: ADD_EMAIL,
+                    variables: {
+                        id: id,
+                        email: email,
+                    },
+                });
+            })
+        );
     }
 
     genUser(name: string) {
@@ -113,12 +120,14 @@ export class RegisterService {
                 $handle: String!
                 $name: String!
                 $elo: Int!
+                $profile_url: String!
             ) {
                 addUser(
                     email: $email
                     handle: $handle
                     name: $name
                     elo: $elo
+                    profile_url: $profile_url
                 ) {
                     id
                 }
@@ -130,6 +139,8 @@ export class RegisterService {
                 variables: {
                     email: '',
                     handle: '',
+                    profile_url:
+                        'https://d26n5v24zcmg6e.cloudfront.net/profiles/default.jpeg',
                     name: 'Billy',
                     elo: 1200,
                 },

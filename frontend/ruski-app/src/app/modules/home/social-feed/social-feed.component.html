@@ -1,0 +1,5 @@
+<cdk-virtual-scroll-viewport itemSize="200" class="viewport">
+    <div *cdkVirtualFor="let game of games">
+        <app-indiv-game [game]="game" [userID]="userID"></app-indiv-game>
+    </div>
+</cdk-virtual-scroll-viewport>
