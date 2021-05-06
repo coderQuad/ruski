@@ -4,7 +4,23 @@
         <div id="name">{{name}}</div>
         <div id="handle">@{{handle}}</div>
     </div>
-    <button mat-flat-button *ngIf="myProfile" color="accent" (click)="editProfile()">Edit Profile</button>
+    <div id="buttons" *ngIf="myProfile">
+        <button mat-flat-button color="primary" (click)="editProfile()">Edit Profile</button>
+        <button
+            mat-flat-button
+            color="accent"
+            (click)="auth.logout({ returnTo: document.location.origin })"
+        >
+            Log out
+        </button>
+    </div>
     <!-- <button mat-flat-button *ngIf="!myProfile && !isFriend" color="accent" (click)="addFriend()">Follow</button> -->
     <!-- <button mat-flat-button *ngIf="isFriend" color="accent" (click)="removeFriend()">Unfollow</button> -->
+</div>
+<div id="body">
+    <div id="stats">
+        <div>Elo: {{elo}}</div>
+        <div>Record: {{wins}} - {{losses}} ({{percentage}})</div>
+        <div>Total yaks: {{yaks}}</div>
+    </div>
 </div>

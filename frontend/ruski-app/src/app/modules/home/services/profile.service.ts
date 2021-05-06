@@ -1,7 +1,7 @@
 import { Injectable, Type } from '@angular/core';
 import { Apollo, gql } from 'apollo-angular';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { of } from 'rxjs';
+import { combineLatest, of } from 'rxjs';
 import { catchError, map, tap, switchMap, timeout } from 'rxjs/operators';
 
 @Injectable({
@@ -14,8 +14,8 @@ export class ProfileService {
   getUserByHandle(handle:string) {
     // query to get logged in user 
     const GET_USER = gql`
-      query GetUser {
-        userByHandle(handle: "${handle}") {
+      query GetUser($handle: String!) {
+        userByHandle(handle: $handle) {
           id
           name
           handle
@@ -25,7 +25,10 @@ export class ProfileService {
       }
     `;
     return this.apollo.query<any>({
-      query: GET_USER
+      query: GET_USER,
+      variables: {
+        handle: handle
+      }
     }).pipe(
       map(response => {
         if(!response.data.userByHandle.length){
@@ -44,10 +47,99 @@ export class ProfileService {
     );
   }
 
+  getUserStats(userId: string) {
+    const GET_USER_PLAYERS = gql`
+      query GetUserPlayers {
+        playerWithUserId(id: "${userId}"){
+          id
+          cups
+          penalties
+        }
+      }
+    `;
+    return this.apollo.query<any>({
+      query: GET_USER_PLAYERS,
+    }).pipe(
+      switchMap((response:any) => {
+        return this.parsePlayers(response.data.playerWithUserId)
+      })
+    );
+  }
+  parsePlayers(data: any){
+    const stats = {
+      wins: 0,
+      losses: 0,
+      yaks: 0,
+      averageCups: 0,
+      percentage: '.000'
+    }
+
+    let cups = 0;
+    let playerIds = [];
+    
+    if(!data){
+      return of(stats);
+    }
+
+    for(let player of data){
+      stats.yaks += player.penalties;
+      cups += player.cups;
+      playerIds.push(player.id);
+    }    
+
+    let observables = [];
+    for(let playerId of playerIds){
+      observables.push(this.findGames(playerId));
+    }
+    return combineLatest(observables).pipe(
+      map((response:any) => {
+        for(let [index, game] of response.entries()){
+          if(game){
+            for(let player of game.winning_team){
+              if(player.id == playerIds[index]){
+                stats.wins += 1
+              }
+            }
+            for(let player of game.losing_team){
+              if(player.id == playerIds[index]){
+                stats.losses += 1
+              }
+            }
+          }
+        }
+        stats.averageCups = cups / (stats.wins + stats.losses);
+        stats.percentage = (stats.wins/(stats.wins + stats.losses)).toFixed(3);
+        return stats;
+      })
+    )
+  }
+
+  findGames(playerId: string){
+    const FIND_PLAYER_GAMES = gql`
+        query GetGames {
+          gamesByPlayerId(id: "${playerId}"){
+            winning_team{
+              id
+            }
+            losing_team{
+              id
+            }
+          }
+        }
+      `; 
+      return this.apollo.query<any>({
+        query: FIND_PLAYER_GAMES,
+      }).pipe(
+        map((response: any) => {
+          return response.data.gamesByPlayerId[0];
+        })
+      )
+  }
+
   checkFriends(prospectiveId: string, baseHandle: string) {
     const FIND_FRIEND_HANDLES = gql`
-      query GetUser {
-        userByHandle(handle: "${baseHandle}") {
+      query GetUser($handle: String!) {
+        userByHandle(handle: $handle) {
           id
           friends {
             handle
@@ -57,7 +149,10 @@ export class ProfileService {
     `;
 
     return this.apollo.query<any>({
-      query: FIND_FRIEND_HANDLES
+      query: FIND_FRIEND_HANDLES,
+      variables: {
+        handle: baseHandle
+      }
     }).pipe(
       map(response => {
         if(!response.data.userByHandle.length){

@@ -33,7 +33,14 @@
 
 @media screen and (max-width: 600px){
     #header {
-        font-size: 1.5em;
+        font-size: 1em;
+        flex-direction: column;
+        height: 33%;
+        justify-content: center;
+    }
+    #header img {
+        height: 33%;
+        width: auto;
     }
     #user-details {
         margin: 0;
