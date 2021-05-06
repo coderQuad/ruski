@@ -5,9 +5,22 @@ const cors = require("cors");
 const schema = require("./graphql/schemas");
 const aws = require("aws-sdk");
 const fs = require('fs');
+const yargs = require('yargs');
+
 if (process.env.NODE_ENV !== "production") {
   require("dotenv").config();
 }
+
+const argv = yargs
+    .option('port', {
+        alias: 'p',
+        description: 'Specify the port to run the server on',
+        type: 'number',
+        demand: 'You must specify the port'
+    })
+    .help()
+    .alias('help', 'h')
+    .argv;
 
 const s3 = new aws.S3({
   accessKeyId: process.env.ACCESS_KEY_ID, // aws access id here
@@ -98,6 +111,6 @@ app.use(
   })
 );
 
-app.listen(80, () => {
-  console.log("Running a GraphQL API server at http://localhost/graphql (port 80)");
+app.listen(argv.port, () => {
+  console.log(`API server running on port ${argv.port}`);
 });
