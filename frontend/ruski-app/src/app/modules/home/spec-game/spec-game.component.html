@@ -49,18 +49,26 @@
     </div>
 </mat-card>
 <div *ngIf="game" class="commenty">
-    <div *ngIf="game.comments.length > 0">
+    <div *ngIf="commentTextMirror.length > 0">
         <cdk-virtual-scroll-viewport itemSize="50" class="viewport">
             <div
-                *cdkVirtualFor="let comment of game.comments; let i = index"
+                *cdkVirtualFor="let comment of commentTextMirror; let i = index"
                 class="comment-container"
             >
                 <div class="placeholder">
                     <img
                         class="comment-image"
-                        src="{{ comment.user.profile_url }}"
+                        src="{{
+                            commentDBMirror[i]
+                                ? currentUser.profile_url
+                                : game.comments[i].user.profile_url
+                        }}"
                     />
-                    <span class="comment-name">{{ comment.user.name }}</span>
+                    <span class="comment-name">{{
+                        commentDBMirror[i]
+                            ? currentUser.name
+                            : game.comments[i].user.name
+                    }}</span>
                     <mat-icon
                         class="comment-likes"
                         (click)="changeCommentLikeCount($event, i)"
@@ -82,12 +90,12 @@
                         >{{ commentLikeMirror[i] }}</span
                     >
                 </div>
-                <div class="comment-text">{{ comment.text }}</div>
+                <div class="comment-text">{{ comment }}</div>
                 <mat-divider></mat-divider>
             </div>
         </cdk-virtual-scroll-viewport>
     </div>
-    <div class="first" *ngIf="game.comments.length <= 0">
+    <div class="first" *ngIf="commentTextMirror <= 0">
         Be the first to comment
     </div>
     <div class="add-comment">

@@ -63,6 +63,7 @@ export class CurrentUserService {
                     })
                     .pipe(
                         map((response) => {
+                            console.log(response);
                             if (!response.data.userByEmail.length) {
                                 return {
                                     profile_url:

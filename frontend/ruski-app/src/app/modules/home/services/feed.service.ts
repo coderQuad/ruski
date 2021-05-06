@@ -258,6 +258,7 @@ export class FeedService {
 
     incCommentLike(commentId: string, userId: string) {
         // console.log(gameId, userId);
+        console.log(userId);
         const INC_LIKE = gql`
             mutation IncrementCommentLike($id: ID!, $liked_by_id: ID!) {
                 incrementCommentLike(id: $id, liked_by_id: $liked_by_id) {
@@ -281,7 +282,7 @@ export class FeedService {
                 })
             )
             .subscribe((response) => {
-                // console.log(response);
+                console.log(response);
             });
     }
 
