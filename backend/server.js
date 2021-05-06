@@ -98,6 +98,6 @@ app.use(
   })
 );
 
-app.listen(4000, () => {
+app.listen(80, () => {
   console.log("Running a GraphQL API server at http://localhost/graphql (port 80)");
 });
