@@ -39,7 +39,8 @@ def main():
     result['yacks'] = yaks
     result['beers'] = beers
 
-    print(json.dumps(result))
+    with open('yack-beer-totals.json', 'w') as file:
+        json.dump(result, file)
 
 
 if __name__ == '__main__':

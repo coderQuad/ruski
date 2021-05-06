@@ -36,7 +36,7 @@ export class RegisterComponent implements OnInit {
             }
         });
         this.reg.fetchAllHandles().subscribe((response) => {
-            // console.l/og(response);
+            console.log(response);
             for (const user of response) {
                 this.allHandles.add(user.handle);
             }
@@ -77,24 +77,24 @@ export class RegisterComponent implements OnInit {
             return;
         }
         this.errorFlag = false;
-        this.hundler.changeRegistered();
         if (this.nameIdMap.has(userName)) {
             const userId = this.nameIdMap.get(userName);
             this.reg.submitHandle(userId, userHandle);
-            this.reg.submitEmail(userId).subscribe((response) => {
-                this.router.navigate(['/main']);
-            });
+            this.reg.submitEmail(userId);
         } else {
+            console.log('HEREE');
             this.reg.genUser(userName).subscribe((response) => {
-                // console.log('HERE');
+                console.log('HERE');
                 const userId = response;
                 this.reg.submitHandle(userId, userHandle);
-                this.reg.submitEmail(userId).subscribe((response) => {
-                    // console.log(response);
-                    this.router.navigate(['/main']);
-                });
+                this.reg.submitEmail(userId);
             });
         }
+
+        // Submit email
+        this.hundler.changeRegistered();
+        console.log(this.hundler.getStatus());
+        this.router.navigate(['/main']);
     }
 
     private _filter(value: string): string[] {

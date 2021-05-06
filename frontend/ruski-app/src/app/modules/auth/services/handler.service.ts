@@ -22,6 +22,7 @@ export class HandlerService {
     }
 
     checkUserExistsByEmail() {
+        console.log();
         const GET_USER = gql`
             query UserByEmail($email: String!) {
                 userByEmail(email: $email) {
@@ -32,21 +33,15 @@ export class HandlerService {
         return this.auth.user$.pipe(
             switchMap((response: any) => {
                 const email = response.email;
-                // console.log(response);
+
                 return this.apollo
                     .query<any>({
                         query: GET_USER,
                         variables: {
                             email: email,
                         },
-                        fetchPolicy: 'no-cache',
                     })
-                    .pipe(
-                        map((response) => {
-                            // console.log(response);
-                            return response.data.userByEmail;
-                        })
-                    );
+                    .pipe(map((response) => response.data.userByEmail));
             })
         );
     }

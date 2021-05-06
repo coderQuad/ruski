@@ -1,5 +1,5 @@
 const { GraphQLObjectType, GraphQLString, GraphQLInt,
-    GraphQLID, GraphQLList } = require('graphql');
+       GraphQLID, GraphQLList} = require('graphql');
 const { GraphQLDateTime } = require('graphql-iso-date');
 
 const User = require('../models/user');
@@ -18,26 +18,26 @@ const EloType = new GraphQLObjectType({
 });
 
 const UserType = new GraphQLObjectType({
-    name: 'User',
+    name: 'User', 
     fields: () => ({
         id: { type: GraphQLID },
         handle: { type: GraphQLString },
         name: { type: GraphQLString },
         email: { type: GraphQLString },
         elo: { type: GraphQLInt },
-        elo_history: {
+        elo_history: { 
             type: new GraphQLList(EloType),
-            resolve(parent, args) {
-                return Elo.find({ '_id': { $in: parent.elo_history_ids } });
+            resolve(parent, args){
+                return Elo.find({'_id': { $in: parent.elo_history_ids}});
             }
         },
         friends: {
             type: new GraphQLList(UserType),
-            resolve(parent, args) {
-                return User.find({ '_id': { $in: parent.friend_ids } });
+            resolve(parent, args){
+                return User.find({'_id': { $in: parent.friend_ids }});
             }
         },
-        profile_url: { type: GraphQLString }
+        profile_url: { type: GraphQLString}
     })
 });
 
@@ -47,12 +47,12 @@ const PlayerType = new GraphQLObjectType({
         id: { type: GraphQLID },
         cups: { type: GraphQLInt },
         penalties: { type: GraphQLInt },
-        user: {
+        user: { 
             type: UserType,
-            resolve(parent, args) {
+            resolve(parent, args){
                 return User.findById(parent.user_id);
             }
-        }
+        } 
     })
 });
 
@@ -65,15 +65,15 @@ const CommentType = new GraphQLObjectType({
         text: { type: GraphQLString },
         likes: { type: GraphQLInt },
         user: {
-            type: UserType,
-            resolve(parent, args) {
+            type: UserType, 
+            resolve(parent, args){
                 return User.findById(parent.user_id);
             }
         },
         liked_by: {
-            type: new GraphQLList(UserType),
-            resolve(parent, args) {
-                return User.find({ '_id': { $in: parent.liked_by_ids } });
+            type: UserType,
+            resolve(parent, args){
+                return User.find({'_id': {$in: parent.liked_by_ids}});
             }
         }
     })
@@ -87,29 +87,29 @@ const GameType = new GraphQLObjectType({
         updatedAt: { type: GraphQLDateTime },
         location: { type: GraphQLString },
         description: { type: GraphQLString },
-        likes: { type: GraphQLInt },
+        likes: { type: GraphQLInt }, 
         winning_team: {
             type: new GraphQLList(PlayerType),
-            resolve(parent, args) {
-                return Player.find({ '_id': { $in: parent.winning_team_player_ids } });
+            resolve(parent, args){
+                return Player.find({'_id': { $in: parent.winning_team_player_ids }});
             }
         },
         losing_team: {
             type: new GraphQLList(PlayerType),
-            resolve(parent, args) {
-                return Player.find({ '_id': { $in: parent.losing_team_player_ids } });
+            resolve(parent, args){
+                return Player.find({'_id': { $in: parent.losing_team_player_ids }});
             }
         },
         comments: {
             type: new GraphQLList(CommentType),
-            resolve(parent, args) {
-                return Comment.find({ '_id': { $in: parent.comment_ids } });
+            resolve(parent, args){
+                return Comment.find({'_id': { $in: parent.comment_ids }});
             }
         },
         liked_by: {
-            type: new GraphQLList(UserType),
-            resolve(parent, args) {
-                return User.find({ '_id': { $in: parent.liked_by_ids } });
+            type: UserType,
+            resolve(parent, args){
+                return User.find({'_id': {$in: parent.liked_by_ids}});
             }
         }
     })

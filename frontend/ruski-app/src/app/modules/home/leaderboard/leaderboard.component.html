@@ -16,7 +16,7 @@
         <ng-container matColumnDef="user">
             <mat-header-cell *matHeaderCellDef> User </mat-header-cell>
             <mat-cell *matCellDef="let element">
-                <div id="user" (click)="goToProfile(element.handle)">
+                <div id="user">
                     <img src="{{element.profile}}"/> 
                     <div id="user-details">
                         <div id="user-name">{{element.name}}</div>
