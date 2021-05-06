@@ -139,37 +139,57 @@ export class ProfileService {
   //     })
   //   );
   // }
-  updatePic(id:string, picture: string) {
+  postPic(id:string, picture:string){
     const typeRegex = /data\:image\/(png|jpeg)/;
     const type = typeRegex.exec(picture)[1];
     return this.http.get(`http://localhost:4000/get_presigned_url_${type}/${id}`).pipe(
-      map(
+      switchMap(
         async (response: any) => {
-        console.log(response);
-        const signedUrl = response.presigned_url;
-        console.log(signedUrl); 
+          console.log(response);
+          const signedUrl = response.presigned_url;
+          console.log(signedUrl); 
 
-        const data = picture.replace(/^data:image\/\w+;base64,/, "");
-        const buff = Buffer.from(data, 'base64');
+          const data = picture.replace(/^data:image\/\w+;base64,/, "");
+          const buff = Buffer.from(data, 'base64');
 
-        await fetch(
-          signedUrl,
-          {
-            method: 'PUT',
-            mode: 'cors',
-            headers: {
-              'Content-Type': `image/${type}`,
-              'Content-Encoding': 'base64'
-            },
-            body: buff
-          }
-        ).then(result => result.text())
-        .then(result => {
-          console.log(result);
+          await fetch(
+            signedUrl,
+            {
+              method: 'PUT',
+              mode: 'cors',
+              headers: {
+                'Content-Type': `image/${type}`,
+                'Content-Encoding': 'base64'
+              },
+              body: buff
+            }
+          ).then(result => result.text())
+          .then(result => {
+            console.log(result);
+          })
           return response.s3_access_url;
         })
-      })
     );
+  }
+  updatePic(id:string, picture: string) {
+    this.postPic(id, picture).subscribe(response => {
+      const UPDATE_PROFILE = gql`
+        mutation ModifyProfileUrl($id: ID!, $profile_url: String!) {
+            modifyProfileURL(id: $id, profile_url: $profile_url) {
+                id
+            }
+        }
+      `;
+      this.apollo
+        .mutate({
+            mutation: UPDATE_PROFILE,
+            variables: {
+                id: id,
+                profile_url: response,
+            },
+        }).subscribe();
+    });
+    return of([]);
   }
 
 }

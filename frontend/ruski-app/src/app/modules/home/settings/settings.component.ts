@@ -37,6 +37,7 @@ export class SettingsComponent implements OnInit {
   // cropper properties
   imageChangedEvent;
   croppedImage;
+  editingPic: boolean;
 
   // error properties
   errorFlag: boolean;
@@ -102,6 +103,7 @@ export class SettingsComponent implements OnInit {
       observables.push(this.profile.updateName(this.id, this.name));
     }
     if(pic){
+      this.editingPic = true;
       observables.push(this.profile.updatePic(this.id, pic));
     }
 
@@ -110,6 +112,15 @@ export class SettingsComponent implements OnInit {
     }
 
     combineLatest(observables).subscribe(response => {
+      console.log(response);
+      // if(this.editingPic){
+      //   if(Array.isArray(response)){
+      //     this.pic = response[response.length-1];
+      //   }
+      //   else {
+      //     this.pic = response;
+      //   }
+      // }
       this.router.navigate([`/main/user/${this.handle}`]);
     });
 
