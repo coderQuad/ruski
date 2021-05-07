@@ -51,11 +51,11 @@ img {
 }
 
 .win-score {
-    color: green;
+    color: #2b5c36;
 }
 
 .lose-score {
-    color: #b00020;
+    color: #b71c1c;
 }
 
 .win-score,
@@ -168,6 +168,45 @@ textarea {
     margin-left: 15px;
     display: inline-block;
     vertical-align: middle;
+}
+
+.stats {
+    margin-top: 10px;
+    margin-left: 200px;
+    margin-right: 200px;
+    font-size: 30px;
+}
+
+.flexy {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.player-name {
+    font-weight: bold;
+}
+
+.playerStats {
+    text-align: center;
+}
+
+.brother-flex {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.timestamp {
+    margin-right: 20px;
+    font-weight: bold;
+    opacity: 0.8;
+    font-style: italic;
+    font-size: 25px;
+}
+
+.submit-buttom {
+    margin-bottom: 20px;
 }
 
 @media screen and (max-width: 600px) {
@@ -319,6 +358,47 @@ textarea {
         display: inline-block;
         vertical-align: middle;
     }
+
+    .stats {
+        margin-top: 10px;
+        margin-left: 30px;
+        margin-right: 30px;
+        font-size: 15px;
+    }
+
+    .flexy {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .player-name {
+        font-weight: bold;
+    }
+
+    .playerStats {
+        text-align: center;
+    }
+
+    .brother-flex {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .timestamp {
+        margin-right: 20px;
+        font-weight: bold;
+        opacity: 0.8;
+        font-style: italic;
+        font-size: 15px;
+    }
+
+    // .brothers {
+    //     display: flex;
+    //     flex-direction: row;
+    //     width: 140px;
+    // }
 
     // .likes {
     //     position: absolute;

@@ -1,3 +1,5 @@
+import { Time } from './../time-template';
+import { TimeService } from './../services/time.service';
 import { User } from './../user-template';
 import { CurrentUserService } from './../services/current-user.service';
 import { CommentService } from './../services/comment.service';
@@ -19,6 +21,7 @@ export class SpecGameComponent implements OnInit {
     winning_score: number;
     losing_score: number;
     alreadyLiked = false;
+    myTime: Time;
     alreadyLikedComment: boolean[] = [];
     commentLikeMirror: number[] = [];
     commentTextMirror: string[] = [];
@@ -31,7 +34,8 @@ export class SpecGameComponent implements OnInit {
         private route: ActivatedRoute,
         private hundy: CurrentUserService,
         private commentService: CommentService,
-        private router: Router
+        private router: Router,
+        private timeConverter: TimeService
     ) {}
 
     ngOnInit(): void {
@@ -41,11 +45,13 @@ export class SpecGameComponent implements OnInit {
         });
         this.gameFetcher.fetchSpecGame(id).subscribe((response) => {
             this.game = response;
+            this.myTime = this.timeConverter.convertTime(this.game.createdAt);
             this.winning_score = 10;
             this.losing_score = this.game.l1Cups + this.game.l2Cups;
             if (this.losing_score > 9) {
                 this.losing_score = this.getRandomInt(5, 9);
             }
+            // "2021-04-07T03:26:01.422Z"
             // this.game.description =
             //     'Dennis is very cool. Everyone else sucks. Dennis is very cool. Everyone else sucks. Dennis is very cool. Everyone else sucks. Dennis is very cool. Everyone else sucks. Dennis is very cool. Everyone else sucks. Dennis is very cool. Everyone else sucks.';
             // console.log(this.game);
