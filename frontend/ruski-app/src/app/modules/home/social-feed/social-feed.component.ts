@@ -21,6 +21,12 @@ export class SocialFeedComponent implements OnInit {
     ngOnInit(): void {
         this.feedFetcher.fetchAllGames().subscribe((response) => {
             this.games = response;
+            this.games.sort((a, b) => {
+                let a_date = new Date(a.createdAt).getTime();
+                let b_date = new Date(b.createdAt).getTime();
+                return b_date - a_date;
+            });
+            console.log(this.games);
         });
         this.hundy.getUserID().subscribe((response) => {
             this.userID = response;

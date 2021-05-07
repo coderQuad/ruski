@@ -29,8 +29,19 @@ const s3 = new aws.S3({
   useAccelerateEndpoint: true,
 });
 
+var whitelist = ['http://localhost:4200', 'https://playruski.com', 'https://dev.playruski.com']
+var corsOptions = {
+  origin: function (origin, callback) {
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true)
+    } else {
+      callback(new Error('Not allowed by CORS'))
+    }
+  }
+}
+
 const app = express();
-app.use(cors());
+app.use(cors(corsOptions));
 
 
 mongoose.connect("mongodb://127.0.0.1:27017/ruski", {
