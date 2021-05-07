@@ -14,7 +14,7 @@
     </mat-autocomplete> -->
     <div class="dom">
         <div *ngFor="let name of filteredOptions | async">
-            <mat-card>
+            <mat-card (click)="navUser(name)">
                 <div class="flex-container">
                     <div>
                         <img

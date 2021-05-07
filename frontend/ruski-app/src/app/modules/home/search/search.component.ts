@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-search',
@@ -10,7 +11,7 @@ import { map, startWith } from 'rxjs/operators';
     styleUrls: ['./search.component.scss'],
 })
 export class SearchComponent implements OnInit {
-    constructor(private searchFetcher: SearchFetcherService) {}
+    constructor(private searchFetcher: SearchFetcherService, private router: Router) {}
     searchControl = new FormControl();
     namesOptions = [];
     handleOptions = [];
@@ -61,5 +62,10 @@ export class SearchComponent implements OnInit {
         returnValues = returnValues.slice(0, 5);
 
         return returnValues;
+    }
+
+    navUser(name: any){
+        const handle = name.split(' ')[1].slice(1);
+        this.router.navigate([`/main/user/${handle}`]);
     }
 }
