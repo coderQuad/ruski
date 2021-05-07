@@ -224,6 +224,8 @@ export class EnterGameComponent implements OnInit {
 
         this.gameSubmitter.submitGame(game);
         this.eloUpdate(game);
+        this.router.navigate(['/main/feed']);
+    
     }
     callUpdate(game: Game) {
         this.gameSubmitter.updateElo(game.myName, this.myElo);
@@ -290,6 +292,7 @@ export class EnterGameComponent implements OnInit {
                 });
             }
         });
+
     }
 
     async eloCalc(cups: number[], elos: number[]) {
