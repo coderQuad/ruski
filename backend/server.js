@@ -30,7 +30,7 @@ const s3 = new aws.S3({
   useAccelerateEndpoint: true,
 });
 
-var whitelist = ['https://playruski.com', 'https://dev.playruski.com']
+var whitelist = ['https://playruski.com', 'https://dev.playruski.com', 'https://www.playruski.com'];
 var corsOptions = {
   origin: function (origin, callback) {
     if (whitelist.indexOf(origin) !== -1) {
