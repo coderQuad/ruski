@@ -1,7 +1,7 @@
 import { Game } from './../game-template';
 import { Injectable } from '@angular/core';
 import { Apollo, gql } from 'apollo-angular';
-import { map, mergeMap, switchMap } from 'rxjs/operators';
+import { map, mergeMap, switchMap, tap } from 'rxjs/operators';
 import { forkJoin, from } from 'rxjs';
 
 @Injectable({
