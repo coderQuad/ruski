@@ -11,9 +11,11 @@
         </div>
         <div class="score">
             <div class="score-text">
-                <span class="win-score">{{ winning_score }}</span>
+                <span class="win-score">{{
+                    winning_score - losing_score
+                }}</span>
                 -
-                <span class="lose-score">{{ losing_score }}</span>
+                <span class="lose-score">{{ 0 }}</span>
             </div>
         </div>
         <div class="losers">
@@ -29,22 +31,69 @@
         <p class="description">
             {{ game.description }}
         </p>
-        <div>
-            <mat-icon
-                (click)="changeLikeCount($event)"
-                class="likeClick"
-                [ngStyle]="{ color: alreadyLiked ? 'red' : 'black' }"
-                >{{ !alreadyLiked ? "favorite_border" : "favorite" }}</mat-icon
-            >
-            <span (click)="changeLikeCount($event)" class="likes likeClick">{{
-                game.likes
-            }}</span>
-            <mat-icon>{{
-                game.comments.length === 0
-                    ? "chat_bubble_outline"
-                    : "chat_bubble"
-            }}</mat-icon>
-            <span class="comments">{{ game.comments.length }}</span>
+        <div class="brother-flex">
+            <div class="brothers">
+                <mat-icon
+                    (click)="changeLikeCount($event)"
+                    class="likeClick"
+                    [ngStyle]="{ color: alreadyLiked ? 'red' : 'black' }"
+                    >{{
+                        !alreadyLiked ? "favorite_border" : "favorite"
+                    }}</mat-icon
+                >
+                <span
+                    (click)="changeLikeCount($event)"
+                    class="likes likeClick"
+                    >{{ game.likes }}</span
+                >
+                <mat-icon>{{
+                    game.comments.length === 0
+                        ? "chat_bubble_outline"
+                        : "chat_bubble"
+                }}</mat-icon>
+                <span class="comments">{{ game.comments.length }}</span>
+            </div>
+            <div class="timestamp">
+                {{ myTime.hour }}:{{ myTime.minute }} {{ myTime.month }}-{{
+                    myTime.day
+                }}
+            </div>
+        </div>
+        <mat-divider [inset]="true"></mat-divider>
+        <div class="stats">
+            <div class="flexy">
+                <div class="playerStats">
+                    <div class="player-name" [ngStyle]="{ color: '#2b5c36' }">
+                        {{ game.w1Name }}
+                    </div>
+                    <div class="cups">{{ game.w1Cups }} cups</div>
+                    <div class="cups">{{ game.w1Penalties }} yaks</div>
+                </div>
+                <div class="playerStats">
+                    <div class="player-name" [ngStyle]="{ color: '#B71C1C' }">
+                        {{ game.l1Name }}
+                    </div>
+                    <div class="cups">{{ game.l1Cups }} cups</div>
+                    <div class="cups">{{ game.l1Penalties }} yaks</div>
+                </div>
+            </div>
+            <br />
+            <div class="flexy">
+                <div class="playerStats">
+                    <div class="player-name" [ngStyle]="{ color: '#2b5c36' }">
+                        {{ game.w2Name }}
+                    </div>
+                    <div class="cups">{{ game.w2Cups }} cups</div>
+                    <div class="cups">{{ game.w2Penalties }} yaks</div>
+                </div>
+                <div class="playerStats">
+                    <div class="player-name" [ngStyle]="{ color: '#B71C1C' }">
+                        {{ game.l2Name }}
+                    </div>
+                    <div class="cups">{{ game.l2Cups }} cups</div>
+                    <div class="cups">{{ game.l2Penalties }} yaks</div>
+                </div>
+            </div>
         </div>
     </div>
 </mat-card>

@@ -150,7 +150,7 @@ export class RegisterService {
                             email: '',
                             handle: '',
                             profile_url: profile_pic,
-                            name: 'Billy',
+                            name: name,
                             elo: 1200,
                         },
                     })
