@@ -75,6 +75,13 @@ const RootQuery = new GraphQLObjectType({
                 return Player.find({});
             }
         },
+        playerWithUserId: {
+            type: new GraphQLList(PlayerType),
+            args: { id: { type: GraphQLID } },
+            resolve(parent, args) {
+                return Player.find({user_id: args.id});
+            }
+        },
 
         /* Comment Queries */
         comment: {
@@ -104,7 +111,31 @@ const RootQuery = new GraphQLObjectType({
             resolve(parent, args){
                 return Game.find( {} );
             }
-        }
+        },
+        gamesByPlayerId: {
+            type: new GraphQLList(GameType),
+            args: { id: {type: GraphQLID }},
+            resolve(parent, args) {
+                return Game.find({
+                    $or: [
+                        {
+                          "winning_team_player_ids": {
+                            "$in": [
+                                args.id
+                            ]
+                          }
+                        },
+                        {
+                          "losing_team_player_ids": {
+                            "$in": [
+                                args.id
+                            ]
+                          }
+                        }
+                      ]
+                });
+            }
+        },
     }
 });
 
