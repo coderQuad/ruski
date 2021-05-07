@@ -25,6 +25,7 @@ export class FeedService {
                         text
                         user {
                             name
+                            handle
                             profile_url
                         }
                         id
@@ -33,6 +34,7 @@ export class FeedService {
                     winning_team {
                         user {
                             name
+                            handle
                             profile_url
                         }
                         cups
@@ -41,6 +43,7 @@ export class FeedService {
                     losing_team {
                         user {
                             name
+                            handle
                             profile_url
                         }
                         cups
@@ -67,18 +70,22 @@ export class FeedService {
                     const game = response.data.game;
                     const tempGame = {
                         w1Name: game.winning_team[0].user.name,
+                        w1Handle: game.winning_team[0].user.handle,
                         w1Cups: game.winning_team[0].cups,
                         w1Penalties: game.winning_team[0].penalties,
                         w1Image: game.winning_team[0].user.profile_url,
                         w2Name: game.winning_team[1].user.name,
+                        w2Handle: game.winning_team[1].user.handle,
                         w2Cups: game.winning_team[1].cups,
                         w2Penalties: game.winning_team[1].penalties,
                         w2Image: game.winning_team[1].user.profile_url,
                         l1Name: game.losing_team[0].user.name,
+                        l1Handle: game.losing_team[0].user.handle,
                         l1Cups: game.losing_team[0].cups,
                         l1Penalties: game.losing_team[0].penalties,
                         l1Image: game.losing_team[0].user.profile_url,
                         l2Name: game.losing_team[1].user.name,
+                        l2Handle: game.losing_team[1].user.handle,
                         l2Cups: game.losing_team[1].cups,
                         l2Penalties: game.losing_team[1].penalties,
                         l2Image: game.losing_team[1].user.profile_url,
@@ -105,6 +112,7 @@ export class FeedService {
                     winning_team {
                         user {
                             name
+                            handle
                             profile_url
                         }
                         cups
@@ -113,6 +121,7 @@ export class FeedService {
                     losing_team {
                         user {
                             name
+                            handle
                             profile_url
                         }
                         cups
@@ -136,18 +145,22 @@ export class FeedService {
                     for (const game of response.data.games) {
                         const tempGame = {
                             w1Name: game.winning_team[0].user.name,
+                            w1Handle: game.winning_team[0].user.handle,
                             w1Cups: game.winning_team[0].cups,
                             w1Penalties: game.winning_team[0].penalties,
                             w1Image: game.winning_team[0].user.profile_url,
                             w2Name: game.winning_team[1].user.name,
+                            w2Handle: game.winning_team[1].user.handle,
                             w2Cups: game.winning_team[1].cups,
                             w2Penalties: game.winning_team[1].penalties,
                             w2Image: game.winning_team[1].user.profile_url,
                             l1Name: game.losing_team[0].user.name,
+                            l1Handle: game.losing_team[0].user.handle,
                             l1Cups: game.losing_team[0].cups,
                             l1Penalties: game.losing_team[0].penalties,
                             l1Image: game.losing_team[0].user.profile_url,
                             l2Name: game.losing_team[1].user.name,
+                            l2Handle: game.losing_team[1].user.handle,
                             l2Cups: game.losing_team[1].cups,
                             l2Penalties: game.losing_team[1].penalties,
                             l2Image: game.losing_team[1].user.profile_url,
