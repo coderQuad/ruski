@@ -94,17 +94,18 @@ export class SettingsComponent implements OnInit {
     this.errorFlag = false;      
 
     let observables = [];
+    const currentHandle = handle ? handle.length : this.handle;
     if(handle && handle !== this.oldHandle){
       this.handle = handle;
       observables.push(this.profile.updateHandle(this.id, this.handle));
     }
     if(name && name !== this.oldName){
       this.name = name;
-      observables.push(this.profile.updateName(this.id, this.name));
+      observables.push(this.profile.updateName(this.id, currentHandle, this.name));
     }
     if(pic){
       this.editingPic = true;
-      observables.push(this.profile.updatePic(this.id, pic));
+      observables.push(this.profile.updatePic(this.id, currentHandle, pic));
     }
 
     if(!observables.length){
@@ -113,14 +114,6 @@ export class SettingsComponent implements OnInit {
 
     combineLatest(observables).subscribe(response => {
       console.log(response);
-      // if(this.editingPic){
-      //   if(Array.isArray(response)){
-      //     this.pic = response[response.length-1];
-      //   }
-      //   else {
-      //     this.pic = response;
-      //   }
-      // }
       this.router.navigate([`/main/user/${this.handle}`]);
     });
 

@@ -1,8 +1,9 @@
 import { Injectable, Type } from '@angular/core';
 import { Apollo, gql } from 'apollo-angular';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { combineLatest, of } from 'rxjs';
+import { combineLatest, of, from } from 'rxjs';
 import { catchError, map, tap, switchMap, timeout } from 'rxjs/operators';
+import {environment} from '../../../../environments/environment';
 
 @Injectable({
     providedIn: 'root',
@@ -22,12 +23,13 @@ export class ProfileService {
             profile_url
             elo
           }
-        }
+        },
       `;
     return this.apollo.query<any>({
       query: GET_USER,
       variables: {
-        handle: handle
+        handle: handle,
+        // fetchPolicy: 'no-cache',
       }
     }).pipe(
       map(response => {
@@ -186,7 +188,7 @@ export class ProfileService {
         });
     }
 
-    updateName(id: string, newName: string) {
+    updateName(id: string, newHandle: string, newName: string) {
         const UPDATE_NAME = gql`
             mutation ModifyName($id: ID!, $name: String!) {
                 modifyName(id: $id, name: $name) {
@@ -200,24 +202,42 @@ export class ProfileService {
                 id: id,
                 name: newName,
             },
+            refetchQueries: [
+              { 
+                query: gql`
+                  query GetUser($handle: String!) {
+                    userByHandle(handle: $handle) {
+                      id
+                      name
+                      handle
+                      profile_url
+                      elo
+                    }
+                  },
+                `,
+                variables: {
+                  handle: newHandle
+                },
+              },
+            ]
         });
     }
 
   postPic(id:string, picture:string){
     const typeRegex = /data\:image\/(png|jpeg)/;
     const type = typeRegex.exec(picture)[1];
-    return this.http.get(`http://localhost:4000/get_presigned_url_${type}/${id}`).pipe(
-      switchMap(
-        async (response: any) => {
-          console.log(response);
-          const signedUrl = response.presigned_url;
-          console.log(signedUrl); 
+    return this.http.get(`${environment.api}/get_presigned_url_${type}/${id}`).pipe(
+      switchMap( (response:any) => {
+        // console.log(response);
+        const signedUrl = response.presigned_url;
+        // console.log(signedUrl); 
 
-          const data = picture.replace(/^data:image\/\w+;base64,/, "");
-          const buff = Buffer.from(data, 'base64');
+        const data = picture.replace(/^data:image\/\w+;base64,/, "");
+        const buff = Buffer.from(data, 'base64');
 
-          await fetch(
-            signedUrl,
+        return from(
+          fetch(
+            signedUrl, 
             {
               method: 'PUT',
               mode: 'cors',
@@ -229,31 +249,51 @@ export class ProfileService {
             }
           ).then(result => result.text())
           .then(result => {
-            console.log(result);
+            console.log("new timestamp just dropped" + Date.now());
+            return `${response.s3_access_url}?lastmod=${Date.now()}`;
           })
-          return response.s3_access_url;
-        })
+        )
+      })
     );
   }
-  updatePic(id:string, picture: string) {
-    this.postPic(id, picture).subscribe(response => {
-      const UPDATE_PROFILE = gql`
-        mutation ModifyProfileUrl($id: ID!, $profile_url: String!) {
-            modifyProfileURL(id: $id, profile_url: $profile_url) {
-                id
-            }
-        }
-      `;
-      this.apollo
-        .mutate({
-            mutation: UPDATE_PROFILE,
-            variables: {
-                id: id,
-                profile_url: response,
-            },
-        }).subscribe();
-    });
-    return of([]);
+  updatePic(id:string, newHandle: string, picture: string) {
+    return this.postPic(id, picture).pipe(
+      switchMap(response => {
+        const UPDATE_PROFILE = gql`
+          mutation ModifyProfileUrl($id: ID!, $profile_url: String!) {
+              modifyProfileURL(id: $id, profile_url: $profile_url) {
+                  id
+              }
+          }
+        `;
+        return this.apollo
+          .mutate({
+              mutation: UPDATE_PROFILE,
+              variables: {
+                  id: id,
+                  profile_url: response,
+              },
+              refetchQueries: [
+                { 
+                  query: gql`
+                    query GetUser($handle: String!) {
+                      userByHandle(handle: $handle) {
+                        id
+                        name
+                        handle
+                        profile_url
+                        elo
+                      }
+                    },
+                  `,
+                  variables: {
+                    handle: newHandle
+                  },
+                },
+              ],
+          });
+        })
+    );
   }
 
 }
