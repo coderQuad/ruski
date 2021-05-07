@@ -9,6 +9,37 @@ import { forkJoin, from } from 'rxjs';
 })
 export class SubmitGameService {
     constructor(private apollo: Apollo) {}
+    getElo(id:string){
+        const GET_ELO = gql`
+          query GetUser {
+            user(id: "${id}") {
+              elo
+            }
+          }
+        `;
+        return this.apollo.query<any>({
+          query: GET_ELO
+        }).pipe( tap(response => console.log(response))
+          );
+    }
+    updateElo(id: string, elo: number) {
+        const UPDATE_ELO = gql`
+            mutation ModifyElo($id: ID!, $elo: Int!) {
+                modifyElo(id: $id, elo: $elo) {
+                    id
+                }
+            }
+        `;
+        console.log(elo);
+        console.log(id)
+        this.apollo.mutate<any>({
+            mutation: UPDATE_ELO,
+            variables: {
+                id: id,
+                elo: elo,
+            },
+        }).subscribe(response => console.log(response));
+    }
 
     submitGame(game: Game) {
         const ADD_PLAYER = gql`
