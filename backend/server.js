@@ -6,6 +6,7 @@ const schema = require("./graphql/schemas");
 const aws = require("aws-sdk");
 const fs = require('fs');
 const yargs = require('yargs');
+const https = require('https');
 
 if (process.env.NODE_ENV !== "production") {
   require("dotenv").config();
@@ -29,7 +30,7 @@ const s3 = new aws.S3({
   useAccelerateEndpoint: true,
 });
 
-var whitelist = ['http://localhost:4200', 'https://playruski.com', 'https://dev.playruski.com']
+var whitelist = ['https://playruski.com', 'https://dev.playruski.com']
 var corsOptions = {
   origin: function (origin, callback) {
     if (whitelist.indexOf(origin) !== -1) {
@@ -41,7 +42,8 @@ var corsOptions = {
 }
 
 const app = express();
-app.use(cors(corsOptions));
+app.use(express.static(__dirname + '/static', { dotfiles: 'allow' }));
+app.use(cors());
 
 
 mongoose.connect("mongodb://127.0.0.1:27017/ruski", {
@@ -122,6 +124,17 @@ app.use(
   })
 );
 
+if (argv.port === 443){
+https.createServer({
+    key: fs.readFileSync('/etc/letsencrypt/live/server.playruski.com/privkey.pem'),
+    cert: fs.readFileSync('/etc/letsencrypt/live/server.playruski.com/fullchain.pem'),
+    ca: fs.readFileSync('/etc/letsencrypt/live/server.playruski.com/fullchain.pem')
+    }, app)
+    .listen(argv.port, () => {
+        console.log(`API server running on port ${argv.port}`);
+    });
+} else {
 app.listen(argv.port, () => {
   console.log(`API server running on port ${argv.port}`);
 });
+}
