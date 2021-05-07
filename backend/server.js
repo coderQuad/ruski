@@ -43,8 +43,11 @@ var corsOptions = {
 
 const app = express();
 app.use(express.static(__dirname + '/static', { dotfiles: 'allow' }));
-app.use(cors(corsOptions));
-
+if(argv.port === 443) {
+  app.use(cors(corsOptions));
+} else {
+  app.use(cors());
+}
 
 mongoose.connect("mongodb://127.0.0.1:27017/ruski", {
   useNewUrlParser: true,
