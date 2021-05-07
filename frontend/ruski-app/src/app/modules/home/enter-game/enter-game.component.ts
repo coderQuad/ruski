@@ -2,6 +2,7 @@ import { SubmitGameService } from './../services/submit-game.service';
 import { CurrentUserService } from './../services/current-user.service';
 import { Game } from './../game-template';
 import { Component, OnInit } from '@angular/core';
+
 import {
     AbstractControl,
     FormControl,
@@ -157,8 +158,7 @@ export class EnterGameComponent implements OnInit {
         }
 
         const allValuesArray = [
-            //this.myName.value,
-            this.userName,
+            this.myName.value,
             this.partnerName.value,
             this.oneName.value,
             this.twoName.value,
@@ -168,16 +168,14 @@ export class EnterGameComponent implements OnInit {
             this.twoCups.value,
         ];
         const namesArray = [
-            //this.myName.value,
-            this.userName,
+            this.myName.value,
             this.partnerName.value,
             this.oneName.value,
             this.twoName.value,
         ];
         let noErrors = true;
-        console.log(allValuesArray);
         for (const value of allValuesArray) {
-            if (value === null) {
+            if (!value) {
                 this.errorFlag = true;
                 noErrors = false;
                 this.errorMessage = `Error: Cannot leave fields blank`;
@@ -205,8 +203,7 @@ export class EnterGameComponent implements OnInit {
                 ? 1
                 : 2;
         const game: Game = {
-            //myName: this.userMap.get(this.myName.value),
-            myName: this.userMap.get(this.userName),
+            myName: this.userMap.get(this.myName.value),
             myCups: this.myCups.value,
             myPenalties: this.myPenalties.value,
             partnerName: this.userMap.get(this.partnerName.value),
@@ -347,7 +344,6 @@ export class EnterGameComponent implements OnInit {
             new_elos[i] = Math.round(new_elo + 2 * win_fact);
         }
         return new_elos;
-    }
 
     private _filter(value: string): string[] {
         const filterValue = value.toLowerCase();
