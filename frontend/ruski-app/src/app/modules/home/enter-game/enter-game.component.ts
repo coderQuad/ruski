@@ -2,9 +2,16 @@ import { SubmitGameService } from './../services/submit-game.service';
 import { CurrentUserService } from './../services/current-user.service';
 import { Game } from './../game-template';
 import { Component, OnInit } from '@angular/core';
-import { AbstractControl, FormControl, Validators, FormBuilder,FormGroup } from '@angular/forms';
-import { Observable } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
+
+import {
+    AbstractControl,
+    FormControl,
+    Validators,
+    FormBuilder,
+    FormGroup,
+} from '@angular/forms';
+import { Observable, forkJoin, from } from 'rxjs';
+import { map, startWith, switchMap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 
 @Component({
@@ -32,7 +39,11 @@ export class EnterGameComponent implements OnInit {
     filteredUsers: Observable<string[]>;
     errorFlag: boolean = false;
     errorMessage: string = '';
-
+    id: string = '';
+    myElo: number = 0;
+    partnerElo: number = 0;
+    enemy1Elo: number = 0;
+    enemy2Elo: number = 0;
 
     // properties for current user display
     userPro: string = '';
@@ -40,7 +51,12 @@ export class EnterGameComponent implements OnInit {
     userHandle: string = '';
     usered: boolean;
 
-    constructor(private gameSubmitter: SubmitGameService, private _formBuilder: FormBuilder, private current:CurrentUserService, private router:Router) {}
+    constructor(
+        private gameSubmitter: SubmitGameService,
+        private _formBuilder: FormBuilder,
+        private current: CurrentUserService,
+        private router: Router
+    ) {}
 
     ngOnInit(): void {
         this.gameSubmitter.fetchUsers().valueChanges.subscribe((response) => {
@@ -51,28 +67,27 @@ export class EnterGameComponent implements OnInit {
         });
         this.formGroup = this._formBuilder.group({
             formArray: this._formBuilder.array([
-              this._formBuilder.group({
-                myName : this.myName,
-                myCups: this.myCups,
-                myPenalties : this.myPenalties,
-                partnerName : this.partnerName,
-                partnerCups : this.partnerCups,
-                partnerPenalties : this.partnerPenalties,
-                
-              }),
-              this._formBuilder.group({
-                oneName : this.oneName,
-                oneCups : this.oneCups,
-                onePenalties : this.onePenalties,
-                twoName : this.twoName,
-                twoCups : this.twoCups,
-                twoPenalties : this.twoPenalties
-              }),
-              this._formBuilder.group({
-                descriptionControl : this.descriptionControl,
-              }),
-            ])
-          });
+                this._formBuilder.group({
+                    myName: this.myName,
+                    myCups: this.myCups,
+                    myPenalties: this.myPenalties,
+                    partnerName: this.partnerName,
+                    partnerCups: this.partnerCups,
+                    partnerPenalties: this.partnerPenalties,
+                }),
+                this._formBuilder.group({
+                    oneName: this.oneName,
+                    oneCups: this.oneCups,
+                    onePenalties: this.onePenalties,
+                    twoName: this.twoName,
+                    twoCups: this.twoCups,
+                    twoPenalties: this.twoPenalties,
+                }),
+                this._formBuilder.group({
+                    descriptionControl: this.descriptionControl,
+                }),
+            ]),
+        });
         this.fillUser();
     }
     get formArray(): AbstractControl | null {
@@ -203,8 +218,132 @@ export class EnterGameComponent implements OnInit {
             description: this.descriptionControl.value,
             winner: winner,
         };
+
         this.gameSubmitter.submitGame(game);
+        this.eloUpdate(game);
+        this.router.navigate(['/main/feed']);
+    
     }
+    callUpdate(game: Game) {
+        this.gameSubmitter.updateElo(game.myName, this.myElo);
+        this.gameSubmitter.updateElo(game.partnerName, this.partnerElo);
+        this.gameSubmitter.updateElo(game.oneName, this.enemy1Elo);
+        this.gameSubmitter.updateElo(game.twoName, this.enemy2Elo);
+    }
+    eloUpdate(game: Game) {
+        forkJoin({
+            me: this.gameSubmitter.getElo(game.myName),
+            partner: this.gameSubmitter.getElo(game.partnerName),
+            enemy1: this.gameSubmitter.getElo(game.oneName),
+            enemy2: this.gameSubmitter.getElo(game.twoName),
+        }).subscribe(({ me, partner, enemy1, enemy2 }) => {
+            let elo_new: number[];
+            this.myElo = me.data.user['elo'];
+            this.partnerElo = partner.data.user['elo'];
+            this.enemy1Elo = enemy1.data.user['elo'];
+            this.enemy2Elo = enemy2.data.user['elo'];
+            if (game.winner === 1) {
+                const elos = [
+                    this.myElo,
+                    this.partnerElo,
+                    this.enemy1Elo,
+                    this.enemy2Elo,
+                ];
+                const cups = [
+                    game.myCups,
+                    game.partnerCups,
+                    game.oneCups,
+                    game.twoCups,
+                ];
+                this.eloCalc(cups, elos).then((elo_new) => {
+                    //this.myElo = elo_new[0];
+                    //this.partnerElo = elo_new[1];
+                    //this.enemy1Elo = elo_new[2];
+                    //this.enemy2Elo = elo_new[3];
+                    console.log('WINNER');
+                    console.log(elos);
+                    console.log(elo_new);
+                    this.gameSubmitter.updateElo(game.myName, elo_new[0]);
+                    this.gameSubmitter.updateElo(game.partnerName, elo_new[1]);
+                    this.gameSubmitter.updateElo(game.oneName, elo_new[2]);
+                    this.gameSubmitter.updateElo(game.twoName, elo_new[3]);
+                });
+            } else {
+                const elos = [
+                    this.enemy1Elo,
+                    this.enemy2Elo,
+                    this.myElo,
+                    this.partnerElo,
+                ];
+                const cups = [
+                    game.oneCups,
+                    game.twoCups,
+                    game.myCups,
+                    game.partnerCups,
+                ];
+                this.eloCalc(cups, elos).then((elo_new) => {
+                    this.gameSubmitter.updateElo(game.myName, elo_new[2]);
+                    this.gameSubmitter.updateElo(game.partnerName, elo_new[3]);
+                    this.gameSubmitter.updateElo(game.oneName, elo_new[0]);
+                    this.gameSubmitter.updateElo(game.twoName, elo_new[1]);
+                });
+            }
+        });
+
+    }
+
+    async eloCalc(cups: number[], elos: number[]) {
+        let K: number = 30;
+        let cup_m: number = 30;
+        let new_elos = [0, 0, 0, 0];
+        let win_elo: number = (elos[0] + elos[1]) / 2;
+        let lose_elo: number = (elos[2] + elos[3]) / 2;
+        let win_expect: number =
+            1 / (1 + Math.pow(10, (win_elo - lose_elo) / 400));
+        let lose_expect: number =
+            1 / (1 + Math.pow(10, (lose_elo - win_elo) / 400));
+        let new_elo: number;
+        let expected: number;
+        let win_fact: number;
+        let oppo_cups: number;
+        let Q: number;
+        let MOVM: number;
+        let result: number;
+        let delta: number;
+        for (let i = 0; i < 4; i++) {
+            new_elo = elos[i];
+            if (i < 2) {
+                expected = win_expect;
+                win_fact = win_expect * cup_m;
+                oppo_cups = (cups[3] + cups[2]) / 2;
+                Q = 2.2 / (Math.abs(elos[i] - lose_elo) * 0.001 + 2.2);
+                MOVM = Math.log(Math.abs(cups[i] - oppo_cups) + 1) * Q;
+                expected = 1 / (1 + Math.pow(10, (elos[i] - lose_elo) / 400));
+                result = 0.5;
+                if (cups[i] > oppo_cups) {
+                    result = 1;
+                } else if (cups[i] < oppo_cups) {
+                    result = 0;
+                }
+            } else {
+                expected = lose_expect;
+                win_fact = -1 * lose_expect * cup_m;
+                oppo_cups = (cups[0] + cups[1]) / 2;
+                Q = 2.2 / (Math.abs(elos[i] - win_elo) * 0.001 + 2.2);
+                MOVM = Math.log(Math.abs(cups[i] - oppo_cups) + 1) * Q;
+                expected = 1 / (1 + Math.pow(10, (elos[i] - win_elo) / 400));
+                result = 0.5;
+                if (cups[i] > oppo_cups) {
+                    result = 1;
+                } else if (cups[i] < oppo_cups) {
+                    result = 0;
+                }
+            }
+            delta = K * (result - expected) * MOVM;
+            new_elo += delta * 0.6;
+            new_elos[i] = Math.round(new_elo + 2 * win_fact);
+        }
+        return new_elos;
 
     private _filter(value: string): string[] {
         const filterValue = value.toLowerCase();
@@ -217,20 +356,17 @@ export class EnterGameComponent implements OnInit {
         return returnValue;
     }
 
-    fillUser(){
-        this.current.fetchUser()
-        .subscribe(response => {
+    fillUser() {
+        this.current.fetchUser().subscribe((response) => {
             const user = response;
-            this.userPro= user.profile_url;
-            this.userName= user.name;
-            this.userHandle= user.handle;
-            this.usered=true;
+            this.userPro = user.profile_url;
+            this.userName = user.name;
+            this.userHandle = user.handle;
+            this.usered = true;
         });
-
     }
 
     goToProfile(handle: string): void {
-        this.router.navigate([`/main/user/${handle}`])
+        this.router.navigate([`/main/user/${handle}`]);
     }
-    
 }

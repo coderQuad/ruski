@@ -56,11 +56,11 @@ img {
 }
 
 .win-score {
-    color: green;
+    color: #2b5c36;
 }
 
 .lose-score {
-    color: #b00020;
+    color: #b71c1c;
 }
 
 .win-score,
@@ -98,6 +98,24 @@ img {
     font-size: 25px;
     margin-left: 10px;
     padding-bottom: 20px;
+}
+
+.brother-flex {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.timestamp {
+    margin-right: 20px;
+    font-weight: bold;
+    opacity: 0.8;
+    font-style: italic;
+    font-size: 25px;
+}
+
+.submit-buttom {
+    margin-bottom: 20px;
 }
 
 @media screen and (max-width: 600px) {
@@ -185,6 +203,20 @@ img {
     .comments {
         font-size: 15px;
         margin-left: 0px;
+    }
+
+    .brother-flex {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .timestamp {
+        margin-right: 20px;
+        font-weight: bold;
+        opacity: 0.8;
+        font-style: italic;
+        font-size: 15px;
     }
 
     // .likes {

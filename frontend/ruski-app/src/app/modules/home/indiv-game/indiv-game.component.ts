@@ -3,6 +3,8 @@ import { CurrentUserService } from './../services/current-user.service';
 import { Game } from './../game-feed-template';
 import { Component, Input, OnInit, OnChanges } from '@angular/core';
 import { Router } from '@angular/router';
+import { TimeService } from '../services/time.service';
+import { Time } from '@angular/common';
 
 @Component({
     selector: 'app-indiv-game',
@@ -15,22 +17,25 @@ export class IndivGameComponent implements OnInit, OnChanges {
     winning_score: number;
     losing_score: number;
     alreadyLiked = false;
+    myTime: any;
 
     constructor(
         private router: Router,
         private hundy: CurrentUserService,
-        private feedFetcher: FeedService
+        private feedFetcher: FeedService,
+        private timeConverter: TimeService
     ) {}
 
     ngOnInit(): void {
         this.winning_score = 10;
         console.log(this.game.likes);
         this.losing_score = this.game.l1Cups + this.game.l2Cups;
+        this.myTime = this.timeConverter.convertTime(this.game.createdAt);
         if (this.losing_score > 9) {
             this.losing_score = this.getRandomInt(5, 9);
         }
-        this.game.description =
-            'Dennis is very cool. Everyone else sucks. Dennis is very cool. Everyone else sucks. Dennis is very cool. Everyone else sucks. Dennis is very cool. Everyone else sucks. Dennis is very cool. Everyone else sucks. Dennis is very cool. Everyone else sucks.';
+        // this.game.description =
+        //     'Dennis is very cool. Everyone else sucks. Dennis is very cool. Everyone else sucks. Dennis is very cool. Everyone else sucks. Dennis is very cool. Everyone else sucks. Dennis is very cool. Everyone else sucks. Dennis is very cool. Everyone else sucks.';
         this.feedFetcher.getGameLikes(this.game.id).subscribe((response) => {
             if (response.includes(this.userID)) {
                 this.alreadyLiked = true;
@@ -94,5 +99,9 @@ export class IndivGameComponent implements OnInit, OnChanges {
             this.game.likes += 1;
             this.alreadyLiked = true;
         }
+    }
+
+    goToUserProfile() {
+        console.log('here');
     }
 }

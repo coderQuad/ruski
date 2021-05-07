@@ -1,12 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
+import { DOCUMENT } from '@angular/common';
+
+import { AuthService } from '@auth0/auth0-angular';
 
 import { ProfileService } from './../services/profile.service';
 import { CurrentUserService } from './../services/current-user.service';
 
-import { forkJoin, combineLatest, from } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { forkJoin, combineLatest, of } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
+import { NoFragmentCyclesRule } from 'graphql';
 
 
 @Component({
@@ -23,6 +27,12 @@ export class ProfileComponent implements OnInit {
   name: string;
   profile_url: string;
 
+  wins: number;
+  losses: number;
+  percentage: string;
+  averageCups: number;
+  yaks: number;
+
   // user data
   myHandle:string;
 
@@ -30,7 +40,7 @@ export class ProfileComponent implements OnInit {
   myProfile: boolean;
   isFriend: boolean;
 
-  constructor(private route:ActivatedRoute, private router: Router, private profile:ProfileService, private user:CurrentUserService) { 
+  constructor(private route:ActivatedRoute, private router: Router, private profile:ProfileService, private user:CurrentUserService, public auth:AuthService, @Inject(DOCUMENT) public document: Document) { 
   }
 
   ngOnInit(): void {
@@ -44,7 +54,7 @@ export class ProfileComponent implements OnInit {
     ]).subscribe(response => {
       this.handle = response[0].handle;
       this.myHandle = response[1];
-      this.getInfo();
+      this.getInfo().subscribe();
       if(this.handle !== this.myHandle){
         this.myProfile = false;
         // this.areFriends(this.id, this.myHandle);
@@ -54,12 +64,24 @@ export class ProfileComponent implements OnInit {
     });
   }
 
-  getInfo(): void{
-    this.profile.getUserByHandle(this.handle).subscribe(response => {
-      this.elo = response.elo;
-      this.name = response.name;
-      this.profile_url = response.profile_url;
-    });
+  getInfo() {
+    return this.profile.getUserByHandle(this.handle).pipe(
+      switchMap(response => {
+        this.elo = response.elo;
+        this.id = response.id
+        this.name = response.name;
+        this.profile_url = response.profile_url;
+        
+        this.profile.getUserStats(this.id).subscribe(response => {
+          this.wins = response.wins;
+          this.losses = response.losses;
+          this.percentage = response.percentage
+          this.yaks = response.yaks;
+          this.averageCups = response.averageCups;
+        })
+        return of();
+      })
+    );
   }
 
   areFriends(pageId: string, myHandle: string): void {

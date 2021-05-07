@@ -85,14 +85,13 @@ export class CurrentUserService {
         return this.auth.user$.pipe(
             switchMap((response) => {
                 // query to get logged in user
-                console.log(response.email);
                 const GET_USER = gql`
-          query GetUser {
-            userByEmail(email: "${response.email}") {
-              handle
-            }
-          }
-        `;
+                    query GetUser {
+                        userByEmail(email: "${response.email}") {
+                        handle
+                        }
+                    }
+                `;
                 return this.apollo
                     .query<any>({
                         query: GET_USER,
@@ -100,7 +99,6 @@ export class CurrentUserService {
                     })
                     .pipe(
                         map((response) => {
-                            console.log(response);
                             if (!response.data.userByEmail.length) {
                                 return {
                                     handle: 'yourhandle',

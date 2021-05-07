@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  api: 'https://tenfoottalltim.cum.irish'
+  api: 'https://server.playruski.com'
 };

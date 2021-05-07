@@ -37,9 +37,11 @@ export class SettingsComponent implements OnInit {
   // cropper properties
   imageChangedEvent;
   croppedImage;
+  editingPic: boolean;
 
   // error properties
   errorFlag: boolean;
+  tooBig: boolean;
   errorMessage: string;
 
   constructor(private currentUser: CurrentUserService, private _formBuilder: FormBuilder, private router: Router, private profile:ProfileService) { }
@@ -71,6 +73,8 @@ export class SettingsComponent implements OnInit {
     const name = this.nameControl.value;
     const pic = this.imageControl.value;
 
+    this.errorFlag = true;
+
     if(name && name.length > 20) {
       this.errorFlag = true;
       this.errorMessage = 'Error: Name must be less than 20 characters.';
@@ -81,19 +85,27 @@ export class SettingsComponent implements OnInit {
         this.errorMessage = 'Error: Handle must be less than 20 characters.';
         return;
     }
+    if(this.tooBig){
+      this.errorFlag = true;
+      this.errorMessage = 'Error: Image must be 1 MB or less.';
+      return;
+    }
+
     this.errorFlag = false;      
 
     let observables = [];
+    const currentHandle = handle ? handle.length : this.handle;
     if(handle && handle !== this.oldHandle){
       this.handle = handle;
       observables.push(this.profile.updateHandle(this.id, this.handle));
     }
     if(name && name !== this.oldName){
       this.name = name;
-      observables.push(this.profile.updateName(this.id, this.name));
+      observables.push(this.profile.updateName(this.id, currentHandle, this.name));
     }
     if(pic){
-      observables.push(this.profile.updatePic(this.id, pic));
+      this.editingPic = true;
+      observables.push(this.profile.updatePic(this.id, currentHandle, pic));
     }
 
     if(!observables.length){
@@ -110,6 +122,10 @@ export class SettingsComponent implements OnInit {
 
   onSelect(event: Event) {
     const file = (event.target as HTMLInputElement).files[0];
+    var filesize = ((file.size/1024)/1024);
+    if(filesize > 1){
+      this.tooBig = true;
+    }
     this.formGroup.patchValue({image: file});
     this.formGroup.get('image').updateValueAndValidity();
     const reader = new FileReader();

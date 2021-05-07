@@ -25,7 +25,7 @@ export class CommentService {
             }
         `;
         console.log('here');
-        this.apollo
+        return this.apollo
             .mutate({
                 mutation: ADD_COMMENT,
                 variables: {
@@ -44,9 +44,6 @@ export class CommentService {
                         },
                     });
                 })
-            )
-            .subscribe((response) => {
-                console.log(response);
-            });
+            );
     }
 }
