@@ -101,7 +101,7 @@ export class IndivGameComponent implements OnInit, OnChanges {
         }
     }
 
-    goToUserProfile() {
-        console.log('here');
+    goToUserProfile(handle: string) {
+        this.router.navigate([`/main/user/${handle}`]);
     }
 }

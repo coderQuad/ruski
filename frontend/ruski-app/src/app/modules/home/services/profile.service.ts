@@ -230,7 +230,7 @@ export class ProfileService {
       switchMap( (response:any) => {
         // console.log(response);
         const signedUrl = response.presigned_url;
-        // console.log(signedUrl); 
+        // console.log(signedUrl);
 
         const data = picture.replace(/^data:image\/\w+;base64,/, "");
         const buff = Buffer.from(data, 'base64');
