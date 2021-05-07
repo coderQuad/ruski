@@ -73,14 +73,13 @@ export class ProfileComponent implements OnInit {
         this.profile_url = response.profile_url;
         
         this.profile.getUserStats(this.id).subscribe(response => {
-          console.log(response);
           this.wins = response.wins;
           this.losses = response.losses;
           this.percentage = response.percentage
           this.yaks = response.yaks;
           this.averageCups = response.averageCups;
         })
-        return of([]);
+        return of();
       })
     );
   }

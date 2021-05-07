@@ -3,6 +3,7 @@ import { Apollo, gql } from 'apollo-angular';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { combineLatest, of } from 'rxjs';
 import { catchError, map, tap, switchMap, timeout } from 'rxjs/operators';
+import { stringify } from '@angular/compiler/src/util';
 
 @Injectable({
   providedIn: 'root'
@@ -47,6 +48,44 @@ export class ProfileService {
     );
   }
 
+  // getInfo(handle:string) {
+  //   interface PlayerData  {
+  //     elo: number,
+  //     id: string,
+  //     name: string,
+  //     profile_url: string,
+  //     wins: number,
+  //     losses: number,
+  //     percentage: string,
+  //     yaks: number,
+  //     averageCups: number,
+  //   };
+
+  //   let output = {} as PlayerData;
+
+  //   return this.getUserByHandle(handle).pipe(
+  //     switchMap(response => {
+  //       output.elo = response.elo;
+  //       output.id = response.id
+  //       output.name = response.name;
+  //       output.profile_url = response.profile_url;
+  //       console.log('brother');
+  //       return this.getUserStats(output.id).pipe(
+  //         map(response => {
+  //           console.log('brotherman');
+  //           console.log(response);
+  //           output.wins = response.wins;
+  //           output.losses = response.losses;
+  //           output.percentage = response.percentage
+  //           output.yaks = response.yaks;
+  //           output.averageCups = response.averageCups;
+  //           return output;
+  //         })
+  //       )
+  //     })
+  //   );
+  // }
+
   getUserStats(userId: string) {
     const GET_USER_PLAYERS = gql`
       query GetUserPlayers {
@@ -59,9 +98,10 @@ export class ProfileService {
     `;
     return this.apollo.query<any>({
       query: GET_USER_PLAYERS,
+      fetchPolicy: 'no-cache',
     }).pipe(
       switchMap((response:any) => {
-        return this.parsePlayers(response.data.playerWithUserId)
+        return this.parsePlayers(response.data.playerWithUserId);
       })
     );
   }
@@ -77,7 +117,7 @@ export class ProfileService {
     let cups = 0;
     let playerIds = [];
     
-    if(!data){
+    if(!data.length){
       return of(stats);
     }
 
@@ -91,6 +131,7 @@ export class ProfileService {
     for(let playerId of playerIds){
       observables.push(this.findGames(playerId));
     }
+
     return combineLatest(observables).pipe(
       map((response:any) => {
         for(let [index, game] of response.entries()){
@@ -129,6 +170,7 @@ export class ProfileService {
       `; 
       return this.apollo.query<any>({
         query: FIND_PLAYER_GAMES,
+        fetchPolicy: 'no-cache',
       }).pipe(
         map((response: any) => {
           return response.data.gamesByPlayerId[0];
@@ -202,38 +244,6 @@ export class ProfileService {
         })
   }
 
-  // updatePic(id:string, picture: string) {
-  //   const typeRegex = /data\:image\/(png|jpeg)/;
-  //   const type = typeRegex.exec(picture)[1];
-  //   return this.http.get(`http://localhost:4000/get_presigned_url_${type}/${id}`).pipe(
-  //     switchMap((response: any) => {
-  //       console.log(response);
-  //       // const data = response.json();
-  //       const signedUrl = response.presigned_url;
-  //       console.log(signedUrl); 
-  //       const HttpOptions = {
-  //         headers: new HttpHeaders({
-  //           'Content-Type': `image/${type}`,
-  //           'mode': 'cors',
-  //         }),
-  //         body: picture,
-  //       }
-  //       fetch(
-  //         signedUrl,
-  //         {
-  //           method: 'PUT',
-  //           mode: 'cors',
-  //           headers: {
-  //             'Content-Type': `image/${type}`,
-  //           },
-  //           body: picture
-  //         }
-  //       ).then(response => {
-  //         console.log(response.text())
-  //       });
-  //     })
-  //   );
-  // }
   postPic(id:string, picture:string){
     const typeRegex = /data\:image\/(png|jpeg)/;
     const type = typeRegex.exec(picture)[1];

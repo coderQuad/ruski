@@ -18,9 +18,12 @@
     <!-- <button mat-flat-button *ngIf="isFriend" color="accent" (click)="removeFriend()">Unfollow</button> -->
 </div>
 <div id="body">
-    <div id="stats">
-        <div>Elo: {{elo}}</div>
-        <div>Record: {{wins}} - {{losses}} ({{percentage}})</div>
-        <div>Total yaks: {{yaks}}</div>
-    </div>
+    <mat-card id="stats-card">
+        <mat-card-title>User Stats</mat-card-title>
+        <div id="stats">
+            <mat-card-content>Elo: {{elo}}</mat-card-content>
+            <mat-card-content>Record: {{wins}} - {{losses}} ({{percentage}})</mat-card-content>
+            <mat-card-content>Total yaks: {{yaks}}</mat-card-content>
+        </div>
+    </mat-card>
 </div>
