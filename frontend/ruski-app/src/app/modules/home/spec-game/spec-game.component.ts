@@ -138,4 +138,13 @@ export class SpecGameComponent implements OnInit {
     goBack() {
         this.router.navigate(['/main/feed']);
     }
+
+    goToUserProfile(handle: string) {
+        this.router.navigate([`/main/user/${handle}`]);
+    }
+    goToUserFromComment(handle: string, dbMirrorFlag: boolean){
+        if(!dbMirrorFlag){
+            this.router.navigate([`/main/user/${handle}`]);
+        }
+    }
 }

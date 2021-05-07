@@ -1,8 +1,8 @@
 <mat-card (click)="navToGame($event)">
     <div class="flex-container">
         <div class="winners">
-            <img class="w1" src="{{ game.w1Image }}" />
-            <img class="w2" src="{{ game.w2Image }}" />
+            <img class="w1" src="{{ game.w1Image }}" (click)="goToUserProfile(game.w1Handle)"/>
+            <img class="w2" src="{{ game.w2Image }} " (click)="goToUserProfile(game.w2Handle)" />
             <span class="names"
                 >{{ game.w1Name | slice: 0:9 }} &
                 {{ game.w2Name | slice: 0:9 }}</span
@@ -22,8 +22,8 @@
                 >{{ game.l1Name | slice: 0:9 }} &
                 {{ game.l2Name | slice: 0:9 }}</span
             >
-            <img class="l1" src="{{ game.l1Image }}" />
-            <img class="l2" src="{{ game.l2Image }}" />
+            <img class="l1" src="{{ game.l1Image }}" (click)="goToUserProfile(game.l1Handle)"/>
+            <img class="l2" src="{{ game.l2Image }}" (click)="goToUserProfile(game.l2Handle)"/>
         </div>
     </div>
     <div class="flex-description">

@@ -2,11 +2,14 @@
     <mat-icon (click)="goBack()">arrow_back_ios</mat-icon>
     <div class="flex-container">
         <div class="winners">
-            <img class="w1" src="{{ game.w1Image }}" />
-            <img class="w2" src="{{ game.w2Image }}" />
+            <img class="w1" src="{{ game.w1Image }}" (click)="goToUserProfile(game.w1Handle)"/>
+            <img class="w2" src="{{ game.w2Image }} " (click)="goToUserProfile(game.w2Handle)" />
             <span class="names"
-                >{{ game.w1Name | slice: 0:9 }} &
-                {{ game.w2Name | slice: 0:9 }}</span
+                >
+                <span (click)="goToUserProfile(game.w1Handle)">{{ game.w1Name | slice: 0:9 }}</span>
+                &
+                <span (click)="goToUserProfile(game.w2Handle)">{{ game.w2Name | slice: 0:9 }}</span>
+                </span
             >
         </div>
         <div class="score">
@@ -20,11 +23,14 @@
         </div>
         <div class="losers">
             <span class="names"
-                >{{ game.l1Name | slice: 0:9 }} &
-                {{ game.l2Name | slice: 0:9 }}</span
+                >
+                <span (click)="goToUserProfile(game.l1Handle)">{{ game.l1Name | slice: 0:9 }}</span>
+                &
+                <span (click)="goToUserProfile(game.l2Handle)">{{ game.l2Name | slice: 0:9 }}</span>
+                </span
             >
-            <img class="l1" src="{{ game.l1Image }}" />
-            <img class="l2" src="{{ game.l2Image }}" />
+            <img class="l1" src="{{ game.l1Image }}" (click)="goToUserProfile(game.l1Handle)"/>
+            <img class="l2" src="{{ game.l2Image }}" (click)="goToUserProfile(game.l2Handle)"/>
         </div>
     </div>
     <div class="flex-description">
@@ -63,14 +69,14 @@
         <div class="stats">
             <div class="flexy">
                 <div class="playerStats">
-                    <div class="player-name" [ngStyle]="{ color: '#2b5c36' }">
+                    <div class="player-name" [ngStyle]="{ color: '#2b5c36' }" (click)="goToUserProfile(game.w1Handle)">
                         {{ game.w1Name }}
                     </div>
                     <div class="cups">{{ game.w1Cups }} cups</div>
                     <div class="cups">{{ game.w1Penalties }} yaks</div>
                 </div>
                 <div class="playerStats">
-                    <div class="player-name" [ngStyle]="{ color: '#B71C1C' }">
+                    <div class="player-name" [ngStyle]="{ color: '#B71C1C' }" (click)="goToUserProfile(game.l1Handle)">
                         {{ game.l1Name }}
                     </div>
                     <div class="cups">{{ game.l1Cups }} cups</div>
@@ -80,14 +86,14 @@
             <br />
             <div class="flexy">
                 <div class="playerStats">
-                    <div class="player-name" [ngStyle]="{ color: '#2b5c36' }">
+                    <div class="player-name" [ngStyle]="{ color: '#2b5c36' }" (click)="goToUserProfile(game.w2Handle)">
                         {{ game.w2Name }}
                     </div>
                     <div class="cups">{{ game.w2Cups }} cups</div>
                     <div class="cups">{{ game.w2Penalties }} yaks</div>
                 </div>
                 <div class="playerStats">
-                    <div class="player-name" [ngStyle]="{ color: '#B71C1C' }">
+                    <div class="player-name" [ngStyle]="{ color: '#B71C1C' }" (click)="goToUserProfile(game.l2Handle)">
                         {{ game.l2Name }}
                     </div>
                     <div class="cups">{{ game.l2Cups }} cups</div>
@@ -106,6 +112,7 @@
             >
                 <div class="placeholder">
                     <img
+                        (click)="goToUserFromComment(game.comments[i].user.handle, commentDBMirror[i])"
                         class="comment-image"
                         src="{{
                             commentDBMirror[i]
@@ -113,7 +120,7 @@
                                 : game.comments[i].user.profile_url
                         }}"
                     />
-                    <span class="comment-name">{{
+                    <span class="comment-name" (click)="goToUserFromComment(game.comments[i].user.handle, commentDBMirror[i])">{{
                         commentDBMirror[i]
                             ? currentUser.name
                             : game.comments[i].user.name
