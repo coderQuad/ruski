@@ -344,6 +344,7 @@ export class EnterGameComponent implements OnInit {
             new_elos[i] = Math.round(new_elo + 2 * win_fact);
         }
         return new_elos;
+    }
 
     private _filter(value: string): string[] {
         const filterValue = value.toLowerCase();
