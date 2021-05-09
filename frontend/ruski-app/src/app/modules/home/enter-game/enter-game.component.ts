@@ -175,7 +175,7 @@ export class EnterGameComponent implements OnInit {
         ];
         let noErrors = true;
         for (const value of allValuesArray) {
-            if (!value) {
+            if (value === null) {
                 this.errorFlag = true;
                 noErrors = false;
                 this.errorMessage = `Error: Cannot leave fields blank`;
