@@ -183,7 +183,7 @@ export class ProfileService {
             mutation: UPDATE_HANDLE,
             variables: {
                 id: id,
-                handle: newHandle,
+                handle: newHandle.split(' ').join('').toLowerCase(),
             },
         });
     }
