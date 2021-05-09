@@ -65,7 +65,15 @@ export class SearchComponent implements OnInit {
     }
 
     navUser(name: any){
-        const handle = name.split(' ')[1].slice(1);
+        const nameFields = name.split(' ');
+        let handle = '';
+
+        if(nameFields.length == 3){
+            handle = nameFields[2].slice(1);
+        } else {
+            handle = nameFields[1].slice(1);
+        }
+
         this.router.navigate([`/main/user/${handle}`]);
     }
 }

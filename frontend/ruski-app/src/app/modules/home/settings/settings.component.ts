@@ -114,7 +114,7 @@ export class SettingsComponent implements OnInit {
 
     combineLatest(observables).subscribe(response => {
       console.log(response);
-      this.router.navigate([`/main/user/${this.handle}`]);
+      this.router.navigate([`/main/user/${this.handle.split(' ').join('').toLowerCase()}`]);
     });
 
 

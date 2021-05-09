@@ -63,6 +63,7 @@ export class RegisterService {
 
     submitHandle(id: string, handle: string) {
         console.log(id, handle);
+        const safeHandle = handle.split(' ').join('').toLowerCase();
         const ADD_HANDLE = gql`
             mutation ModifyHandle($id: ID!, $handle: String!) {
                 modifyHandle(id: $id, handle: $handle) {
@@ -78,7 +79,7 @@ export class RegisterService {
                 mutation: ADD_HANDLE,
                 variables: {
                     id: id,
-                    handle: handle,
+                    handle: safeHandle,
                 },
             })
             .subscribe((response) => {
