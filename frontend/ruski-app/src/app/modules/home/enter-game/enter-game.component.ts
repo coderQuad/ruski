@@ -158,7 +158,7 @@ export class EnterGameComponent implements OnInit {
         }
 
         const allValuesArray = [
-            this.myName.value,
+             this.userName,
             this.partnerName.value,
             this.oneName.value,
             this.twoName.value,
@@ -168,7 +168,7 @@ export class EnterGameComponent implements OnInit {
             this.twoCups.value,
         ];
         const namesArray = [
-            this.myName.value,
+            this.userName,
             this.partnerName.value,
             this.oneName.value,
             this.twoName.value,
@@ -203,7 +203,7 @@ export class EnterGameComponent implements OnInit {
                 ? 1
                 : 2;
         const game: Game = {
-            myName: this.userMap.get(this.myName.value),
+            myName: this.userMap.get(this.userName),
             myCups: this.myCups.value,
             myPenalties: this.myPenalties.value,
             partnerName: this.userMap.get(this.partnerName.value),
