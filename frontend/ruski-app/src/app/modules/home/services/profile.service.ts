@@ -111,7 +111,7 @@ export class ProfileService {
             }
           }
         }
-        stats.averageCups = cups / (stats.wins + stats.losses);
+        stats.averageCups = cups / data.length;
         stats.percentage = (stats.wins/(stats.wins + stats.losses)).toFixed(3);
         return stats;
       })
@@ -249,7 +249,6 @@ export class ProfileService {
             }
           ).then(result => result.text())
           .then(result => {
-            console.log("new timestamp just dropped" + Date.now());
             return `${response.s3_access_url}?lastmod=${Date.now()}`;
           })
         )
