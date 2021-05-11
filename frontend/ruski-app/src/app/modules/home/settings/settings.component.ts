@@ -4,6 +4,7 @@ import { ImageCroppedEvent } from 'ngx-image-cropper';
 import { Router } from '@angular/router';
 
 import { CurrentUserService } from './../services/current-user.service';
+import { RegisterService } from './../../auth/services/register.service';
 import { ProfileService } from './../services/profile.service';
 import { combineLatest } from 'rxjs';
 
@@ -20,6 +21,9 @@ export class SettingsComponent implements OnInit {
   imageControl = new FormControl(null);
 
   formGroup = this._formBuilder.group({});
+
+  // list of existing handles
+  allHandles: Set<string> = new Set();
 
   // values for html
   name:string;
@@ -42,12 +46,22 @@ export class SettingsComponent implements OnInit {
   // error properties
   errorFlag: boolean;
   tooBig: boolean;
-  errorMessage: string;
+  errorMessage: string = '';
 
-  constructor(private currentUser: CurrentUserService, private _formBuilder: FormBuilder, private router: Router, private profile:ProfileService) { }
+  constructor(
+    private currentUser: CurrentUserService, 
+    private _formBuilder: FormBuilder, 
+    private router: Router, 
+    private profile:ProfileService, 
+    private reg: RegisterService) { }
 
   ngOnInit(): void {
     this.compareHandles();
+    this.reg.fetchAllHandles().subscribe((response) => {
+      for (const user of response) {
+          this.allHandles.add(user.handle);
+      }
+  });
     this.formGroup = this._formBuilder.group({
       name: this.nameControl,
       handle: this.handleControl,
@@ -77,17 +91,22 @@ export class SettingsComponent implements OnInit {
 
     if(name && name.length > 20) {
       this.errorFlag = true;
-      this.errorMessage = 'Error: Name must be less than 20 characters.';
+      this.errorMessage += 'Error: Name must be less than 20 characters.';
       return;
     }
     if(handle && handle.length > 20) {
         this.errorFlag = true;
-        this.errorMessage = 'Error: Handle must be less than 20 characters.';
+        this.errorMessage += 'Error: Handle must be less than 20 characters.';
         return;
+    }
+    if(handle && this.allHandles.has(handle)){
+      this.errorFlag = true;
+      this.errorMessage += 'Error: Handle is already taken.';
+      return;
     }
     if(this.tooBig){
       this.errorFlag = true;
-      this.errorMessage = 'Error: Image must be 1 MB or less.';
+      this.errorMessage += 'Error: Image must be 1 MB or less.';
       return;
     }
 
