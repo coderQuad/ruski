@@ -111,7 +111,7 @@ export class ProfileService {
             }
           }
         }
-        stats.averageCups = cups / (stats.wins + stats.losses);
+        stats.averageCups = cups / data.length;
         stats.percentage = (stats.wins/(stats.wins + stats.losses)).toFixed(3);
         return stats;
       })
