@@ -249,7 +249,6 @@ export class ProfileService {
             }
           ).then(result => result.text())
           .then(result => {
-            console.log("new timestamp just dropped" + Date.now());
             return `${response.s3_access_url}?lastmod=${Date.now()}`;
           })
         )

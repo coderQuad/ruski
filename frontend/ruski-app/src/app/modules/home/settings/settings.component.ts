@@ -123,7 +123,7 @@ export class SettingsComponent implements OnInit {
   onSelect(event: Event) {
     const file = (event.target as HTMLInputElement).files[0];
     var filesize = ((file.size/1024)/1024);
-    if(filesize > 1){
+    if(filesize > 5){
       this.tooBig = true;
     }
     this.formGroup.patchValue({image: file});
