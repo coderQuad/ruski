@@ -30,7 +30,7 @@ export class ProfileComponent implements OnInit {
   wins: number;
   losses: number;
   percentage: string;
-  averageCups: number;
+  averageCups: string;
   yaks: number;
 
   // user data

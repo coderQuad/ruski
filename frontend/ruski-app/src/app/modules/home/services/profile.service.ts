@@ -73,7 +73,7 @@ export class ProfileService {
       wins: 0,
       losses: 0,
       yaks: 0,
-      averageCups: 0,
+      averageCups: '0.0',
       percentage: '.000'
     }
 
@@ -111,7 +111,7 @@ export class ProfileService {
             }
           }
         }
-        stats.averageCups = cups / data.length;
+        stats.averageCups = (cups / data.length).toFixed(1);
         stats.percentage = (stats.wins/(stats.wins + stats.losses)).toFixed(3);
         return stats;
       })
