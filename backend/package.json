@@ -19,6 +19,6 @@
     "graphql-iso-date": "^3.6.1",
     "mongoose": "^5.12.2",
     "nodemon": "^2.0.7",
-    "yargs": "^17.0.1"
+    "yargs": "^17.3.1"
   }
 }

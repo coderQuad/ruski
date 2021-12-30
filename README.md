@@ -23,6 +23,11 @@ Be sure to use `sudo -E` when running node on port 80 to pass environment variab
 `ACCESS_KEY_ID=******************`
 `SECRET_ACCESS_KEY=****************************`
 
+## Server deployment
+Set up pm2 to work on port 80 or 443 to then auto restart process when SSL certificate renews:  
+https://pm2.keymetrics.io/docs/usage/specifics/#listening-on-port-80-w-o-root
+
+
 ### Cron
 Run `crontab -e` to edit your crontab and add the following line:  
 `11 23 * * * ~/ruski/backend/cronjob-script.py 1> ~/ruski/backend/yack-beer-totals.json`
