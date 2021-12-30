@@ -43,7 +43,7 @@ var corsOptions = {
 
 const app = express();
 app.use(express.static(__dirname + '/static', { dotfiles: 'allow' }));
-if(argv.port === 443) {
+if(argv.port === 5000) {
   app.use(cors(corsOptions));
 } else {
   app.use(cors());

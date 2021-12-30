@@ -24,8 +24,18 @@ Be sure to use `sudo -E` when running node on port 80 to pass environment variab
 `SECRET_ACCESS_KEY=****************************`
 
 ## Server deployment
-Set up pm2 to work on port 80 or 443 to then auto restart process when SSL certificate renews:  
-https://pm2.keymetrics.io/docs/usage/specifics/#listening-on-port-80-w-o-root
+setup nginx + let's encrypt ssl + pm2 to auto renew certificates without disrupting server.  
+https://www.learnwithjason.dev/blog/deploy-nodejs-ssl-digitalocean  
+Then start server  
+`pm2 start 'node server.js -p 5000'`  
+Edit the file to add a post hook so that nginx restarts when certificate is renewed  
+`sudo vi /etc/letsencrypt/renewal/server.playruski.com.conf`
+and add  
+`post_hook = /bin/systemctl reload nginx`  
+somewhere below  
+`[renewalparams]`
+
+
 
 
 ### Cron
